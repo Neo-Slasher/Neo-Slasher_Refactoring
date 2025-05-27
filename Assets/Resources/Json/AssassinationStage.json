@@ -1,0 +1,64 @@
+﻿{
+    "assassinationStage": [
+        {
+            "stageNo": 1,
+            "normalReward": 1,
+            "eliteReward": 3,
+            "normalDropRate": 0.0002,
+            "eliteDropRate": 0.0006,
+            "normal1Spawn": 1.50,
+            "normal2Spwan": 0.50,
+            "normal3Spawn": 0.00,
+            "elite1Spawn": 0.50,
+            "elite2Spawn": 0.00,
+            "elite3Spawn": 0.00,
+            "stageDropRank": 1,
+            "stageRecCP": 70
+        },
+        {
+            "stageNo": 2,
+            "normalReward": 2,
+            "eliteReward": 7,
+            "normalDropRate": 0.0003,
+            "eliteDropRate": 0.0008,
+            "normal1Spawn": 0.50,
+            "normal2Spwan": 1.50,
+            "normal3Spawn": 0.50,
+            "elite1Spawn": 0.50,
+            "elite2Spawn": 0.50,
+            "elite3Spawn": 0.00,
+            "stageDropRank": 3,
+            "stageRecCP": 100
+        },
+        {
+            "stageNo": 3,
+            "normalReward": 3,
+            "eliteReward": 12,
+            "normalDropRate": 0.0005,
+            "eliteDropRate": 0.0012,
+            "normal1Spawn": 0.25,
+            "normal2Spwan": 1.00,
+            "normal3Spawn": 1.50,
+            "elite1Spawn": 0.25,
+            "elite2Spawn": 0.75,
+            "elite3Spawn": 0.50,
+            "stageDropRank": 6,
+            "stageRecCP": 140
+        },
+        {
+            "stageNo": 4,
+            "normalReward": 5,
+            "eliteReward": 25,
+            "normalDropRate": 0.0007,
+            "eliteDropRate": 0.0015,
+            "normal1Spawn": 0.00,
+            "normal2Spwan": 1.50,
+            "normal3Spawn": 2.50,
+            "elite1Spawn": 0.00,
+            "elite2Spawn": 1.00,
+            "elite3Spawn": 1.00,
+            "stageDropRank": 10,
+            "stageRecCP": 200
+        }
+    ]
+}
