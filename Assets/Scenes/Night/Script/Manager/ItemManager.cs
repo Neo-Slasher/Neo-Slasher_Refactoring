@@ -44,7 +44,7 @@ public class ItemManager : MonoBehaviour
     float centryBallAngle;
     [SerializeField]
     float chargingReaperAngle;
-    [SerializeField] 
+    [SerializeField]
     float reaperCircleR = 3; //반지름
     float reaperDeg = 0; //각도
     [SerializeField]
@@ -132,7 +132,7 @@ public class ItemManager : MonoBehaviour
 
     void StartItem()
     {
-        for(int i =0; i< itemIdxArr.Length; i++)
+        for (int i = 0; i < itemIdxArr.Length; i++)
         {
             FindItem(itemIdxArr[i], itemRankArr[i]);
         }
@@ -142,7 +142,7 @@ public class ItemManager : MonoBehaviour
     {
         ItemName nowItemName = (ItemName)getIdx;
         Debug.Log(nowItemName.ToString());
-        switch(nowItemName)
+        switch (nowItemName)
         {
             case ItemName.None:
                 break;
@@ -238,7 +238,7 @@ public class ItemManager : MonoBehaviour
         {
             if (chargingReaperScript.IsChargingGaugeFull())
             {
-                if(!isReaperSoundPlay)
+                if (!isReaperSoundPlay)
                 {
                     isReaperSoundPlay = true;
                     nightSFXManager.PlayAudioClip(AudioClipName.chargingReaper);
@@ -360,7 +360,7 @@ public class ItemManager : MonoBehaviour
         //swordAura.GetComponent<SpriteRenderer>().color = swordAuraColor;
         SetSwordAuraAngle(swordAura);
 
-        if(character.fixPos != Vector3.zero)
+        if (character.fixPos != Vector3.zero)
             swordAura.GetComponent<Rigidbody2D>().linearVelocity = character.fixPos.normalized * 10;
         else
             swordAura.GetComponent<Rigidbody2D>().linearVelocity = Vector3.right * 10;
@@ -442,7 +442,7 @@ public class ItemManager : MonoBehaviour
         while (!nightManager.isStageEnd)
         {
             //왜인지는 모르겠는데 현재 체력이 0으로 받아오는 버그가 있음 근데 이유를 모르겠음;;
-            while(nowHp == 0)
+            while (nowHp == 0)
             {
                 nowHp = GameManager.instance.player.curHp;
                 yield return null;
@@ -479,7 +479,7 @@ public class ItemManager : MonoBehaviour
 
         double timeCount = 50 / characterAttackSpeed;
 
-        switch(getRank)
+        switch (getRank)
         {
             case 0:
                 shieldPoint *= (float)DataManager.instance.consumableList.item[6].attackPowerValue;
@@ -504,7 +504,7 @@ public class ItemManager : MonoBehaviour
             character.SetShieldPointData(shieldPoint);
             nightSFXManager.PlayAudioClip(AudioClipName.barrior);
             barriorScript.CreateBarrior();
-            
+
             yield return new WaitUntil(() => character.ReturnCharacterShieldPoint() == 0);
             barriorScript.SetBarriorActive(false);
             Debug.Log(timeCount);
@@ -594,7 +594,7 @@ public class ItemManager : MonoBehaviour
     {
         character.isAntiPhenetOn = true;
 
-        switch(getRank)
+        switch (getRank)
         {
             case 0:
                 character.SetAntiPhenetData((float)DataManager.instance.consumableList.item[8].attackPowerValue);
@@ -677,7 +677,7 @@ public class ItemManager : MonoBehaviour
         }
 
         timeCount *= -1;
-        
+
         while (!nightManager.isStageEnd)
         {
             nightSFXManager.PlayAudioClip(AudioClipName.moveBack);
@@ -699,7 +699,7 @@ public class ItemManager : MonoBehaviour
         character.SetCharacterBasicSpeedError();
         GameObject boosterParent = Instantiate(itemPrefabArr[13]);
         boosterParent.transform.SetParent(character.transform);
-        boosterParent.transform.localPosition = character.transform.position + new Vector3(2.13f,0,0);
+        boosterParent.transform.localPosition = character.transform.position + new Vector3(2.13f, 0, 0);
         boosterParent.GetComponent<Booster>().character = character.GetComponent<SpriteRenderer>();
         //아이콘 인덱스 찾기
         int iconIdx = FindIconIdx((int)ItemName.Booster);
@@ -712,7 +712,7 @@ public class ItemManager : MonoBehaviour
         float timeCount = 300 / getAttackSpeed;
         float duration = getAttackRange;
         double speed = getAttackPower;
-        
+
         switch (getRank)
         {
             case 0:
@@ -779,7 +779,7 @@ public class ItemManager : MonoBehaviour
         }
         character.SetItemAbsorbAttackData(getAbsorbAttackData);
     }
-    
+
     void InterceptDroneCoroutine(int getRank)
     {
         //아이콘 인덱스 찾기
@@ -816,7 +816,7 @@ public class ItemManager : MonoBehaviour
     {
         coolTimeImageArr[coolTimeImageIdx].gameObject.SetActive(true);
         float nowTime = 0;
-        while(coolTimeImageArr[coolTimeImageIdx].fillAmount >0)
+        while (coolTimeImageArr[coolTimeImageIdx].fillAmount > 0)
         {
             nowTime += Time.deltaTime;
             coolTimeImageArr[coolTimeImageIdx].fillAmount = 1 - nowTime / getCoolTime;

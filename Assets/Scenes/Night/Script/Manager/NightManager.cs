@@ -6,104 +6,52 @@ using TMPro;
 
 public class NightManager : MonoBehaviour
 {
-    [SerializeField]
-    ItemManager itemManager;
-
-    [SerializeField]
-    TimerManager timerManager;
-
-    [SerializeField]
-    NightSFXManager nightSFXManager;
-
-    [SerializeField]
-    GameObject character;
-
-    [SerializeField]
-    GameObject backGround;
-
-    [SerializeField]
-    Sprite[] backGroundSpriteArr;
-
-    //UI        
-    [SerializeField]
-    GameObject endPopup;
-
-    //몬스터 출현 등에 사용할 예정
-    [SerializeField]
-    GameObject[] normalEnemyPrefabs;
-    [SerializeField]
-    GameObject[] eliteEnemyPrefabs;
+    [Header("Managers")]
+    [SerializeField] ItemManager itemManager;
+    [SerializeField] TimerManager timerManager;
+    [SerializeField] NightSFXManager nightSFXManager;
 
 
-    int normalEnemyCount = 3;
-    int eliteEnemyCount = 3;
+    [Header("UI")]
+    [SerializeField] SpriteRenderer backGround;
+    [SerializeField] GameObject endPopup;
+    [SerializeField] GameObject itemChangePopup;
+    [SerializeField] Transform GetThing; // itemChangePopup 내부
+    //230904 추가된 팝업 (아이템을 획득했을 때 나타나는 창)
+    [SerializeField] Image[] characterItemImageArr;
+    //환경설정
+    [SerializeField] Button settingButton;
+    [SerializeField] GameObject setting;
 
 
+    [Header("GameObjects")]
+    [SerializeField] GameObject character;
+    [SerializeField] private Transform enemies;
 
-    Vector3 nowCharPos;
-    [SerializeField]
-    Transform enemyCloneParent;
 
-    //전투시 필요한 데이터
-    public bool isStageEnd = false; //밤이 끝났는지 알아보는 변수
+    [Header("Resources")]
+    [SerializeField] Sprite[] backGroundSpriteArr;
+    [SerializeField] GameObject[] normalEnemyPrefabs;
+    [SerializeField] GameObject[] eliteEnemyPrefabs;
 
-    [SerializeField]
-    TextMeshProUGUI[] killCountTextArr; //0: 노멀 킬수, 1: 엘리트 킬수, 2: 노멀 알파, 3: 엘리트 알파
-    [SerializeField]
-    TextMeshProUGUI aliveOrDieText;
+
+    [SerializeField] int selectItemIdx;
+
+    private const int MAX_NORMAL_ENEMY_INDEX = 2;
+    private const int MAX_ELITE_ENEMY_INDEX = 2;
+
+
+    public bool isStageEnd = false; 
     public int killCount = 0;
     public int killNormal = 0;
     public int killElite = 0;
 
-    //환경설정 추가
-    [SerializeField]
-    Button settingBtn;
-    [SerializeField]
-    GameObject settingParent;
 
-    //게임 종료 팝업
-    [SerializeField]
-    TextMeshProUGUI dayText;
-    [SerializeField]
-    Sprite[] itemSpriteArr;
-    [SerializeField]
-    Image getItemImage;
-    [SerializeField]
-    TextMeshProUGUI getItemName;
-
-    //230904 추가된 팝업 (아이템을 획득했을 때 나타나는 창)
-    [SerializeField]
-    GameObject itemChangePopupParent;
-    [SerializeField]
-    Image[] characterItemImageArr;
-    [SerializeField]
-    Image selectItemImage;
-    [SerializeField]
-    TextMeshProUGUI selectItemNameText;
-    [SerializeField]
-    TextMeshProUGUI selectItemRankText;
-    [SerializeField]
-    TextMeshProUGUI selectItemPartText;
-    [SerializeField]
-    TextMeshProUGUI selectItemInfoText;
-    [SerializeField]
-    Image getItemPopupImage;
-    [SerializeField]
-    TextMeshProUGUI getItemPopupNameText;
-    [SerializeField]
-    TextMeshProUGUI getItemPopupRankText;
-    [SerializeField]
-    TextMeshProUGUI getItemPopupPartText;
-    [SerializeField]
-    TextMeshProUGUI getItemPopupInfoText;
-    [SerializeField]
-    int selectItemIdx;
 
 
     private void Start()
     {
         SetBackGround();
-
         InstantiateEnemy();
     }
 
@@ -112,83 +60,52 @@ public class NightManager : MonoBehaviour
         switch (GameManager.instance.player.assassinationCount)
         {
             case 0:
-                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[0];
+                backGround.sprite = backGroundSpriteArr[0];
                 break;
             case 1:
-                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[1];
+                backGround.sprite = backGroundSpriteArr[1];
                 break;
             case 2:
-                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[2];
+                backGround.sprite = backGroundSpriteArr[2];
                 break;
             case 3:
-                backGround.GetComponent<SpriteRenderer>().sprite = backGroundSpriteArr[3];
+                backGround.sprite = backGroundSpriteArr[3];
                 break;
         }
     }
 
 
-    //노멀 적과 엘리트 적 소환하는 함수
-    // 각 몬스터마다 소환 함수를 따로 두고 스폰율에 따라 차등 생성
     void InstantiateEnemy()
     {
-        for (int normalEnemyDataIndex = 0; normalEnemyDataIndex < normalEnemyCount; normalEnemyDataIndex++)
-            StartCoroutine(InstantiateNormalEnemyCoroutine(normalEnemyDataIndex));
-        for (int eliteEnemyDataIndex = 0; eliteEnemyDataIndex < eliteEnemyCount; eliteEnemyDataIndex++)
-            StartCoroutine(InstantiateEliteEnemyCoroutine(eliteEnemyDataIndex));
+        for (int normalEnemyDataIndex = 0; normalEnemyDataIndex <= MAX_NORMAL_ENEMY_INDEX; normalEnemyDataIndex++)
+        {
+            StartCoroutine(InstantiateEnemyCoroutine(normalEnemyPrefabs, false, normalEnemyDataIndex));
+
+        }
+        for (int eliteEnemyDataIndex = 0; eliteEnemyDataIndex <= MAX_ELITE_ENEMY_INDEX; eliteEnemyDataIndex++)
+        {
+            StartCoroutine(InstantiateEnemyCoroutine(eliteEnemyPrefabs, true, eliteEnemyDataIndex));
+        }
     }
 
-
-
-
-
-
-    IEnumerator InstantiateNormalEnemyCoroutine(int nowEnemyIndex)
+    IEnumerator InstantiateEnemyCoroutine(GameObject[] prefabs, bool isElite, int index)
     {
-        double spawnRate = GetSpawnRate(false, nowEnemyIndex);
-        if (spawnRate == 0.0)
-            yield break;
+        double spawnRate = GetSpawnRate(isElite, index);
+        if (spawnRate == 0.0) yield break;
 
         float spawnTime = (float)(1 / spawnRate);
-
         yield return new WaitForSeconds(spawnTime);
 
         while (!isStageEnd && timerManager.timerCount > 1)
         {
-            //몬스터 스폰
-            GameObject normalEnemyClone = Instantiate(normalEnemyPrefabs[nowEnemyIndex], SetEnemyPos(), Quaternion.identity);
-
-            normalEnemyClone.GetComponent<Enemy>().SetEnforceData(GameManager.instance.player.level, false);
-
-            normalEnemyClone.transform.SetParent(enemyCloneParent);
-
+            GameObject enemy = Instantiate(prefabs[index], SetEnemyPosition(), Quaternion.identity);
+            enemy.GetComponent<Enemy>().SetEnforceData(GameManager.instance.player.level, false);
+            enemy.transform.SetParent(enemies);
             yield return new WaitForSeconds(spawnTime);
         }
-
     }
 
-    IEnumerator InstantiateEliteEnemyCoroutine(int nowEnemyIndex)
-    {
-        double spawnRate = GetSpawnRate(true, nowEnemyIndex);
-        if (spawnRate == 0.0)
-            yield break;
 
-        float spawnTime = (float)(1 / spawnRate);
-
-        yield return new WaitForSeconds(spawnTime);
-
-        while (!isStageEnd && timerManager.timerCount > 1)
-        {
-            //몬스터 스폰
-            GameObject eliteEnemyClone = Instantiate(eliteEnemyPrefabs[nowEnemyIndex], SetEnemyPos(), Quaternion.identity);
-
-            eliteEnemyClone.GetComponent<Enemy>().SetEnforceData(GameManager.instance.player.level, false);
-
-            eliteEnemyClone.transform.SetParent(enemyCloneParent);
-
-            yield return new WaitForSeconds(spawnTime);
-        }
-
-    }
     double GetSpawnRate(bool isElite, int getIndex)
     {
         int nowAssassination = GameManager.instance.player.assassinationCount;
@@ -214,24 +131,21 @@ public class NightManager : MonoBehaviour
         }
     }
 
-
-    //적이 스폰되는 벡터 구하기
-    Vector3 SetEnemyPos()
+    Vector3 SetEnemyPosition()
     {
-        nowCharPos = character.transform.position;
+        const float MIN_DISTANCE = 10; // 플레이어와 적이 스폰될 때 최소 거리
 
-        float minDistance = 10; // 플레이어와 적이 스폰될 때 최소 거리
-        Vector3 instantiatePos;
-        do
+        Vector3 instantiatePos = new Vector3(Random.Range(-15f, 15f), Random.Range(-30f, 30f), 0);
+        while (Vector3.Distance(instantiatePos, character.transform.position) < MIN_DISTANCE)
         {
             // tolelom: 아래 두 범위 중 무엇이 옳은 지는 아직 모름
             //instantiatePos = new Vector3(Random.Range(-10f, 10f), Random.Range(-20f, 20f), 0);
             instantiatePos = new Vector3(Random.Range(-15f, 15f), Random.Range(-30f, 30f), 0);
-        } while (Vector3.Distance(instantiatePos, character.transform.position) < minDistance);
-
+        }
 
         return instantiatePos;
     }
+
 
     // 게임 종료 함수
     // 플레이어 체력이 0, 시간이 0일 때 발동되는 함수
@@ -246,11 +160,11 @@ public class NightManager : MonoBehaviour
 
         //조이스틱 사용은 nightManager.isStageEnd를 매번 받기 때문에 알아서 꺼짐
 
-        // 적 삭제
-        Transform[] enemies = new Transform[enemyCloneParent.childCount];
+        // 적 삭제 (안전하게 복사 후 삭제)
+        Transform[] enemyList = new Transform[enemies.childCount];
 
-        for (int i = 0; i < enemies.Length; i++)
-            enemies[i] = enemyCloneParent.GetChild(i);
+        for (int i = 0; i < enemyList.Length; i++)
+            enemyList[i] = enemies.GetChild(i);
 
         foreach (Transform child in enemies)
         {
@@ -276,13 +190,22 @@ public class NightManager : MonoBehaviour
     //팝업창 데이터 설정
     void SetEndPopUp()
     {
-        aliveOrDieText.text = (timerManager.timerCount == 0) ? "생존" : "사망";
+        Transform enemytTexts = endPopup.transform.Find("PopupBoard").Find("EnemyTexts");
+        Transform UIs = endPopup.transform.Find("PopupBoard").Find("UIs");
 
-        killCountTextArr[0].text = killNormal.ToString();
-        killCountTextArr[1].text = killElite.ToString();
+        Player player = GameManager.instance.player;
 
-        int currnet_day = GameManager.instance.player.day;
-        dayText.text = currnet_day + "일차 D-" + (7 - currnet_day);
+        TMP_Text aliveOrDie = UIs.Find("AliveOrDieText").GetComponent<TMP_Text>();
+        aliveOrDie.text = (timerManager.timerCount == 0) ? "생존" : "사망";
+
+        TMP_Text day = UIs.Find("DayText").GetComponent<TMP_Text>();
+        day.text = player.day + "일차 D-" + (7 - player.day);
+
+        TMP_Text normalCount = enemytTexts.Find("NormalKill").Find("NormalKillCount").GetComponent<TMP_Text>();
+        TMP_Text eliteCount = enemytTexts.Find("EliteKill").Find("EliteKillCount").GetComponent<TMP_Text>();
+
+        normalCount.text = killNormal.ToString();
+        eliteCount.text = killElite.ToString();
 
         CalculateItemReward();
         CalculateMoneyReward();
@@ -292,15 +215,16 @@ public class NightManager : MonoBehaviour
         // 아이템이 마음에 들지 않아 게임 강제 종료 가능
         // SavePlayerData의 위치가 옳지 않을 수 있음
         // 실질적인 day가 증가하지 않기 때문에 여러 번 강제 종료해서 돈, 아이템 수급 가능
-        Player.Save(GameManager.instance.player);
+        Player.Save(player);
     }
 
     //밤이 끝나고 아이템 획득하는 함수
     void CalculateItemReward()
     {
         Player player = GameManager.instance.player;
-        //(처치한 일반 몬스터 수 × 해당 단계에서의 일반 드랍 확률) +
-        //(처치한 정예 몬스터 수 × 해당 단계에서의 정예 드랍 확률) = (장비 및 아이템을 획득할 확률)
+
+        // (처치한 일반 몬스터 수 × 해당 단계에서의 일반 드랍 확률) +
+        // (처치한 정예 몬스터 수 × 해당 단계에서의 정예 드랍 확률) = (장비 및 아이템을 획득할 확률)
         int difficulty = player.difficulty;
         int assassination = player.assassinationCount;
 
@@ -320,6 +244,11 @@ public class NightManager : MonoBehaviour
 
         const int ITEMS_PER_RANK = 15;
         const int MAX_ITEM_INDEX = 14;
+
+        Transform dropItemUI = endPopup.transform.Find("PopupBoard").Find("DropItemUI");
+        Image itemImage = dropItemUI.Find("DropItemImage").GetComponent<Image>();
+        TMP_Text itemName = dropItemUI.Find("DropItemNameText").GetComponent<TMP_Text>();
+
         if (nowProb < rate) // 아이템 획득
         {
             int getItemIdx = Random.Range(itemRank * ITEMS_PER_RANK, itemRank * ITEMS_PER_RANK + MAX_ITEM_INDEX);
@@ -332,8 +261,8 @@ public class NightManager : MonoBehaviour
 
             Consumable getItem = DataManager.instance.consumableList.item[getItemIdx];
 
-            getItemImage.sprite = itemSpriteArr[getItem.imgIdx];
-            getItemName.text = getItem.name;
+            itemImage.sprite = Resources.Load<Sprite>("Item/" + getItem.name); 
+            itemName.text = getItem.name;
 
             int itemSlotIndex = -1;
             for (int i = 0; i < player.itemSlot; ++i)
@@ -355,8 +284,8 @@ public class NightManager : MonoBehaviour
         }
         else // 획득 x
         {
-            getItemImage.gameObject.SetActive(false);
-            getItemName.text = "없음";
+            itemImage.gameObject.SetActive(false);
+            itemName.text = "없음";
         }
     }
 
@@ -370,8 +299,13 @@ public class NightManager : MonoBehaviour
         int normalMoney = stageData.normalReward * killNormal;
         int eliteMoney = stageData.eliteReward * killElite;
 
-        killCountTextArr[2].text = $"{normalMoney}a";
-        killCountTextArr[3].text = $"{eliteMoney}a";
+
+        Transform enemytTexts = endPopup.transform.Find("PopupBoard").Find("EnemyTexts");
+        TMP_Text norlmalAlpha = enemytTexts.Find("NormalAlpha").Find("NormalAlpha").GetComponent<TMP_Text>();
+        TMP_Text eliteAlpha = enemytTexts.Find("EliteAlpha").Find("EliteAlpha").GetComponent <TMP_Text>();
+
+        norlmalAlpha.text = $"{normalMoney}a";
+        eliteAlpha.text = $"{eliteMoney}a";
 
 
         //(처치한 일반 적 수 * 일반 적 현상금 + 정예 적 수 * 적 현상금) * 획득 재화값
@@ -380,10 +314,12 @@ public class NightManager : MonoBehaviour
     }
 
 
-    //끝난 날짜 및 데이터 조정 및 저장
+
+    // 끝난 날짜 및 데이터 조정 및 저장
     public void OnTouchEndBtn()
     {
         Player player = GameManager.instance.player;
+
         // 7일차가 아니면 저장하고 낮씬으로 가고 아니면 엔딩으로 갑니다.
         if (player.day < 7)
         {
@@ -439,8 +375,6 @@ public class NightManager : MonoBehaviour
 
 
 
-
-
     bool IsItemDuplication(int getNowItemIdx)
     {
         Player player = GameManager.instance.player;
@@ -469,20 +403,20 @@ public class NightManager : MonoBehaviour
     //환경설정 여는 함수
     public void OnClickSettingBtn()
     {
-        settingParent.SetActive(true);
+        setting.SetActive(true);
         Time.timeScale = 0;
     }
 
     public void OnClickContinueBtn()
     {
-        settingParent.SetActive(false);
+        setting.SetActive(false);
         Time.timeScale = 1;
     }
 
     public void OnClickExitBtn()
     {
         //씬 이동  
-        settingParent.SetActive(false);
+        setting.SetActive(false);
         Time.timeScale = 1;
         SetEndPopUp();
         endPopup.SetActive(true);
@@ -493,18 +427,27 @@ public class NightManager : MonoBehaviour
     {
         Player player = GameManager.instance.player;
         int itemSlotCount = player.itemSlot;
+
+
         for (int i = 0; i < itemSlotCount; i++)
         {
             characterItemImageArr[i].sprite = itemManager.itemIconArr[player.item[i].imgIdx];
             characterItemImageArr[i].gameObject.SetActive(true);
         }
 
-        getItemPopupImage.sprite = itemManager.itemIconArr[player.item[itemSlotCount].imgIdx];
-        getItemPopupNameText.text = player.item[itemSlotCount].name;
-        getItemPopupRankText.text = player.item[itemSlotCount].GetRank() + "등급";
-        getItemPopupInfoText.text = player.item[itemSlotCount].GetConvertedScript(player);
+        Image image = GetThing.Find("Image").GetComponent<Image>();
+        TMP_Text name = GetThing.Find("Name").GetComponent<TMP_Text>();
+        TMP_Text rank = GetThing.Find("Rank").GetComponent<TMP_Text>();
+        TMP_Text part = GetThing.Find("Part").GetComponent<TMP_Text>();
+        TMP_Text info = GetThing.Find("Info").GetComponent<TMP_Text>();
 
-        itemChangePopupParent.SetActive(true);
+        image.sprite = itemManager.itemIconArr[player.item[itemSlotCount].imgIdx];
+        name.text = player.item[itemSlotCount].name;
+        rank.text = player.item[itemSlotCount].GetRank() + "등급";
+        part.text = player.item[itemSlotCount].GetCategory();
+        info.text = player.item[itemSlotCount].GetConvertedScript(player);
+
+        itemChangePopup.SetActive(true);
     }
 
     public void OnClickItemChangePopupBtn(int itemIdx)
@@ -514,16 +457,26 @@ public class NightManager : MonoBehaviour
             return;
 
         selectItemIdx = itemIdx;
-        selectItemImage.sprite = itemManager.itemIconArr[player.item[itemIdx].imgIdx];
-        selectItemImage.gameObject.SetActive(true);
-        selectItemNameText.text = player.item[itemIdx].name;
-        selectItemRankText.text = player.item[itemIdx].GetRank() + "등급";
 
-        selectItemInfoText.text = player.item[itemIdx].GetConvertedScript(player);
+        Transform haveItem = itemChangePopup.transform.Find("haveItem");
+        Image itemImage = haveItem.Find("Image").GetComponent<Image>();
+        TMP_Text itemName = haveItem.Find("Iname").GetComponent<TMP_Text>();
+        TMP_Text itemRank = haveItem.Find("Irank").GetComponent<TMP_Text>();
+        TMP_Text itemPart = haveItem.Find("Ipart").GetComponent<TMP_Text>();
+        TMP_Text itemInfo = haveItem.Find("Iinfo").GetComponent <TMP_Text>();
+
+        itemImage.sprite = itemManager.itemIconArr[player.item[itemIdx].imgIdx];
+        itemImage.gameObject.SetActive(true);
+
+        itemName.text = player.item[itemIdx].name;
+        itemRank.text = player.item[itemIdx].GetRank() + "등급";
+        itemPart.text = player.item[itemIdx].GetCategory();
+        itemInfo.text = player.item[itemIdx].GetConvertedScript(player);
     }
 
     public void OnClickItemThrowBtn()
     {
+        // 어떤 아이템인지 받아와서 null 처리 할 것
         //GameManager.instance.player.item.RemoveAt(GameManager.instance.player.itemSlot);
 
         Player.Save(GameManager.instance.player);
