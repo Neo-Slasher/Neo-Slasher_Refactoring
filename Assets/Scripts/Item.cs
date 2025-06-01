@@ -47,11 +47,11 @@ public class Consumable : Item
     {
         string convertedScript = script;
         if (attackPowerCalc)
-            script = script.Replace("#at#", (player.attackPower * attackPowerValue).ToString());
+            convertedScript = convertedScript.Replace("#at#", (player.attackPower * attackPowerValue).ToString());
         if (attackSpeedCalc)
-            script = script.Replace("#as#", (player.attackSpeed * attackSpeedValue).ToString());
+            convertedScript = convertedScript.Replace("#as#", (player.attackSpeed * attackSpeedValue).ToString());
         if (attackRangeCalc)
-            script = script.Replace("#ar#", (player.attackRange * attackRangeValue).ToString());
+            convertedScript = convertedScript.Replace("#ar#", (player.attackRange * attackRangeValue).ToString());
 
         return convertedScript;
     }

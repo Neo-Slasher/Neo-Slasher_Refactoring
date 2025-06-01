@@ -8,10 +8,8 @@ public class Player
 {
     public const string file_path = "UserData.json";
 
-    public bool playingGame; // 게임 중인지 
     // defalut
-    public int day;     //정윤석: 날짜를 세이브하기 위해서 넣었습니다. 제이슨도 바꿨어요.
-    public int round; // 회차, 즉 스토리와 연관
+    public int day; //정윤석: 날짜를 세이브하기 위해서 넣었습니다. 제이슨도 바꿨어요.
     public int difficulty;
     public int assassinationCount;
 
@@ -67,10 +65,8 @@ public class Player
 
     public Player()
     {
-        playingGame = false;
         day = 1;
-        round = 1;
-        difficulty = 1;
+        difficulty = 0; // 0인 경우 인트로를 보게 됨
         assassinationCount = 0;
 
         level = 1;
@@ -103,6 +99,9 @@ public class Player
         itemSlot = 1;
 
         traitPoint = level;
+
+        // earn money 관련 데이터 없어서 추가 
+        earnMoney = 1.0F;
 
         for (int i = 0; i < equipment.Length; i++)
         {
@@ -139,13 +138,23 @@ public class Player
         return player;
     }
 
-    public void CheatApply()
+    public int GetEmptyComsumableSlot()
     {
-        maxHp = 2000;
-        curHp = 2000;
-        level = 20;
-        money = 100000;
+        for (int i = 0; i < itemSlot; ++i)
+        {
+            if (item[i] == null)
+                return i;
+        }
+        return -1;
     }
 
-
+    public bool haveConsumable(int consumableIndex)
+    {
+        for (int i = 0; i < itemSlot; i++)
+        {
+            if (item[i] != null && item[i].itemIdx == consumableIndex)
+                return true;
+        }
+        return false;
+    }
 }

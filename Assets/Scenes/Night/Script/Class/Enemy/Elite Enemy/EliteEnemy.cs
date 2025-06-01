@@ -9,7 +9,7 @@ public class EliteEnemy : Enemy
     [SerializeField]
     GameObject[] projectilesPulling;
     int pullingScale = 100;
-    [SerializeField]int nowPullingIndex = 0;
+    [SerializeField] int nowPullingIndex = 0;
 
     bool isShoot = false;
 
@@ -26,12 +26,12 @@ public class EliteEnemy : Enemy
     //공격 함수 들어갈 예정 + 범위는 overlap
     void SetProjectile()
     {
-        if(stats.canProj)
+        if (stats.canProj)
         {
             projectilesPulling = new GameObject[pullingScale];
 
             //투사체 준비
-            for(int i =0; i< pullingScale; i++)
+            for (int i = 0; i < pullingScale; i++)
             {
                 GameObject nowProj = Instantiate(projectileObject, this.transform);
                 nowProj.GetComponent<Projectile>().isEnemy = true;
@@ -39,7 +39,7 @@ public class EliteEnemy : Enemy
                 nowProj.transform.position = this.transform.position;
                 nowProj.SetActive(false);
                 projectilesPulling[i] = nowProj;
-            }    
+            }
             DetectCharacter();
         }
     }
@@ -86,8 +86,8 @@ public class EliteEnemy : Enemy
         while (!isStageEnd)
         {
             Collider2D collider = Physics2D.OverlapCircle(this.transform.position, detectRadius, layerMask);
-            
-            if(collider != null)
+
+            if (collider != null)
             {
                 //투사체 발사
                 ShootProjectile();

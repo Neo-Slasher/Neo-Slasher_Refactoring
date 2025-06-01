@@ -407,7 +407,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -976,7 +976,7 @@ GameObject:
   - component: {fileID: 227227948}
   - component: {fileID: 227227947}
   m_Layer: 5
-  m_Name: Sinfo
+  m_Name: Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1071,7 +1071,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -1186,7 +1186,7 @@ GameObject:
   - component: {fileID: 293387899}
   - component: {fileID: 293387898}
   m_Layer: 5
-  m_Name: GetItemBackGround
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1298,7 +1298,7 @@ GameObject:
   - component: {fileID: 301170406}
   - component: {fileID: 301170405}
   m_Layer: 5
-  m_Name: GetItemImage
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2542,12 +2542,12 @@ GameObject:
   - component: {fileID: 610569579}
   - component: {fileID: 610569578}
   m_Layer: 5
-  m_Name: Spart
+  m_Name: Part
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &610569577
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2564,7 +2564,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 45, y: 22.000175}
+  m_AnchoredPosition: {x: 45, y: 58.484}
   m_SizeDelta: {x: 114.7852, y: 36.484}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &610569578
@@ -2636,7 +2636,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -2905,7 +2905,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -3116,7 +3116,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -3563,7 +3563,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -4933,7 +4933,7 @@ GameObject:
   - component: {fileID: 1154332641}
   - component: {fileID: 1154332640}
   m_Layer: 5
-  m_Name: Srank
+  m_Name: Rank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5027,7 +5027,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -5069,7 +5069,7 @@ GameObject:
   - component: {fileID: 1164268826}
   - component: {fileID: 1164268825}
   m_Layer: 5
-  m_Name: Sname
+  m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5163,7 +5163,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -6336,7 +6336,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -7066,7 +7066,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -7145,14 +7145,16 @@ MonoBehaviour:
   nightSFXManager: {fileID: 1657796862}
   backGround: {fileID: 2135326779}
   endPopup: {fileID: 973832368}
-  killCountTextArr:
-  - {fileID: 505239458}
-  - {fileID: 1216991914}
-  - {fileID: 1894572979}
-  - {fileID: 683043828}
-  aliveOrDieText: {fileID: 1506699017}
-  settingBtn: {fileID: 480298949}
+  itemChangePopup: {fileID: 1778064153}
+  GetThing: {fileID: 950442191}
+  characterItemImageArr:
+  - {fileID: 621283414}
+  - {fileID: 1889901144}
+  - {fileID: 2090310600}
+  settingButton: {fileID: 480298949}
   setting: {fileID: 2147058080}
+  character: {fileID: 889106806}
+  enemies: {fileID: 562037683}
   backGroundSpriteArr:
   - {fileID: 21300000, guid: af8580b9f8ece4d8da11e3d191dc8b0a, type: 3}
   - {fileID: 21300000, guid: 0507c25db172b43ab8061467bb8ee2ce, type: 3}
@@ -7166,48 +7168,26 @@ MonoBehaviour:
   - {fileID: 5704455429035723747, guid: a52504d50004b4521b71a28e05f1870b, type: 3}
   - {fileID: 5704455429035723747, guid: 34184c2f63a5a4895bbcfa34a29d21a5, type: 3}
   - {fileID: 5704455429035723747, guid: ff8fa84f91b404b50a88ac6efa2e2202, type: 3}
-  character: {fileID: 889106806}
-  enemies: {fileID: 562037683}
+  getItem:
+    itemIdx: 0
+    name: 
+    rank: 0
+    showCooltime: 0
+    price: 0
+    script: 
+    imgIdx: 0
+    category: 0
+    attackPowerCalc: 0
+    attackPowerValue: 0
+    attackSpeedCalc: 0
+    attackSpeedValue: 0
+    attackRangeCalc: 0
+    attackRangeValue: 0
+  selectItemIdx: 0
   isStageEnd: 0
   killCount: 0
   killNormal: 0
   killElite: 0
-  dayText: {fileID: 1383702050}
-  itemSpriteArr:
-  - {fileID: 0}
-  - {fileID: 21300000, guid: ee654467a16a06e4caba57a50b66c0d7, type: 3}
-  - {fileID: 21300000, guid: eae37026def6902428bfce96959094f2, type: 3}
-  - {fileID: 21300000, guid: b107fc8a1188d5542b5b9a700a7b732c, type: 3}
-  - {fileID: 21300000, guid: 8ff0a635e9399ab41940f7b2ed605b2f, type: 3}
-  - {fileID: 21300000, guid: 27bb45733233978409ff9420d63632cc, type: 3}
-  - {fileID: 21300000, guid: b040d88cd24c6484cb941c25b04469d9, type: 3}
-  - {fileID: 21300000, guid: f4dff42bfe3bc3942a5b21fec7df301e, type: 3}
-  - {fileID: 21300000, guid: 03e78ccaf19aff34a97f59502db733a5, type: 3}
-  - {fileID: 21300000, guid: c0c6f0f2ebd44024592eea881b59e7fb, type: 3}
-  - {fileID: 21300000, guid: 0ab8069f8475de94dbdf077b04ad83c6, type: 3}
-  - {fileID: 21300000, guid: 54ca583485711c942ac1aa7c9f3f4292, type: 3}
-  - {fileID: 21300000, guid: e9b2428560e78a748a00dc9e4bebb709, type: 3}
-  - {fileID: 21300000, guid: a8ef6b221b9971b4fa8661dcbf6df57a, type: 3}
-  - {fileID: 21300000, guid: 12aa1459bb90809459962470ed993602, type: 3}
-  - {fileID: 21300000, guid: ae5cef08d23560746916ec6d0dd52e7a, type: 3}
-  getItemImage: {fileID: 449857142}
-  getItemName: {fileID: 460079785}
-  itemChangePopupParent: {fileID: 1778064153}
-  characterItemImageArr:
-  - {fileID: 621283414}
-  - {fileID: 1889901144}
-  - {fileID: 2090310600}
-  selectItemImage: {fileID: 1460827850}
-  selectItemNameText: {fileID: 631091436}
-  selectItemRankText: {fileID: 703675892}
-  selectItemPartText: {fileID: 1560987479}
-  selectItemInfoText: {fileID: 1468317474}
-  getItemPopupImage: {fileID: 301170405}
-  getItemPopupNameText: {fileID: 1164268825}
-  getItemPopupRankText: {fileID: 1154332640}
-  getItemPopupPartText: {fileID: 610569578}
-  getItemPopupInfoText: {fileID: 227227947}
-  selectItemIdx: 0
 --- !u!1001 &1572966485
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7885,7 +7865,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -8880,7 +8860,7 @@ MonoBehaviour:
   timerParent: {fileID: 295054476}
   timerImage: {fileID: 803906632}
   timerText: {fileID: 2043238922}
-  startTime: 60
+  startTime: 1
 --- !u!1 &2001496777
 GameObject:
   m_ObjectHideFlags: 0
@@ -10159,7 +10139,7 @@ PrefabInstance:
       objectReference: {fileID: 1657796862}
     - target: {fileID: 4976701938403315984, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4976701938584526928, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -10168,6 +10148,10 @@ PrefabInstance:
     - target: {fileID: 4976701938676606320, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_Name
       value: Setting
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976701938676606320, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4976701938676606323, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_Pivot.x
@@ -10267,15 +10251,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4976701938953902212, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4976701938953902212, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4976701938953902212, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939048138523, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -10283,7 +10267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939200985706, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939206217204, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -10291,15 +10275,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939387501820, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939387501820, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939387501820, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939475784741, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -10311,19 +10295,19 @@ PrefabInstance:
       objectReference: {fileID: 678614975}
     - target: {fileID: 4976701939647600451, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939647600451, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939743469454, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939743469454, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939748900172, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'

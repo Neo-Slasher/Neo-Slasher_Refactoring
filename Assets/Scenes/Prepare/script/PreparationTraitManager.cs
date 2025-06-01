@@ -83,19 +83,19 @@ public class PreparationTraitManager : MonoBehaviour
         }
         else if (type == EffectType.moveSpeed) {
             player.moveSpeed += value;
-            move_speed_by_trait = value;
+            move_speed_by_trait += value;
         }
         else if (type == EffectType.attackPower) {
             player.attackPower += value;
-            attack_power_by_trait = value;
+            attack_power_by_trait += value;
         }
         else if (type == EffectType.attackSpeed) {
             player.attackSpeed += value;
-            attack_speed_by_trait = value;
+            attack_speed_by_trait += value;
         }
         else if (type == EffectType.attackRange) {
             player.attackRange += value;
-            attack_range_by_trait = value;
+            attack_range_by_trait += value;
         }
         else if (type == EffectType.startMoney) {
             player.startMoney += (int)value;
