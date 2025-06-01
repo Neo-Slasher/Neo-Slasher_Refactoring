@@ -22,14 +22,14 @@ public class CutSceneManager : MonoBehaviour
 
     void Start()
     {
-        stories = DataManager.instance.storyList.stories[GameManager.instance.player.difficulty + 1].story;
+        stories = DataManager.Instance.storyList.stories[GameManager.Instance.player.difficulty + 1].story;
 
         Debug.Log("start cut씬");
         Debug.Log(stories);
 
-        if (GameManager.instance.player.difficulty == 0) // intro
+        if (GameManager.Instance.player.difficulty == 0) // intro
             background.sprite = backgrounds[1];
-        else if (GameManager.instance.player.difficulty == 9) // bad ending
+        else if (GameManager.Instance.player.difficulty == 9) // bad ending
             background.sprite = backgrounds[9];
         else
             background.sprite = backgrounds[8]; // good ending
@@ -65,7 +65,7 @@ public class CutSceneManager : MonoBehaviour
             ChangeScene();
             return;
         }
-        if (GameManager.instance.player.difficulty == 1) // 배경은 인트로인 경우에만 바꿈
+        if (GameManager.Instance.player.difficulty == 1) // 배경은 인트로인 경우에만 바꿈
         {
             background.sprite = backgrounds[story_number];
         }

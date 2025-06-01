@@ -17,29 +17,29 @@ public class SoundManager : MonoBehaviour
     public Slider JoyStickSlider;
 
     void Start() {
-        bgmMixer.SetFloat("BGM", MapVolumeToDecibel(GameManager.instance.setting.bgm_volume));
-        sfxMixer.SetFloat("SFX", MapVolumeToDecibel(GameManager.instance.setting.sfx_volume));
-        BGMSlider.value = GameManager.instance.setting.bgm_volume;
-        SFXSlider.value = GameManager.instance.setting.sfx_volume;
-        JoyStickSlider.value = GameManager.instance.setting.joy_stick_size;
+        bgmMixer.SetFloat("BGM", MapVolumeToDecibel(GameManager.Instance.setting.bgm_volume));
+        sfxMixer.SetFloat("SFX", MapVolumeToDecibel(GameManager.Instance.setting.sfx_volume));
+        BGMSlider.value = GameManager.Instance.setting.bgm_volume;
+        SFXSlider.value = GameManager.Instance.setting.sfx_volume;
+        JoyStickSlider.value = GameManager.Instance.setting.joy_stick_size;
     }
 
     public void ChangeBgmVolume(float value) {
         bgmMixer.SetFloat("BGM", MapVolumeToDecibel(value));
-        GameManager.instance.setting.bgm_volume = value;
-        Setting.Save(GameManager.instance.setting);
+        GameManager.Instance.setting.bgm_volume = value;
+        Setting.Save(GameManager.Instance.setting);
     }
 
     public void ChangeSfxVolume(float value) {
         sfxMixer.SetFloat("SFX", MapVolumeToDecibel(value));
-        GameManager.instance.setting.sfx_volume = value;
-        Setting.Save(GameManager.instance.setting);
+        GameManager.Instance.setting.sfx_volume = value;
+        Setting.Save(GameManager.Instance.setting);
     }
 
     public void ChangeJoyStickSize(float value)
     {
-        GameManager.instance.setting.joy_stick_size = value;
-        Setting.Save(GameManager.instance.setting);
+        GameManager.Instance.setting.joy_stick_size = value;
+        Setting.Save(GameManager.Instance.setting);
     }
 
     float MapVolumeToDecibel(float normalizedValue) {

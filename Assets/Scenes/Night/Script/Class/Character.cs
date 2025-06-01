@@ -64,7 +64,7 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
-        player = GameManager.instance.player;
+        player = GameManager.Instance.player;
 
         // Tolelom: 밤 씬 시작시에는 체력을 최대 체력으로 변경할 지 고민 중
         if (player.curHp == 0)
@@ -110,7 +110,7 @@ public class Character : MonoBehaviour
 
     void SetHitBoxScale()
     {
-        float goalY = (float)GameManager.instance.player.attackRange * 0.15f;
+        float goalY = (float)GameManager.Instance.player.attackRange * 0.15f;
         Vector3 goalScale = new Vector3(1, goalY, 1);
 
         hitBox.transform.localScale = goalScale;
@@ -178,7 +178,7 @@ public class Character : MonoBehaviour
 
     IEnumerator AttackCoroutine()
     {
-        float attackSpeed = 10 / (float)GameManager.instance.player.attackSpeed;
+        float attackSpeed = 10 / (float)GameManager.Instance.player.attackSpeed;
 
         while (!nightManager.isStageEnd)
         {

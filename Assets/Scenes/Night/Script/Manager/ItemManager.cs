@@ -72,43 +72,16 @@ public class ItemManager : MonoBehaviour
         SetItemIdxArr();
         SetItemIconArr();
         StartItem();
-
-        //테스트용
-        //TestItem();
     }
 
-    void TestItem()
-    {
-        for (int i = 0; i < tempItemIdxArr.Length; i++) /////item배열에서 리스트로 변경했습니다!! Length->Count *엄지민
-        {
-            itemIdxArr[i] = tempItemIdxArr[i];
-            itemRankArr[i] = 3;
-        }
-
-        for (int i = 0; i < 3; i++)
-        {
-            if (i >= tempItemIdxArr.Length)
-            {
-                nowItemUIArr[i].SetActive(false);
-            }
-            else
-            {
-                int nowItemIconIdx = DataManager.instance.consumableList.item[itemIdxArr[i] - 1].imgIdx;
-                nowItemUIArr[i].transform.GetChild(0).GetComponent<Image>().sprite = itemIconArr[nowItemIconIdx];
-            }
-        }
-        StartItem();
-    }
 
     void SetItemIdxArr()
     {
-        for (int i = 0; i < GameManager.instance.player.item.Length; i++) /////item배열에서 리스트로 변경했습니다!! Length->Count *엄지민
+        Player player = GameManager.Instance.player;
+        for (int i = 0; i < player.itemSlot; i++) 
         {
-            if (i == 3)
-                return;
-
-            itemIdxArr[i] = GameManager.instance.player.item[i].itemIdx;
-            itemRankArr[i] = GameManager.instance.player.item[i].rank;
+            itemIdxArr[i] = player.item[i].itemIdx;
+            itemRankArr[i] = player.item[i].rank;
             itemIdxArr[i] -= (itemRankArr[i] * 15);     //아이템 인덱스로 ItemName을 구분하기 때문에 강제로 만든 식입니다.
                                                         //아이템 인덱스 - 랭크*15 = itemName
         }
@@ -116,16 +89,18 @@ public class ItemManager : MonoBehaviour
 
     void SetItemIconArr()
     {
+        Player player = GameManager.Instance.player;
+
         for (int i = 0; i < 3; i++)
         {
-            if (i >= GameManager.instance.player.item.Length)
+            if (i >= player.itemSlot)
             {
                 nowItemUIArr[i].SetActive(false);
             }
             else
             {
-                int nowItemIconIdx = DataManager.instance.consumableList.item[itemIdxArr[i] - 1].imgIdx;
-                nowItemUIArr[i].transform.GetChild(0).GetComponent<Image>().sprite = itemIconArr[nowItemIconIdx];
+                Consumable consumable = DataManager.Instance.consumableList.item[itemIdxArr[i] - 1];
+                nowItemUIArr[i].transform.GetChild(0).GetComponent<Image>().sprite = DataManager.Instance.consumableIcons[consumable.itemIdx];
             }
         }
     }
@@ -293,7 +268,7 @@ public class ItemManager : MonoBehaviour
 
         //랭크에 따라 다른 작업 추가
         float slashTime = 6;
-        float attackPowerRate = (float)DataManager.instance.consumableList.item[3].attackPowerValue;
+        float attackPowerRate = (float)DataManager.Instance.consumableList.item[3].attackPowerValue;
         float slashAttackPower = (float)character.ReturnCharacterAttackPower() * attackPowerRate;
         float attackRange = (float)character.ReturnCharacterAttackRange();
 
@@ -414,7 +389,7 @@ public class ItemManager : MonoBehaviour
         firstAdeParent.transform.localPosition = character.transform.position;
         firstAdeParent.SetActive(false);
 
-        double nowHp = GameManager.instance.player.curHp;
+        double nowHp = GameManager.Instance.player.curHp;
         double firstAdeHp = character.ReturnCharacterHitPointMax() * 0.4f;
         float healHp = (float)character.ReturnCharacterAttackPower();
         int coolTime = 30;
@@ -422,19 +397,19 @@ public class ItemManager : MonoBehaviour
         switch (getRank)
         {
             case 0:
-                healHp *= (float)DataManager.instance.consumableList.item[5].attackPowerValue;
+                healHp *= (float)DataManager.Instance.consumableList.item[5].attackPowerValue;
                 coolTime = 30;
                 break;
             case 1:
-                healHp *= (float)DataManager.instance.consumableList.item[20].attackPowerValue;
+                healHp *= (float)DataManager.Instance.consumableList.item[20].attackPowerValue;
                 coolTime = 25;
                 break;
             case 2:
-                healHp *= (float)DataManager.instance.consumableList.item[35].attackPowerValue;
+                healHp *= (float)DataManager.Instance.consumableList.item[35].attackPowerValue;
                 coolTime = 20;
                 break;
             case 3:
-                healHp *= (float)DataManager.instance.consumableList.item[50].attackPowerValue;
+                healHp *= (float)DataManager.Instance.consumableList.item[50].attackPowerValue;
                 coolTime = 15;
                 break;
         }
@@ -444,13 +419,13 @@ public class ItemManager : MonoBehaviour
             //왜인지는 모르겠는데 현재 체력이 0으로 받아오는 버그가 있음 근데 이유를 모르겠음;;
             while (nowHp == 0)
             {
-                nowHp = GameManager.instance.player.curHp;
+                nowHp = GameManager.Instance.player.curHp;
                 yield return null;
             }
 
             while (nowHp >= firstAdeHp)
             {
-                nowHp = GameManager.instance.player.curHp;
+                nowHp = GameManager.Instance.player.curHp;
                 yield return null;
             }
             Debug.Log("helldfaiodhsfoiasdbfodsabfioads");
@@ -482,20 +457,20 @@ public class ItemManager : MonoBehaviour
         switch (getRank)
         {
             case 0:
-                shieldPoint *= (float)DataManager.instance.consumableList.item[6].attackPowerValue;
-                timeCount = 90 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[6].attackSpeedValue);
+                shieldPoint *= (float)DataManager.Instance.consumableList.item[6].attackPowerValue;
+                timeCount = 90 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[6].attackSpeedValue);
                 break;
             case 1:
-                shieldPoint *= (float)DataManager.instance.consumableList.item[6].attackPowerValue;
-                timeCount = 90 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[21].attackSpeedValue);
+                shieldPoint *= (float)DataManager.Instance.consumableList.item[6].attackPowerValue;
+                timeCount = 90 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[21].attackSpeedValue);
                 break;
             case 2:
-                shieldPoint *= (float)DataManager.instance.consumableList.item[6].attackPowerValue;
-                timeCount = 90 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[36].attackSpeedValue);
+                shieldPoint *= (float)DataManager.Instance.consumableList.item[6].attackPowerValue;
+                timeCount = 90 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[36].attackSpeedValue);
                 break;
             case 3:
-                shieldPoint *= (float)DataManager.instance.consumableList.item[6].attackPowerValue;
-                timeCount = 90 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[51].attackSpeedValue);
+                shieldPoint *= (float)DataManager.Instance.consumableList.item[6].attackPowerValue;
+                timeCount = 90 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[51].attackSpeedValue);
                 break;
         }
 
@@ -555,20 +530,20 @@ public class ItemManager : MonoBehaviour
         switch (getRank)
         {
             case 0:
-                timeCount = 120 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[7].attackSpeedValue);
-                duration = characterAttackRange * (float)DataManager.instance.consumableList.item[7].attackRangeValue;
+                timeCount = 120 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[7].attackSpeedValue);
+                duration = characterAttackRange * (float)DataManager.Instance.consumableList.item[7].attackRangeValue;
                 break;
             case 1:
-                timeCount = 120 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[22].attackSpeedValue);
-                duration = characterAttackRange * (float)DataManager.instance.consumableList.item[22].attackRangeValue;
+                timeCount = 120 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[22].attackSpeedValue);
+                duration = characterAttackRange * (float)DataManager.Instance.consumableList.item[22].attackRangeValue;
                 break;
             case 2:
-                timeCount = 120 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[37].attackSpeedValue);
-                duration = characterAttackRange * (float)DataManager.instance.consumableList.item[37].attackRangeValue;
+                timeCount = 120 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[37].attackSpeedValue);
+                duration = characterAttackRange * (float)DataManager.Instance.consumableList.item[37].attackRangeValue;
                 break;
             case 3:
-                timeCount = 120 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[52].attackSpeedValue);
-                duration = characterAttackRange * (float)DataManager.instance.consumableList.item[52].attackRangeValue;
+                timeCount = 120 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[52].attackSpeedValue);
+                duration = characterAttackRange * (float)DataManager.Instance.consumableList.item[52].attackRangeValue;
                 break;
         }
 
@@ -597,16 +572,16 @@ public class ItemManager : MonoBehaviour
         switch (getRank)
         {
             case 0:
-                character.SetAntiPhenetData((float)DataManager.instance.consumableList.item[8].attackPowerValue);
+                character.SetAntiPhenetData((float)DataManager.Instance.consumableList.item[8].attackPowerValue);
                 break;
             case 1:
-                character.SetAntiPhenetData((float)DataManager.instance.consumableList.item[23].attackPowerValue);
+                character.SetAntiPhenetData((float)DataManager.Instance.consumableList.item[23].attackPowerValue);
                 break;
             case 2:
-                character.SetAntiPhenetData((float)DataManager.instance.consumableList.item[38].attackPowerValue);
+                character.SetAntiPhenetData((float)DataManager.Instance.consumableList.item[38].attackPowerValue);
                 break;
             case 3:
-                character.SetAntiPhenetData((float)DataManager.instance.consumableList.item[53].attackPowerValue);
+                character.SetAntiPhenetData((float)DataManager.Instance.consumableList.item[53].attackPowerValue);
                 break;
         }
     }
@@ -620,21 +595,21 @@ public class ItemManager : MonoBehaviour
         switch (getRank)
         {
             case 0:
-                addHp *= (float)DataManager.instance.consumableList.item[9].attackPowerValue;
-                addHpRegen *= (float)DataManager.instance.consumableList.item[9].attackRangeValue;
+                addHp *= (float)DataManager.Instance.consumableList.item[9].attackPowerValue;
+                addHpRegen *= (float)DataManager.Instance.consumableList.item[9].attackRangeValue;
                 Debug.Log(addHpRegen);
                 break;
             case 1:
-                addHp *= (float)DataManager.instance.consumableList.item[24].attackPowerValue;
-                addHpRegen *= (float)DataManager.instance.consumableList.item[24].attackRangeValue;
+                addHp *= (float)DataManager.Instance.consumableList.item[24].attackPowerValue;
+                addHpRegen *= (float)DataManager.Instance.consumableList.item[24].attackRangeValue;
                 break;
             case 2:
-                addHp *= (float)DataManager.instance.consumableList.item[39].attackPowerValue;
-                addHpRegen *= (float)DataManager.instance.consumableList.item[39].attackRangeValue;
+                addHp *= (float)DataManager.Instance.consumableList.item[39].attackPowerValue;
+                addHpRegen *= (float)DataManager.Instance.consumableList.item[39].attackRangeValue;
                 break;
             case 3:
-                addHp *= (float)DataManager.instance.consumableList.item[54].attackPowerValue;
-                addHpRegen *= (float)DataManager.instance.consumableList.item[54].attackRangeValue;
+                addHp *= (float)DataManager.Instance.consumableList.item[54].attackPowerValue;
+                addHpRegen *= (float)DataManager.Instance.consumableList.item[54].attackRangeValue;
                 break;
         }
 
@@ -663,16 +638,16 @@ public class ItemManager : MonoBehaviour
         switch (getRank)
         {
             case 0:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.consumableList.item[11].attackSpeedValue);
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[11].attackSpeedValue);
                 break;
             case 1:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.consumableList.item[26].attackSpeedValue);
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[26].attackSpeedValue);
                 break;
             case 2:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.consumableList.item[41].attackSpeedValue);
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[41].attackSpeedValue);
                 break;
             case 3:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.consumableList.item[56].attackSpeedValue);
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[56].attackSpeedValue);
                 break;
         }
 
@@ -716,24 +691,24 @@ public class ItemManager : MonoBehaviour
         switch (getRank)
         {
             case 0:
-                timeCount = 30 / (getAttackSpeed * (float)DataManager.instance.consumableList.item[12].attackSpeedValue);
-                duration = getAttackRange * (float)DataManager.instance.consumableList.item[12].attackRangeValue;
-                speed = getBasicSpeed + getAttackPower * (float)DataManager.instance.consumableList.item[12].attackPowerValue;
+                timeCount = 30 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[12].attackSpeedValue);
+                duration = getAttackRange * (float)DataManager.Instance.consumableList.item[12].attackRangeValue;
+                speed = getBasicSpeed + getAttackPower * (float)DataManager.Instance.consumableList.item[12].attackPowerValue;
                 break;
             case 1:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.consumableList.item[27].attackSpeedValue);
-                duration = getAttackRange * (float)DataManager.instance.consumableList.item[27].attackRangeValue;
-                speed = getBasicSpeed + getAttackPower * (float)DataManager.instance.consumableList.item[27].attackPowerValue;
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[27].attackSpeedValue);
+                duration = getAttackRange * (float)DataManager.Instance.consumableList.item[27].attackRangeValue;
+                speed = getBasicSpeed + getAttackPower * (float)DataManager.Instance.consumableList.item[27].attackPowerValue;
                 break;
             case 2:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.consumableList.item[42].attackSpeedValue);
-                duration = getAttackRange * (float)DataManager.instance.consumableList.item[42].attackRangeValue;
-                speed = getBasicSpeed + getAttackPower * (float)DataManager.instance.consumableList.item[42].attackPowerValue;
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[42].attackSpeedValue);
+                duration = getAttackRange * (float)DataManager.Instance.consumableList.item[42].attackRangeValue;
+                speed = getBasicSpeed + getAttackPower * (float)DataManager.Instance.consumableList.item[42].attackPowerValue;
                 break;
             case 3:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.instance.consumableList.item[57].attackSpeedValue);
-                duration = getAttackRange * (float)DataManager.instance.consumableList.item[57].attackRangeValue;
-                speed = getBasicSpeed + getAttackPower * (float)DataManager.instance.consumableList.item[57].attackPowerValue;
+                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[57].attackSpeedValue);
+                duration = getAttackRange * (float)DataManager.Instance.consumableList.item[57].attackRangeValue;
+                speed = getBasicSpeed + getAttackPower * (float)DataManager.Instance.consumableList.item[57].attackPowerValue;
                 break;
         }
 

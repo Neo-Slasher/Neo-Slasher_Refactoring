@@ -56,20 +56,20 @@ public class InterceptDrone : MonoBehaviour
         switch (itemRank)
         {
             case 0:
-                timeCount = 40 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[14].attackSpeedValue);
-                detectRadius = characterAttackRange * 0.15f * (float)DataManager.instance.consumableList.item[14].attackRangeValue;
+                timeCount = 40 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[14].attackSpeedValue);
+                detectRadius = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[14].attackRangeValue;
                 break;
             case 1:
-                timeCount = 40 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[29].attackSpeedValue);
-                detectRadius = characterAttackRange * 0.15f * (float)DataManager.instance.consumableList.item[29].attackRangeValue;
+                timeCount = 40 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[29].attackSpeedValue);
+                detectRadius = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[29].attackRangeValue;
                 break;
             case 2:
-                timeCount = 40 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[44].attackSpeedValue);
-                detectRadius = characterAttackRange * 0.15f * (float)DataManager.instance.consumableList.item[44].attackRangeValue;
+                timeCount = 40 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[44].attackSpeedValue);
+                detectRadius = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[44].attackRangeValue;
                 break;
             case 3:
-                timeCount = 40 / (characterAttackSpeed * (float)DataManager.instance.consumableList.item[59].attackSpeedValue);
-                detectRadius = characterAttackRange * 0.15f * (float)DataManager.instance.consumableList.item[59].attackRangeValue;
+                timeCount = 40 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[59].attackSpeedValue);
+                detectRadius = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[59].attackRangeValue;
                 break;
         }
         detectRadius += 1.95f;

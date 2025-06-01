@@ -52,20 +52,20 @@ public class RailPiercer : MonoBehaviour
         switch (itemRank)
         {
             case 0:
-                attackPower = characterAttackPower * DataManager.instance.consumableList.item[4].attackPowerValue;
-                attackTime = 10 / (characterAttackSpeed * DataManager.instance.consumableList.item[4].attackSpeedValue);
+                attackPower = characterAttackPower * DataManager.Instance.consumableList.item[4].attackPowerValue;
+                attackTime = 10 / (characterAttackSpeed * DataManager.Instance.consumableList.item[4].attackSpeedValue);
                 break;
             case 1:
-                attackPower = characterAttackPower * DataManager.instance.consumableList.item[19].attackPowerValue;
-                attackTime = 10 / (characterAttackSpeed * DataManager.instance.consumableList.item[19].attackSpeedValue);
+                attackPower = characterAttackPower * DataManager.Instance.consumableList.item[19].attackPowerValue;
+                attackTime = 10 / (characterAttackSpeed * DataManager.Instance.consumableList.item[19].attackSpeedValue);
                 break;
             case 2:
-                attackPower = characterAttackPower * DataManager.instance.consumableList.item[34].attackPowerValue;
-                attackTime = 10 / (characterAttackSpeed * DataManager.instance.consumableList.item[34].attackSpeedValue);
+                attackPower = characterAttackPower * DataManager.Instance.consumableList.item[34].attackPowerValue;
+                attackTime = 10 / (characterAttackSpeed * DataManager.Instance.consumableList.item[34].attackSpeedValue);
                 break;
             case 3:
-                attackPower = characterAttackPower * DataManager.instance.consumableList.item[49].attackPowerValue;
-                attackTime = 10 / (characterAttackSpeed * DataManager.instance.consumableList.item[49].attackSpeedValue);
+                attackPower = characterAttackPower * DataManager.Instance.consumableList.item[49].attackPowerValue;
+                attackTime = 10 / (characterAttackSpeed * DataManager.Instance.consumableList.item[49].attackSpeedValue);
                 break;
         }
     }

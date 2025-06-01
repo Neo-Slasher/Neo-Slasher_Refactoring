@@ -1,19 +1,6 @@
 ﻿{
   "equipment": [
     {
-      "index": 0,
-      "name": "",
-      "rank": 0,
-      "price": 0,
-      "script": "",
-      "imageIndex": 0,
-      "part": 0,
-      "attackPower": 0,
-      "attackSpeed": 0,
-      "attackRange": 0,
-      "moveSpeed": 0
-    },
-    {
       "index": 1,
       "name": "프라임 엣지",
       "rank": 0,

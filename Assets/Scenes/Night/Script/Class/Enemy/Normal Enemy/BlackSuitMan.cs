@@ -8,7 +8,7 @@ public class BlackSuitMan : NormalEnemy
     private void Awake()
     {
         stats = new Monster(MonsterType.BlackSuitMan);
-        SetEnemyStatus(GameManager.instance.player.level);
+        SetEnemyStatus(GameManager.Instance.player.level);
     }
 
 }

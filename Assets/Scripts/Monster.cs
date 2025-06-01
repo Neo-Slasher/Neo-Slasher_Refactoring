@@ -43,7 +43,7 @@ public class Monster
     public Monster(MonsterType monsterType)
     {
         Monster data = null;
-        data = DataManager.instance.monsterList.monster[(int)monsterType];
+        data = DataManager.Instance.monsterList.monster[(int)monsterType];
 
         if (data != null)
         {

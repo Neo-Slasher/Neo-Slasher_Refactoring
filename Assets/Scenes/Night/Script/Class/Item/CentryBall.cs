@@ -63,24 +63,24 @@ public class CentryBall : MonoBehaviour
         switch(itemRank)
         {
             case 0:
-                attackRangeRate = (float)DataManager.instance.consumableList.item[0].attackRangeValue;
-                attackSpeedRate = (float)DataManager.instance.consumableList.item[0].attackSpeedValue;
-                attackPowerRate = (float)DataManager.instance.consumableList.item[0].attackPowerValue;
+                attackRangeRate = (float)DataManager.Instance.consumableList.item[0].attackRangeValue;
+                attackSpeedRate = (float)DataManager.Instance.consumableList.item[0].attackSpeedValue;
+                attackPowerRate = (float)DataManager.Instance.consumableList.item[0].attackPowerValue;
                 break;
             case 1:
-                attackRangeRate = (float)DataManager.instance.consumableList.item[15].attackRangeValue;
-                attackSpeedRate = (float)DataManager.instance.consumableList.item[15].attackSpeedValue;
-                attackPowerRate = (float)DataManager.instance.consumableList.item[15].attackPowerValue;
+                attackRangeRate = (float)DataManager.Instance.consumableList.item[15].attackRangeValue;
+                attackSpeedRate = (float)DataManager.Instance.consumableList.item[15].attackSpeedValue;
+                attackPowerRate = (float)DataManager.Instance.consumableList.item[15].attackPowerValue;
                 break;
             case 2:
-                attackRangeRate = (float)DataManager.instance.consumableList.item[30].attackRangeValue;
-                attackSpeedRate = (float)DataManager.instance.consumableList.item[30].attackSpeedValue;
-                attackPowerRate = (float)DataManager.instance.consumableList.item[30].attackPowerValue;
+                attackRangeRate = (float)DataManager.Instance.consumableList.item[30].attackRangeValue;
+                attackSpeedRate = (float)DataManager.Instance.consumableList.item[30].attackSpeedValue;
+                attackPowerRate = (float)DataManager.Instance.consumableList.item[30].attackPowerValue;
                 break;
             case 3:
-                attackRangeRate = (float)DataManager.instance.consumableList.item[45].attackRangeValue;
-                attackSpeedRate = (float)DataManager.instance.consumableList.item[45].attackSpeedValue;
-                attackPowerRate = (float)DataManager.instance.consumableList.item[45].attackPowerValue;
+                attackRangeRate = (float)DataManager.Instance.consumableList.item[45].attackRangeValue;
+                attackSpeedRate = (float)DataManager.Instance.consumableList.item[45].attackSpeedValue;
+                attackPowerRate = (float)DataManager.Instance.consumableList.item[45].attackPowerValue;
                 break;
         }
         projPower = (float)character.ReturnCharacterAttackPower() * attackPowerRate;

@@ -26,7 +26,7 @@ public class AssassinationManager : MonoBehaviour
     {
         for (int i = 0; i < StepButtons.Length; i++)
         {
-            int stageRecCP = DataManager.instance.assassinationStageList.assassinationStage[i].stageRecCP;
+            int stageRecCP = DataManager.Instance.assassinationStageList.assassinationStage[i].stageRecCP;
 
             int currentCP = FightingPower.currentCP;
             double cpGap = ((double)(currentCP - stageRecCP) / (double)stageRecCP) * 100;
@@ -50,9 +50,9 @@ public class AssassinationManager : MonoBehaviour
     public void InitAssassinationStageInfomation(int i)
     {
         string dropRank = "";
-        int normalReward = DataManager.instance.assassinationStageList.assassinationStage[i].normalReward;
-        int eliteReward = DataManager.instance.assassinationStageList.assassinationStage[i].eliteReward;
-        int stageDropRank = DataManager.instance.assassinationStageList.assassinationStage[i].stageDropRank;
+        int normalReward = DataManager.Instance.assassinationStageList.assassinationStage[i].normalReward;
+        int eliteReward = DataManager.Instance.assassinationStageList.assassinationStage[i].eliteReward;
+        int stageDropRank = DataManager.Instance.assassinationStageList.assassinationStage[i].stageDropRank;
 
         if (stageDropRank <= 7)
             dropRank = "C";
@@ -68,14 +68,14 @@ public class AssassinationManager : MonoBehaviour
 
     public void OnClickGoNightButton()
     {
-        Player.Save(GameManager.instance.player);
+        Player.Save(GameManager.Instance.player);
         SceneManager.LoadScene("NightScene");
     }
 
 
     public void OnClickStepButton(int step)
     {
-        GameManager.instance.player.assassinationCount = step;
+        GameManager.Instance.player.assassinationCount = step;
 
         for (int i = 0; i < StepButtons.Length; i++)
         {

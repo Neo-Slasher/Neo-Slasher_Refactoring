@@ -27,7 +27,7 @@ public class EquipmentManager : MonoBehaviour
 
     public void LoadPlayerItems()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         for (int i = 0; i < player.equipment.Length; i++)
         {
@@ -124,12 +124,12 @@ public class EquipmentManager : MonoBehaviour
         TMP_Text part = selected.transform.Find("part").GetComponent<TMP_Text>();
         TMP_Text info = selected.transform.Find("info").GetComponent<TMP_Text>();
 
-        Consumable consumable = GameManager.instance.player.item[slotNumber];
+        Consumable consumable = GameManager.Instance.player.item[slotNumber];
         image.sprite = Resources.Load<Sprite>("Item/" + consumable.name);
         name.text = consumable.name;
         rank.text = consumable.GetRank() + "등급";
         part.text = consumable.GetCategory();
-        info.text = consumable.GetConvertedScript(GameManager.instance.player);
+        info.text = consumable.GetConvertedScript(GameManager.Instance.player);
     }
 
     public void OnClickEquipmentSlot(int slotNumber)
@@ -142,7 +142,7 @@ public class EquipmentManager : MonoBehaviour
         TMP_Text part = selected.transform.Find("part").GetComponent<TMP_Text>();
         TMP_Text info = selected.transform.Find("info").GetComponent<TMP_Text>();
 
-        Equipment equipment = GameManager.instance.player.equipment[slotNumber];
+        Equipment equipment = GameManager.Instance.player.equipment[slotNumber];
         image.sprite = Resources.Load<Sprite>("Equip/" + equipment.name);
         name.text = equipment.name;
         rank.text = equipment.GetRank() + "등급";

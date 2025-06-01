@@ -45,21 +45,21 @@ public class GravityBind : MonoBehaviour
         switch (itemRank)
         {
             case 0:
-                detectScale = characterAttackRange * 0.15f * (float)DataManager.instance.consumableList.item[10].attackRangeValue;
-                slowRate = characterAttackSpeed * (float)DataManager.instance.consumableList.item[10].attackSpeedValue * 0.01f;
+                detectScale = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[10].attackRangeValue;
+                slowRate = characterAttackSpeed * (float)DataManager.Instance.consumableList.item[10].attackSpeedValue * 0.01f;
                 Debug.Log(slowRate);
                 break;
             case 1:
-                detectScale = characterAttackRange * 0.15f * (float)DataManager.instance.consumableList.item[25].attackRangeValue;
-                slowRate = characterAttackSpeed * (float)DataManager.instance.consumableList.item[25].attackSpeedValue * 0.01f;
+                detectScale = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[25].attackRangeValue;
+                slowRate = characterAttackSpeed * (float)DataManager.Instance.consumableList.item[25].attackSpeedValue * 0.01f;
                 break;
             case 2:
-                detectScale = characterAttackRange * 0.15f * (float)DataManager.instance.consumableList.item[40].attackRangeValue;
-                slowRate = characterAttackSpeed * (float)DataManager.instance.consumableList.item[40].attackSpeedValue * 0.01f;
+                detectScale = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[40].attackRangeValue;
+                slowRate = characterAttackSpeed * (float)DataManager.Instance.consumableList.item[40].attackSpeedValue * 0.01f;
                 break;
             case 3:
-                detectScale = characterAttackRange * 0.15f * (float)DataManager.instance.consumableList.item[55].attackRangeValue;
-                slowRate = characterAttackSpeed * (float)DataManager.instance.consumableList.item[55].attackSpeedValue * 0.01f;
+                detectScale = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[55].attackRangeValue;
+                slowRate = characterAttackSpeed * (float)DataManager.Instance.consumableList.item[55].attackSpeedValue * 0.01f;
                 break;
         }
         detectScale += 1.95f;    //기본 값 180px 추가

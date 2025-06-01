@@ -28,7 +28,7 @@ public class FightingPower : MonoBehaviour
 
     public void CalculatePower()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         double maxHp = player.maxHp;
         double moveSpeed = player.moveSpeed;
@@ -42,7 +42,7 @@ public class FightingPower : MonoBehaviour
 
     public void RemoveEquipment(int part)
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         if (player.equipment[part].name != "")
         {
@@ -57,7 +57,7 @@ public class FightingPower : MonoBehaviour
 
     public void EquipEquipment(Equipment equipment)
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         player.equipmentAttackPower += equipment.attackPower;
         player.equipmentAttackSpeed += equipment.attackSpeed;
@@ -72,9 +72,9 @@ public class FightingPower : MonoBehaviour
     {
         CalculatePower();
 
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
-        money.text = player.money.ToString() + "a / " + DataManager.instance.difficultyList.difficulty[player.difficulty].goalMoney + "a";
+        money.text = player.money.ToString() + "a / " + DataManager.Instance.difficultyList.difficulty[player.difficulty].goalMoney + "a";
         
         currentcp.text = currentCP.ToString();
 
@@ -90,7 +90,7 @@ public class FightingPower : MonoBehaviour
     }
     public void PrintFightPower()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         foreach (var equipment in player.equipment)
         {

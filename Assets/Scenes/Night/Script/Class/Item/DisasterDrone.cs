@@ -32,7 +32,7 @@ public class DisasterDrone : MonoBehaviour
 
     void SetDisasterDroneData()
     {
-        getAttackRangeValue = (float)DataManager.instance.consumableList.item[2].attackRangeValue;
+        getAttackRangeValue = (float)DataManager.Instance.consumableList.item[2].attackRangeValue;
 
         switch (itemRank)
         {

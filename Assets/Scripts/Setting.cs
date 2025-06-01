@@ -33,9 +33,7 @@ public class Setting
         string setting_file_path = Path.Combine(Application.persistentDataPath, file_path);
         if (!File.Exists(setting_file_path))
         {
-            Setting setting = new Setting();
-            Setting.Save(setting);
-            return setting;
+            return null;
         }
         string savedData = File.ReadAllText(setting_file_path);
         return JsonUtility.FromJson<Setting>(savedData);

@@ -56,7 +56,7 @@ public class NightManager : MonoBehaviour
 
     void SetBackGround()
     {
-        switch (GameManager.instance.player.assassinationCount)
+        switch (GameManager.Instance.player.assassinationCount)
         {
             case 0:
                 backGround.sprite = backGroundSpriteArr[0];
@@ -98,7 +98,7 @@ public class NightManager : MonoBehaviour
         while (!isStageEnd && timerManager.timerCount > 1)
         {
             GameObject enemy = Instantiate(prefabs[index], SetEnemyPosition(), Quaternion.identity);
-            enemy.GetComponent<Enemy>().SetEnforceData(GameManager.instance.player.level, false);
+            enemy.GetComponent<Enemy>().SetEnforceData(GameManager.Instance.player.level, false);
             enemy.transform.SetParent(enemies);
             yield return new WaitForSeconds(spawnTime);
         }
@@ -107,24 +107,24 @@ public class NightManager : MonoBehaviour
 
     double GetSpawnRate(bool isElite, int getIndex)
     {
-        int nowAssassination = GameManager.instance.player.assassinationCount;
+        int nowAssassination = GameManager.Instance.player.assassinationCount;
         switch (getIndex)
         {
             case 0:
                 if (isElite)
-                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].elite1Spawn;
+                    return DataManager.Instance.assassinationStageList.assassinationStage[nowAssassination].elite1Spawn;
                 else
-                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].normal1Spawn;
+                    return DataManager.Instance.assassinationStageList.assassinationStage[nowAssassination].normal1Spawn;
             case 1:
                 if (isElite)
-                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].elite2Spawn;
+                    return DataManager.Instance.assassinationStageList.assassinationStage[nowAssassination].elite2Spawn;
                 else
-                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].normal2Spawn;
+                    return DataManager.Instance.assassinationStageList.assassinationStage[nowAssassination].normal2Spawn;
             case 2:
                 if (isElite)
-                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].elite3Spawn;
+                    return DataManager.Instance.assassinationStageList.assassinationStage[nowAssassination].elite3Spawn;
                 else
-                    return DataManager.instance.assassinationStageList.assassinationStage[nowAssassination].normal3Spawn;
+                    return DataManager.Instance.assassinationStageList.assassinationStage[nowAssassination].normal3Spawn;
             default:
                 return -1;
         }
@@ -198,7 +198,7 @@ public class NightManager : MonoBehaviour
     //팝업창 데이터 설정
     void SetEndPopUp()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
         Transform enemytTexts = endPopup.transform.Find("PopupBoard").Find("EnemyTexts");
         Transform UIs = endPopup.transform.Find("PopupBoard").Find("UIs");
 
@@ -228,8 +228,8 @@ public class NightManager : MonoBehaviour
     //밤이 끝나고 아이템 획득하는 함수
     private Consumable CalculateItemReward()
     {
-        Player player = GameManager.instance.player;
-        var stageData = DataManager.instance.assassinationStageList.assassinationStage[player.assassinationCount];
+        Player player = GameManager.Instance.player;
+        var stageData = DataManager.Instance.assassinationStageList.assassinationStage[player.assassinationCount];
 
         const int ITEMS_PER_RANK = 15;
         const int MAX_ITEM_INDEX = 14;
@@ -241,11 +241,11 @@ public class NightManager : MonoBehaviour
         Image itemImage = dropItemUI.Find("DropItemImage").GetComponent<Image>();
         TMP_Text itemName = dropItemUI.Find("DropItemNameText").GetComponent<TMP_Text>();
 
-        //if (randomValue < dropRate) // 아이템 획득
-        if (true) // 임시로 디버깅 위해 항상 획득
+        if (randomValue < dropRate) // 아이템 획득
+        //if (true) // 임시로 디버깅 위해 항상 획득
         {
-            int rank = player.dropRank + DataManager.instance.difficultyList.difficulty[player.difficulty].dropRank
-                        + DataManager.instance.assassinationStageList.assassinationStage[player.assassinationCount].stageDropRank;
+            int rank = player.dropRank + DataManager.Instance.difficultyList.difficulty[player.difficulty].dropRank
+                        + DataManager.Instance.assassinationStageList.assassinationStage[player.assassinationCount].stageDropRank;
 
             int itemRank = SetItemRank(rank);
 
@@ -256,7 +256,7 @@ public class NightManager : MonoBehaviour
                 getItemIdx = Random.Range(itemRank * ITEMS_PER_RANK, itemRank * ITEMS_PER_RANK + MAX_ITEM_INDEX);
             }
 
-            Consumable getItem = DataManager.instance.consumableList.item[getItemIdx];
+            Consumable getItem = DataManager.Instance.consumableList.item[getItemIdx];
 
             itemImage.sprite = Resources.Load<Sprite>("Item/" + getItem.name);
             itemName.text = getItem.name;
@@ -287,10 +287,10 @@ public class NightManager : MonoBehaviour
 
     private int CalculateMoneyReward()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
 
-        var stageData = DataManager.instance.assassinationStageList.assassinationStage[player.assassinationCount];
+        var stageData = DataManager.Instance.assassinationStageList.assassinationStage[player.assassinationCount];
         int normalMoney = stageData.normalReward * killNormal;
         int eliteMoney = stageData.eliteReward * killElite;
 
@@ -318,7 +318,7 @@ public class NightManager : MonoBehaviour
     // 끝난 날짜 및 데이터 조정 및 저장
     public void OnTouchEndBtn()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         // 여기서 아이템 보상이 있다면 처리해야 함
         if (getItem != null)
@@ -344,7 +344,7 @@ public class NightManager : MonoBehaviour
 
     void SetItemChangePopup()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         for (int i = 0; i < player.itemSlot; i++)
         {
@@ -376,15 +376,15 @@ public class NightManager : MonoBehaviour
     // '교체' 버튼 눌렀을 때
     public void OnClickItemChangeBtn()
     {
-        GameManager.instance.player.item[selectItemIdx] = getItem;
-        Player.Save(GameManager.instance.player);
+        GameManager.Instance.player.item[selectItemIdx] = getItem;
+        Player.Save(GameManager.Instance.player);
 
         GoNextScene();
     }
 
     public void OnClickItemChangePopupBtn(int itemIdx)
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
         if (itemIdx >= player.itemSlot)
             return;
 
@@ -409,36 +409,39 @@ public class NightManager : MonoBehaviour
 
     public void GoNextScene()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
         //7일차가 아니면 저장하고 낮씬으로 가고 아니면 엔딩으로 갑니다.
-        if (GameManager.instance.player.day < 7)
+        if (GameManager.Instance.player.day < 7)
         {
-            GameManager.instance.player.day++;
-            Player.Save(GameManager.instance.player);
+            GameManager.Instance.player.day++;
+            Player.Save(GameManager.Instance.player);
             UnityEngine.SceneManagement.SceneManager.LoadScene("DayScene");
         }
         else // day == 7 인 경우
         {
 
-            if (player.money >= DataManager.instance.difficultyList.difficulty[player.difficulty].goalMoney)
+            if (player.money >= DataManager.Instance.difficultyList.difficulty[player.difficulty].goalMoney)
             {
                 // good ending
-                player.curExp += DataManager.instance.difficultyList.difficulty[player.difficulty].rewardExp;
+                player.curExp += DataManager.Instance.difficultyList.difficulty[player.difficulty].rewardExp;
                 while (player.level < 20 && player.reqExp < player.curExp)
                 {
                     player.curExp -= player.reqExp;
                     player.level++;
-                    player.reqExp = DataManager.instance.expList.exp[player.level - 1].reqExp;
+                    player.reqExp = DataManager.Instance.expList.exp[player.level - 1].reqExp;
                 }
             }
             else
             {
+                // 플레이어가 선택한 난이도의 목표 재화를 7일 동안 얻지 못한 경우 
+                // 7일차 종료 후 bad ending을 진행하게 됩니다.
+                // cut scene에서 스토리를 difficulty를 기준으로 출력 중
                 player.difficulty = 9;
             }
 
 
             player.day = 1;
-            Player.Save(GameManager.instance.player);
+            Player.Save(GameManager.Instance.player);
             UnityEngine.SceneManagement.SceneManager.LoadScene("CutScene");
         }
     }

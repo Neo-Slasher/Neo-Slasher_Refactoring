@@ -12,7 +12,7 @@ public class MainManager : MonoBehaviour
 
     void Start()
     {
-        if (!GameManager.instance.has_save_data)
+        if (!GameManager.Instance.has_save_data)
         {
             continue_button.interactable = false;
         }
@@ -24,7 +24,7 @@ public class MainManager : MonoBehaviour
 
     public void OnClickStartButton()
     {
-        if (GameManager.instance.has_save_data == true)
+        if (GameManager.Instance.has_save_data == true)
         {
             start_popup.SetActive(true);
         }
@@ -35,7 +35,7 @@ public class MainManager : MonoBehaviour
     }
     private void StartNewGame()
     {
-        GameManager.instance.player = Player.SoftReset(GameManager.instance.player);
+        GameManager.Instance.player = Player.SoftReset(GameManager.Instance.player);
         SceneManager.LoadScene("CutScene");
     }
 

@@ -29,9 +29,9 @@ public class HealthBar : MonoBehaviour
 
     public void UpdateBar()
     {
-        maxHp = GameManager.instance.player.maxHp;
-        curHp = GameManager.instance.player.curHp;
-        curShield = GameManager.instance.player.shieldPoint;
+        maxHp = GameManager.Instance.player.maxHp;
+        curHp = GameManager.Instance.player.curHp;
+        curShield = GameManager.Instance.player.shieldPoint;
 
         double totalAmount = curHp + curShield;
 

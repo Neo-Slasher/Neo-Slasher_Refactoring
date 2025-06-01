@@ -1,22 +1,6 @@
 ﻿{
   "item": [
     {
-      "itemIdx": 0,
-      "name": "",
-      "rank": 0,
-      "showCooltime": 0,
-      "price": 250,
-      "script": "",
-      "imgIdx": 0,
-      "category": 0,
-      "attackPowerCalc": ,
-      "attackPowerValue": 0,
-      "attackSpeedCalc": 0,
-      "attackSpeedValue": 0,
-      "attackRangeCalc": 0,
-      "attackRangeValue": 0
-    },
-    {
       "itemIdx": 1,
       "name": "센트리볼",
       "rank": 0,

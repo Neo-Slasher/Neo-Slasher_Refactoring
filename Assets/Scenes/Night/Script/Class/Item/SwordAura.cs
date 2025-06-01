@@ -46,20 +46,20 @@ public class SwordAura : MonoBehaviour
         switch(itemRank)
         {
             case 0:
-                returnGoalDistance *= (float)DataManager.instance.consumableList.item[3].attackRangeValue;
+                returnGoalDistance *= (float)DataManager.Instance.consumableList.item[3].attackRangeValue;
                 break;
             case 1:
-                returnGoalDistance *= (float)DataManager.instance.consumableList.item[18].attackRangeValue;
+                returnGoalDistance *= (float)DataManager.Instance.consumableList.item[18].attackRangeValue;
                 break;
             case 2:
-                returnGoalDistance *= (float)DataManager.instance.consumableList.item[33].attackRangeValue;
+                returnGoalDistance *= (float)DataManager.Instance.consumableList.item[33].attackRangeValue;
                 break;
             case 3:
-                returnGoalDistance *= (float)DataManager.instance.consumableList.item[48].attackRangeValue;
+                returnGoalDistance *= (float)DataManager.Instance.consumableList.item[48].attackRangeValue;
                 break;
         }
 
-        Debug.Log((float)DataManager.instance.consumableList.item[4].attackRangeValue);
+        Debug.Log((float)DataManager.Instance.consumableList.item[4].attackRangeValue);
         return returnGoalDistance;
     }
 }

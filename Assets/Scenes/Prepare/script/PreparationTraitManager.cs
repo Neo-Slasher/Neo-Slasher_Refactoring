@@ -32,23 +32,23 @@ public class PreparationTraitManager : MonoBehaviour
 
     public void activeTrait(int traitNumber)
     {
-        if (GameManager.instance.player.traitPoint <= 0)
+        if (GameManager.Instance.player.traitPoint <= 0)
         {
             Debug.Log("플레이어의 특성 포인트가 없습니다.");
             return;
         }
         
-        Trait trait = DataManager.instance.traitList.trait[traitNumber - 1];
-        GameManager.instance.player.traitPoint--;
-        GameManager.instance.player.trait[traitNumber] = true;
+        Trait trait = DataManager.Instance.traitList.trait[traitNumber - 1];
+        GameManager.Instance.player.traitPoint--;
+        GameManager.Instance.player.trait[traitNumber] = true;
         TraitParseAndApply(trait);
     }
 
     public void unactiveTrait(int traitNumber)
     {
-        Trait trait =  DataManager.instance.traitList.trait[traitNumber - 1];
-        GameManager.instance.player.trait[traitNumber] = false;
-        GameManager.instance.player.traitPoint++;
+        Trait trait =  DataManager.Instance.traitList.trait[traitNumber - 1];
+        GameManager.Instance.player.trait[traitNumber] = false;
+        GameManager.Instance.player.traitPoint++;
         TraitParseAndDisapply(trait);
     }
 
@@ -76,7 +76,7 @@ public class PreparationTraitManager : MonoBehaviour
     }
 
     private void applyTrait(EffectType type, double value, bool multi) {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
         if (type == EffectType.hp) {
             player.maxHp += value;
             hp_by_trait += value;

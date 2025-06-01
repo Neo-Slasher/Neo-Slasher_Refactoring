@@ -100,10 +100,10 @@ public class Enemy : MonoBehaviour
     public void SetEnemyStatus(int getLevel = 1)
     {
         // 선택한 난이도에 따라 스테이터스 변경
-        int difficulty = GameManager.instance.player.difficulty;
-        stats.maxHp *= DataManager.instance.difficultyList.difficulty[difficulty].enemyStatus;
-        stats.curHp *= DataManager.instance.difficultyList.difficulty[difficulty].enemyStatus;
-        stats.attackPower *= DataManager.instance.difficultyList.difficulty[difficulty].enemyStatus;
+        int difficulty = GameManager.Instance.player.difficulty;
+        stats.maxHp *= DataManager.Instance.difficultyList.difficulty[difficulty].enemyStatus;
+        stats.curHp *= DataManager.Instance.difficultyList.difficulty[difficulty].enemyStatus;
+        stats.attackPower *= DataManager.Instance.difficultyList.difficulty[difficulty].enemyStatus;
     }
 
 
@@ -127,11 +127,11 @@ public class Enemy : MonoBehaviour
         double nowProb;
         double randomProb = Random.value;
 
-        int difficulty = GameManager.instance.player.difficulty;
+        int difficulty = GameManager.Instance.player.difficulty;
         if (!isElite)
-            nowProb = DataManager.instance.difficultyList.difficulty[difficulty].normalEnhance;
+            nowProb = DataManager.Instance.difficultyList.difficulty[difficulty].normalEnhance;
         else
-            nowProb = DataManager.instance.difficultyList.difficulty[difficulty].eliteEnhance;
+            nowProb = DataManager.Instance.difficultyList.difficulty[difficulty].eliteEnhance;
 
         if (randomProb < nowProb)
             return true;

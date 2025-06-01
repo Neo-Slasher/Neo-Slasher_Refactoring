@@ -56,7 +56,7 @@ public class TraitManager : MonoBehaviour
     // 플레이어 데이터를 가져와 액티브 특성을 저장합니다.
     void FindActiveTrait()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         //index = 28, 42, 43, 44, 45, 61, 62 총 7개의 액티브가 존재.
         int[] activeTraitIndices = { 28, 42, 43, 44, 45, 61, 62 };
@@ -67,7 +67,7 @@ public class TraitManager : MonoBehaviour
         {
             if (player.trait[index])
             {
-                activeTraitList.Add(DataManager.instance.traitList.trait[index - 1]);
+                activeTraitList.Add(DataManager.Instance.traitList.trait[index - 1]);
             }
         }
     }

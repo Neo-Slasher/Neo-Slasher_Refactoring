@@ -26,24 +26,24 @@ public class ShopManager : MonoBehaviour
 
     private void SetShopItems()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         // 판매할 수 있는 후보 아이템 뽑기
         int shop_min_rank = player.shopMinRank;
         int shop_max_rank = player.shopMaxRank;
 
         List<Equipment> equipments = new();
-        for (int i = 0; i < DataManager.instance.equipmentList.equipment.Count; i++)
+        for (int i = 0; i < DataManager.Instance.equipmentList.equipment.Count; i++)
         {
-            Equipment equipment = DataManager.instance.equipmentList.equipment[i];
+            Equipment equipment = DataManager.Instance.equipmentList.equipment[i];
             if (shop_min_rank <= equipment.rank && equipment.rank <= shop_max_rank)
                 equipments.Add(equipment);
         }
 
         List<Consumable> consumables = new();
-        for (int i = 0; i < DataManager.instance.consumableList.item.Count; i++)
+        for (int i = 0; i < DataManager.Instance.consumableList.item.Count; i++)
         {
-            Consumable consumable = DataManager.instance.consumableList.item[i];
+            Consumable consumable = DataManager.Instance.consumableList.item[i];
             if (shop_min_rank <= consumable.rank && consumable.rank <= shop_max_rank)
                 consumables.Add(consumable);
         }
@@ -148,7 +148,7 @@ public class ShopManager : MonoBehaviour
             name.text = consumable.name;
             rank.text = consumable.GetRank() + "등급";
             part.text = "/ " + consumable.GetCategory();
-            info.text = consumable.GetConvertedScript(GameManager.instance.player);
+            info.text = consumable.GetConvertedScript(GameManager.Instance.player);
         }
         else if (item.GetItemType() == ItemType.Equipment)
         {

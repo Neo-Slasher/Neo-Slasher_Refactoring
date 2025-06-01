@@ -5,42 +5,46 @@ using UnityEngine.UI;
 
 public class TimerManager : MonoBehaviour
 {
-    [Header("Managers")]
     [SerializeField] NightManager nightManager;
-
-    [Header("Timer UI")]
-    [SerializeField] GameObject timerParent; // 사용 안하는 중
-    [SerializeField] Image timerImage; // 사용 안하는 중
     [SerializeField] TextMeshProUGUI timerText;
+    [SerializeField] int startTime = 60;
 
-    [Header("Timer Settings")]
-    [SerializeField] private int startTime = 60;
-    public int timerCount { get; private set; }
-
+    private WaitForSeconds waitOneSecond = new WaitForSeconds(1f);
     private Coroutine timerCoroutine;
+    private int _timerCount;
+
+    public int timerCount
+    {
+        get => _timerCount;
+        private set
+        {
+            _timerCount = value;
+            UpdateTimerUI();
+        }
+    }
+
+
+
 
     private void Start()
     {
+        Debug.Assert(nightManager != null, "NightManager 참조 필요");
+        Debug.Assert(timerText != null, "Timer Text 참조 필요");
         StartTimer();
     }
 
     void StartTimer()
     {
-        if (timerCoroutine != null)
-            StopCoroutine(timerCoroutine);
-
+        StopTimer();
         timerCount = startTime;
-        UpdateTimerUI();
-        timerCoroutine = StartCoroutine(PlayTimerCoroutine());
+        timerCoroutine = StartCoroutine(TimerCoroutine());
     }
 
-    IEnumerator PlayTimerCoroutine()
+    IEnumerator TimerCoroutine()
     {
-        while (timerCount >= 0)
+        while (timerCount > 0)
         {
             if (nightManager.isStageEnd) break;
-
-            UpdateTimerUI();
 
             if (timerCount == 0)
             {
@@ -48,9 +52,14 @@ public class TimerManager : MonoBehaviour
                 break;
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return waitOneSecond;
             timerCount--;
         }
+    }
+    private void UpdateTimerUI()
+    {
+        if (timerText != null)
+            timerText.text = timerCount.ToString();
     }
 
     public void StopTimer()
@@ -62,9 +71,5 @@ public class TimerManager : MonoBehaviour
         }
     }
 
-    private void UpdateTimerUI()
-    {
-        if (timerText != null)
-            timerText.text = timerCount.ToString();
-    }
+
 }

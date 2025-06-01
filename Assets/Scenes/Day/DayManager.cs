@@ -23,13 +23,13 @@ public class DayManager : MonoBehaviour
     }
 
     public void OnClickSettingExitButton() {
-        Player.Save(GameManager.instance.player);
+        Player.Save(GameManager.Instance.player);
         SceneManager.LoadScene("MainScene");
     }
 
     public void PrintDay()
     {
-        int current_day = GameManager.instance.player.day;
+        int current_day = GameManager.Instance.player.day;
         day.text = "D-" + (7 - current_day).ToString() + "\n" + current_day.ToString() + "ÀÏÂ÷";
     }
 }

@@ -8860,7 +8860,7 @@ MonoBehaviour:
   timerParent: {fileID: 295054476}
   timerImage: {fileID: 803906632}
   timerText: {fileID: 2043238922}
-  startTime: 1
+  startTime: 60
 --- !u!1 &2001496777
 GameObject:
   m_ObjectHideFlags: 0

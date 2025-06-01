@@ -46,7 +46,7 @@ public class ComparisonPopup : MonoBehaviour
 
         PrintSelectedItem();
 
-        if (GameManager.instance.player.money < itemToBuy.GetPrice())
+        if (GameManager.Instance.player.money < itemToBuy.GetPrice())
             PurchaseButton.GetComponent<Button>().interactable = false;
 
         playerConsumableIndex = -1;
@@ -54,7 +54,7 @@ public class ComparisonPopup : MonoBehaviour
 
     void PrintPlayerEquipment() //장비창 출력
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
         int equipmentPart = ((Equipment)itemToBuy).part;
 
         if (player.equipment[equipmentPart].index != 0)
@@ -77,7 +77,7 @@ public class ComparisonPopup : MonoBehaviour
 
     void PrintPlayerConsumable() //아이템 창 출력
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         for (int i = 0; i < player.item.Length; i++)
         {
@@ -119,7 +119,7 @@ public class ComparisonPopup : MonoBehaviour
             name.text = consumable.name;
             rank.text = consumable.GetRank() + "등급";
             part.text = " / " + consumable.GetCategory();
-            info.text = "<size=20>" + consumable.GetConvertedScript(GameManager.instance.player) + "</size>";
+            info.text = "<size=20>" + consumable.GetConvertedScript(GameManager.Instance.player) + "</size>";
         }
     }
 
@@ -131,7 +131,7 @@ public class ComparisonPopup : MonoBehaviour
 
     public void OnClickPurchaseButton()
     {
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
 
         if (player.money < itemToBuy.GetPrice())
         {
@@ -202,7 +202,7 @@ public class ComparisonPopup : MonoBehaviour
     {
         playerConsumableIndex = buttonNumber;
 
-        Player player = GameManager.instance.player;
+        Player player = GameManager.Instance.player;
         Consumable consumable = player.item[buttonNumber];
 
         Image image = consumableSelectedPlayerItemPanel.transform.Find("background").Find("image").GetComponent<Image>();

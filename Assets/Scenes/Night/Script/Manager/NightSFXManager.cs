@@ -28,11 +28,11 @@ public class NightSFXManager : MonoBehaviour
 
     private void Start()
     {
-        bgmPlayer.volume = GameManager.instance.setting.bgm_volume;
-        bgmSlider.value = GameManager.instance.setting.bgm_volume;
+        bgmPlayer.volume = GameManager.Instance.setting.bgm_volume;
+        bgmSlider.value = GameManager.Instance.setting.bgm_volume;
 
-        sfxPlayer.volume = GameManager.instance.setting.sfx_volume;
-        sfxSlider.value = GameManager.instance.setting.sfx_volume;
+        sfxPlayer.volume = GameManager.Instance.setting.sfx_volume;
+        sfxSlider.value = GameManager.Instance.setting.sfx_volume;
 
         PlayNightBGM();
     }
@@ -40,20 +40,20 @@ public class NightSFXManager : MonoBehaviour
     public void SetBGMPlayerVolume()
     {
         bgmPlayer.volume = bgmSlider.value;
-        GameManager.instance.setting.bgm_volume = bgmSlider.value;
-        Player.Save(GameManager.instance.player);
+        GameManager.Instance.setting.bgm_volume = bgmSlider.value;
+        Player.Save(GameManager.Instance.player);
     }
 
     public void SetSFXPlayerVolume()
     {
         sfxPlayer.volume = sfxSlider.value;
-        GameManager.instance.setting.sfx_volume = sfxSlider.value;
-        Player.Save(GameManager.instance.player);
+        GameManager.Instance.setting.sfx_volume = sfxSlider.value;
+        Player.Save(GameManager.Instance.player);
     }
 
     void PlayNightBGM()
     {
-        switch(GameManager.instance.player.assassinationCount)
+        switch(GameManager.Instance.player.assassinationCount)
         {
             case 1:
                 bgmPlayer.clip = bgmArr[0];

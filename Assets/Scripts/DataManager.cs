@@ -1,13 +1,10 @@
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Unity.VisualScripting;
-using System.Text;
-using TMPro;
+using System;
 
-public class DataManager : MonoBehaviour {
-    public static DataManager instance = null;
+// 2025.06.02 Refactoring Final Version
+public class DataManager : MonoBehaviour
+{
+    public static DataManager Instance { get; private set; }
 
     public DifficultyList difficultyList;
     public TraitList traitList;
@@ -18,65 +15,112 @@ public class DataManager : MonoBehaviour {
     public StoryList storyList;
     public ExpList expList;
 
-    void Awake() {
-        if (instance == null)
-            instance = this;
-        else if (instance != this)
+    public Sprite[] consumableIcons = Array.Empty<Sprite>();
+    public Sprite[] equipmentIcons = Array.Empty<Sprite>();
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else if (Instance != this)
+        {
             Destroy(this.gameObject);
-
-        DontDestroyOnLoad(this.gameObject);
-
+            return;
+        }
     }
 
-
-    void Start() {
-        // init difficulty data
-        string DifficultyData = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Difficulty.json"));
-        difficultyList = JsonUtility.FromJson<DifficultyList>(DifficultyData);
-
-        // init Equipment data
-        string EquipmentData = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Equipment.json"));
-        equipmentList = JsonUtility.FromJson<EquipmentList>(EquipmentData);
-
-        // init trait data
-        string TraitData = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Trait.json"));
-        traitList = JsonUtility.FromJson<TraitList>(TraitData);
-
-        // assassination stage data
-        string AssassinationStageData = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "AssassinationStage.json"));
-        assassinationStageList = JsonUtility.FromJson<AssassinationStageList>(AssassinationStageData);
-
-        // item data 
-        string ItemData = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Item.json"));
-        consumableList = JsonUtility.FromJson<ConsumableList>(ItemData);
-
-        // monster data
-        string MonsterData = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Monster.json"));
-        monsterList = JsonUtility.FromJson<MonsterList>(MonsterData);
-
-        // stroy data
-        string StoryData = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Story.json"));
-        storyList = JsonUtility.FromJson<StoryList>(StoryData);
-
-        // exp data
-        string ExpData = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Exp.json"));
-        expList = JsonUtility.FromJson<ExpList>(ExpData);
+    void Start()
+    {
+        LoadAllData();
+        LoadAllIcons();
     }
 
-    public T ResourceDataLoad<T>(string name) {
-        T gameData;
+    private void LoadAllData()
+    {
+        difficultyList = LoadJson<DifficultyList>("Difficulty");
+        equipmentList = LoadJson<EquipmentList>("Equipment");
+        traitList = LoadJson<TraitList>("Trait");
+        assassinationStageList = LoadJson<AssassinationStageList>("AssassinationStage");
+        consumableList = LoadJson<ConsumableList>("Item");
+        monsterList = LoadJson<MonsterList>("Monster");
+        storyList = LoadJson<StoryList>("Story");
+        expList = LoadJson<ExpList>("Exp");
+    }
 
-        string directory = "Json/";
-        string appender1 = name;
+    private void LoadAllIcons()
+    {
+        SetConsumableIcons();
+        SetEquipmentIcons();
+    }
 
-        StringBuilder builder = new StringBuilder(directory);
-        builder.Append(appender1);
+    private T LoadJson<T>(string fileName) where T : new()
+    {
+        TextAsset jsonFile = Resources.Load<TextAsset>($"Json/{fileName}");
+        if (jsonFile == null)
+        {
+            Logger.LogError($"{fileName}.json 파일 누락");
+            return new T();
+        }
 
-        TextAsset jsonString = Resources.Load<TextAsset>(builder.ToString());
+        try
+        {
+            return JsonUtility.FromJson<T>(jsonFile.text);
+        }
+        catch (Exception e)
+        {
+            Logger.LogError($"{fileName} 파싱 실패: {e.Message}");
+            return new T();
+        }
+    }
 
-        gameData = JsonUtility.FromJson<T>(jsonString.ToString());
+    private void SetConsumableIcons()
+    {
+        if (consumableList?.item == null)
+        {
+            Logger.LogWarning("소비 아이템 데이터가 비어있습니다.");
+            return;
+        }
 
+        int maxIdx = 0;
+        foreach (var c in consumableList.item)
+            if (c.itemIdx > maxIdx) maxIdx = c.itemIdx;
+        consumableIcons = new Sprite[maxIdx + 1];
 
-        return gameData;
+        foreach (var consumable in consumableList.item)
+        {
+            Sprite icon = Resources.Load<Sprite>("Item/" + consumable.name);
+            consumableIcons[consumable.itemIdx] = icon;
+            if (consumableIcons[consumable.itemIdx] == null)
+            {
+                Logger.LogWarning($"아이템 아이콘 누락: {consumable.name}");
+            }
+        }
+    }
+
+    private void SetEquipmentIcons()
+    {
+        if (equipmentList?.equipment == null)
+        {
+            Logger.LogWarning("장비 아이템 데이터가 비어있습니다.");
+            return;
+        }
+
+        int maxIdx = 0;
+        foreach (var c in equipmentList.equipment)
+            if (c.index > maxIdx) maxIdx = c.index;
+        equipmentIcons = new Sprite[maxIdx + 1];
+
+        foreach (var equipment in equipmentList.equipment)
+        {
+            Sprite icon = Resources.Load<Sprite>("Equip/" + equipment.name);
+            equipmentIcons[equipment.index] = icon;
+            if (equipmentIcons[equipment.index] == null)
+            {
+                Logger.LogWarning($"아이템 아이콘 누락: {equipment.name}");
+            }
+        }
     }
 }

@@ -5,6 +5,6 @@ public class Red3LegRobot : EliteEnemy
     private void Awake()
     {
         stats = new Monster(MonsterType.Red3LegRobot);
-        SetEnemyStatus(GameManager.instance.player.level);
+        SetEnemyStatus(GameManager.Instance.player.level);
     }
 }
