@@ -80,6 +80,7 @@ public class ItemManager : MonoBehaviour
         Player player = GameManager.Instance.player;
         for (int i = 0; i < player.itemSlot; i++) 
         {
+            if (player.item[i].itemIdx == 0) continue;
             itemIdxArr[i] = player.item[i].itemIdx;
             itemRankArr[i] = player.item[i].rank;
             itemIdxArr[i] -= (itemRankArr[i] * 15);     //아이템 인덱스로 ItemName을 구분하기 때문에 강제로 만든 식입니다.
@@ -99,7 +100,7 @@ public class ItemManager : MonoBehaviour
             }
             else
             {
-                Consumable consumable = DataManager.Instance.consumableList.item[itemIdxArr[i] - 1];
+                Consumable consumable = DataManager.Instance.consumableList.item[itemIdxArr[i]];
                 nowItemUIArr[i].transform.GetChild(0).GetComponent<Image>().sprite = DataManager.Instance.consumableIcons[consumable.itemIdx];
             }
         }
