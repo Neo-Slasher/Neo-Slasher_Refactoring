@@ -1,6 +1,3 @@
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine;
@@ -86,11 +83,11 @@ public class PreparationManager : MonoBehaviour
 
     public void LoadStatDifferenceByTrait()
     {
-        addMaxHpText.text = (traitManager.hp_by_trait > 0 ? "+" : "") + traitManager.hp_by_trait;
-        addMoveSpeedText.text = (traitManager.move_speed_by_trait > 0 ? "+" : "") + traitManager.move_speed_by_trait;
-        addAttackPowerText.text = (traitManager.attack_power_by_trait > 0 ? "+" : "") + traitManager.attack_power_by_trait;
-        addAttackSpeedText.text = (traitManager.attack_speed_by_trait > 0 ? "+" : "") + traitManager.attack_speed_by_trait;
-        addAttackRangeText.text = (traitManager.attack_range_by_trait > 0 ? "+" : "") + traitManager.attack_range_by_trait;
+        addMaxHpText.text = (traitManager.HpByTrait > 0 ? "+" : "") + traitManager.HpByTrait;
+        addMoveSpeedText.text = (traitManager.MoveSpeedByTrait > 0 ? "+" : "") + traitManager.MoveSpeedByTrait;
+        addAttackPowerText.text = (traitManager.AttackPowerByTrait > 0 ? "+" : "") + traitManager.AttackPowerByTrait;
+        addAttackSpeedText.text = (traitManager.AttackSpeedByTrait > 0 ? "+" : "") + traitManager.AttackSpeedByTrait;
+        addAttackRangeText.text = (traitManager.AttackRangeByTrait > 0 ? "+" : "") + traitManager.AttackRangeByTrait;
         startMoneyText.text = GameManager.Instance.player.startMoney.ToString();
         getMoneyText.text = GameManager.Instance.player.earnMoney.ToString();
     }
@@ -246,7 +243,7 @@ public class PreparationManager : MonoBehaviour
         DisableTraitInSameLevel(traitNumber);
 
         // activae trait
-        traitManager.activeTrait(traitNumber);
+        traitManager.ActivateTrait(traitNumber);
 
         button.transform.GetChild(2).gameObject.SetActive(true); // selected object
         button.GetComponent<Button>().interactable = false;
@@ -269,7 +266,7 @@ public class PreparationManager : MonoBehaviour
     void DisableTrait(int traitNumber)
     {
         Debug.Log($"disable {traitNumber}");
-        traitManager.unactiveTrait(traitNumber);
+        traitManager.DeactivateTrait(traitNumber);
         traitButtons[traitNumber].interactable = true;
         traitButtons[traitNumber].transform.GetChild(2).gameObject.SetActive(false);
     }

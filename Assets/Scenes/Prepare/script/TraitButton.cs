@@ -1,11 +1,9 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+// 2025.06.03 Refactoring Final Version
 public class TraitButton : MonoBehaviour
 {
-    public PreparationTraitManager traitManager;
-    public PreparationManager preparationManager;
     [SerializeField] private Image traitImage;
 
     public void SetTraitSprite(Sprite sprite)
