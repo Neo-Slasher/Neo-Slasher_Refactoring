@@ -6,31 +6,29 @@ using UnityEngine;
 [Serializable]
 public class Setting
 {
-    public const string file_path = "Setting.json";
+    public const string filePath = "Setting.json";
 
-    public float bgm_volume;
-    public float sfx_volume;
-    public float joy_stick_size;
+    public float bgmVolume;
+    public float sfxVolume;
+    public float joystickSize;
 
     public Setting()
     {
-        bgm_volume = 100f;
-        sfx_volume = 100f;
-        joy_stick_size = 100f;
+        bgmVolume = 100f;
+        sfxVolume = 100f;
+        joystickSize = 100f;
     }
 
     public static void Save(Setting instance)
     {
-        string setting_file_path = Path.Combine(Application.persistentDataPath, file_path);
+        string settingFilePath = Path.Combine(Application.persistentDataPath, filePath);
         string json = JsonUtility.ToJson(instance);
-        File.WriteAllText(setting_file_path, json);
+        File.WriteAllText(settingFilePath, json);
     }
 
-
-    // Load the setting from persistent data path, if does not exist, create a new setting
     public static Setting Load()
     {
-        string setting_file_path = Path.Combine(Application.persistentDataPath, file_path);
+        string setting_file_path = Path.Combine(Application.persistentDataPath, filePath);
         if (!File.Exists(setting_file_path))
         {
             return null;

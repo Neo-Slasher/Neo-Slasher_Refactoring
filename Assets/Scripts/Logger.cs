@@ -1,5 +1,6 @@
 using System.Diagnostics;
 
+// 2025.06.02 Refactoring Final Version
 public static class Logger
 {
     [Conditional("UNITY_EDITOR")]

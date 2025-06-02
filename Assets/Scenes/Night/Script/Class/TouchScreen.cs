@@ -31,7 +31,7 @@ public class TouchScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     float joyStickRange = 10;
     void Start()
     {
-        float startJoyStickSize = GameManager.Instance.setting.joy_stick_size / 100;
+        float startJoyStickSize = GameManager.Instance.setting.joystickSize / 100;
         joyStickSizeVector = new Vector3(startJoyStickSize, startJoyStickSize, startJoyStickSize);
         joyStickTransform.localScale = joyStickSizeVector;
 
@@ -92,7 +92,7 @@ public class TouchScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         int joyStickSize = (int)(joyStickSlider.value * 100);
 
-        GameManager.Instance.setting.joy_stick_size = joyStickSize;
+        GameManager.Instance.setting.joystickSize = joyStickSize;
         Player.Save(GameManager.Instance.player);
     }
 }

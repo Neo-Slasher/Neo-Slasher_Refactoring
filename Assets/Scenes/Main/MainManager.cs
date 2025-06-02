@@ -2,31 +2,48 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+// 2025.06.02 Refactoring Final Version
 public class MainManager : MonoBehaviour
 {
-    public GameObject start_popup;
-    public GameObject exit_popup;
-    public GameObject setting_popup;
-    public Button continue_button;
+    [SerializeField] private GameObject startPopup;
+    [SerializeField] private GameObject exitPopup;
+    [SerializeField] private GameObject settingPopup;
+    [SerializeField] private Button continueButton;
+
+    private const string CUT_SCENE_NAME = "CutScene";
+    private const string DAY_SCENE_NAME = "DayScene";
 
 
     void Start()
     {
-        if (!GameManager.Instance.has_save_data)
+        if (startPopup == null || exitPopup == null || settingPopup == null || continueButton == null)
         {
-            continue_button.interactable = false;
+            Logger.LogError("UI 오브젝트가 할당되지 않았습니다!");
+            enabled = false;
+            return;
         }
 
-        start_popup.SetActive(false);
-        exit_popup.SetActive(false);
-        setting_popup.SetActive(false);
+        if (GameManager.Instance == null)
+        {
+            Logger.LogError("GameManager 인스턴스가 존재하지 않습니다!");
+            return;
+        }
+
+        if (!GameManager.Instance.has_save_data)
+        {
+            continueButton.interactable = false;
+        }
+
+        startPopup.SetActive(false);
+        exitPopup.SetActive(false);
+        settingPopup.SetActive(false);
     }
 
     public void OnClickStartButton()
     {
-        if (GameManager.Instance.has_save_data == true)
+        if (GameManager.Instance.has_save_data)
         {
-            start_popup.SetActive(true);
+            startPopup.SetActive(true);
         }
         else
         {
@@ -36,7 +53,7 @@ public class MainManager : MonoBehaviour
     private void StartNewGame()
     {
         GameManager.Instance.player = Player.SoftReset(GameManager.Instance.player);
-        SceneManager.LoadScene("CutScene");
+        SceneManager.LoadScene(CUT_SCENE_NAME);
     }
 
     public void OnClickStartPopupYesButton()
@@ -46,27 +63,28 @@ public class MainManager : MonoBehaviour
 
     public void OnClickStartPopupNoButton()
     {
-        start_popup.SetActive(false);
+        startPopup.SetActive(false);
     }
 
     public void OnClickContinueButton()
     {
-        SceneManager.LoadScene("DayScene");
+        SceneManager.LoadScene(DAY_SCENE_NAME);
     }
 
     public void OnClickSettingButton()
     {
-        setting_popup.SetActive(true);
+        settingPopup.SetActive(true);
     }
 
     public void OnClickSettingExitButton()
     {
-        setting_popup.SetActive(false);
+        settingPopup.SetActive(false);
+        Setting.Save(GameManager.Instance.setting);
     }
 
     public void OnClickExitButton()
     {
-        exit_popup.SetActive(true);
+        exitPopup.SetActive(true);
     }
 
     public void OnClickExitPopupYesButton()
@@ -80,6 +98,6 @@ public class MainManager : MonoBehaviour
 
     public void OnClickExitPopupNoButton()
     {
-        exit_popup.SetActive(false);
+        exitPopup.SetActive(false);
     }
 }

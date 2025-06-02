@@ -28,11 +28,11 @@ public class NightSFXManager : MonoBehaviour
 
     private void Start()
     {
-        bgmPlayer.volume = GameManager.Instance.setting.bgm_volume;
-        bgmSlider.value = GameManager.Instance.setting.bgm_volume;
+        bgmPlayer.volume = GameManager.Instance.setting.bgmVolume;
+        bgmSlider.value = GameManager.Instance.setting.bgmVolume;
 
-        sfxPlayer.volume = GameManager.Instance.setting.sfx_volume;
-        sfxSlider.value = GameManager.Instance.setting.sfx_volume;
+        sfxPlayer.volume = GameManager.Instance.setting.sfxVolume;
+        sfxSlider.value = GameManager.Instance.setting.sfxVolume;
 
         PlayNightBGM();
     }
@@ -40,14 +40,14 @@ public class NightSFXManager : MonoBehaviour
     public void SetBGMPlayerVolume()
     {
         bgmPlayer.volume = bgmSlider.value;
-        GameManager.Instance.setting.bgm_volume = bgmSlider.value;
+        GameManager.Instance.setting.bgmVolume = bgmSlider.value;
         Player.Save(GameManager.Instance.player);
     }
 
     public void SetSFXPlayerVolume()
     {
         sfxPlayer.volume = sfxSlider.value;
-        GameManager.Instance.setting.sfx_volume = sfxSlider.value;
+        GameManager.Instance.setting.sfxVolume = sfxSlider.value;
         Player.Save(GameManager.Instance.player);
     }
 

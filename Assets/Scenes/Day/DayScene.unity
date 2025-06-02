@@ -1029,7 +1029,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -3421,7 +3421,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -4885,7 +4885,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -4923,75 +4923,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 1
   m_AspectRatio: 4.1294966
---- !u!1001 &698108614
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2522651249256675273, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_Name
-      value: BGM Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675273, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675274, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 16190f25d0e944256a56876b42b65a71, type: 3}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2522651249256675275, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 14bf5421ec80648a89cae503335df080, type: 3}
 --- !u!1 &701153159
 GameObject:
   m_ObjectHideFlags: 0
@@ -5131,7 +5062,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -5539,7 +5470,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -6299,7 +6230,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -6597,6 +6528,7 @@ MonoBehaviour:
   selected: {fileID: 7093687}
   comparisonButton: {fileID: 1216804178}
   comparisonPopup: {fileID: 292709833}
+  selectedNumber: 0
 --- !u!1001 &986043352
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8149,7 +8081,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -8635,7 +8567,7 @@ PrefabInstance:
     - target: {fileID: 1713287461666006292, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1746245857}
+      objectReference: {fileID: 0}
     - target: {fileID: 1713287461666006292, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -8867,7 +8799,7 @@ PrefabInstance:
     - target: {fileID: 2312053016118630034, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1746245857}
+      objectReference: {fileID: 0}
     - target: {fileID: 2312053016118630034, guid: 233074257f4884e18802a27fef6be0f9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
@@ -9061,7 +8993,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -9612,7 +9544,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -9893,7 +9825,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -10889,7 +10821,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -11635,11 +11567,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 1
   m_AspectRatio: 1
---- !u!82 &1541488295 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 2522651249256675274, guid: 14bf5421ec80648a89cae503335df080, type: 3}
-  m_PrefabInstance: {fileID: 698108614}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1559318070
 GameObject:
   m_ObjectHideFlags: 0
@@ -12073,7 +12000,7 @@ PrefabInstance:
     - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
       propertyPath: bgm_player
       value: 
-      objectReference: {fileID: 1541488295}
+      objectReference: {fileID: 0}
     - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
       propertyPath: bgm_slider
       value: 
@@ -12081,7 +12008,7 @@ PrefabInstance:
     - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
       propertyPath: sfx_player
       value: 
-      objectReference: {fileID: 1746245856}
+      objectReference: {fileID: 0}
     - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
       propertyPath: sfx_slider
       value: 
@@ -12837,22 +12764,6 @@ MonoBehaviour:
   - {fileID: 362517109}
   - {fileID: 986043354}
   selected: {fileID: 999943653}
---- !u!82 &1746245856 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 1078335032963288323, guid: 50765c32905304e47b639911336d01f6, type: 3}
-  m_PrefabInstance: {fileID: 1873560532}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1746245857 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 878186633, guid: 50765c32905304e47b639911336d01f6, type: 3}
-  m_PrefabInstance: {fileID: 1873560532}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc25ce11a9f024932b77aea5174e16eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1776436231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14001,71 +13912,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1867590846}
   m_CullTransparentMesh: 1
---- !u!1001 &1873560532
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1078335032963288320, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_Name
-      value: SFX Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288320, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -47.214424
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 432.26074
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -9.965068
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1078335032963288322, guid: 50765c32905304e47b639911336d01f6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 50765c32905304e47b639911336d01f6, type: 3}
 --- !u!1 &1881480704
 GameObject:
   m_ObjectHideFlags: 0
@@ -16323,7 +16169,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1746245857}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SFXPlayer, Assembly-CSharp
         m_MethodName: PlayButtonSound
         m_Mode: 1
@@ -16376,7 +16222,7 @@ PrefabInstance:
     - target: {fileID: 5359026658352823273, guid: 8e64c2f9f83a6eb448809b81aed3a691, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1746245857}
+      objectReference: {fileID: 0}
     - target: {fileID: 5832648169702827365, guid: 8e64c2f9f83a6eb448809b81aed3a691, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -16674,7 +16520,7 @@ PrefabInstance:
     - target: {fileID: 8047287090794495362, guid: 6ab1ee738e705c24a858ab33bc085344, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1746245857}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16691,5 +16537,3 @@ SceneRoots:
   - {fileID: 537193063}
   - {fileID: 1249736951}
   - {fileID: 1647562687}
-  - {fileID: 698108614}
-  - {fileID: 1873560532}
