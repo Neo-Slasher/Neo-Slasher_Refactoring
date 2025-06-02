@@ -354,8 +354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1707054551}
 --- !u!1 &8775204
 GameObject:
@@ -1430,8 +1428,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 318273611}
 --- !u!1 &76741205
 GameObject:
@@ -2186,8 +2182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1273489190}
 --- !u!1 &110071397
 GameObject:
@@ -3860,8 +3854,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1655273714}
 --- !u!1 &230618135
 GameObject:
@@ -5913,8 +5905,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 4713342}
 --- !u!1 &323575609
 GameObject:
@@ -6364,8 +6354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1313643946}
 --- !u!1 &335033319
 GameObject:
@@ -6738,8 +6726,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 2040995213}
 --- !u!1 &345104079
 GameObject:
@@ -7222,8 +7208,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1414906299}
 --- !u!1 &396178488
 GameObject:
@@ -7385,8 +7369,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1098655692}
 --- !u!1 &413256264
 GameObject:
@@ -7684,8 +7666,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1109150746}
 --- !u!1 &432759088
 GameObject:
@@ -8589,8 +8569,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1408597665}
 --- !u!1 &490383808
 GameObject:
@@ -8752,8 +8730,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 352503864}
 --- !u!1 &491094162
 GameObject:
@@ -9187,8 +9163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1891168468}
 --- !u!1001 &502812213
 PrefabInstance:
@@ -10420,8 +10394,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 2088450152}
 --- !u!1 &542465361
 GameObject:
@@ -10719,8 +10691,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 132679851}
 --- !u!1001 &552521482
 PrefabInstance:
@@ -11163,8 +11133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1405105512}
 --- !u!1 &570881394
 GameObject:
@@ -13488,8 +13456,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1273230515}
 --- !u!1 &662743281
 GameObject:
@@ -13651,8 +13617,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 227356418}
 --- !u!1 &669043770
 GameObject:
@@ -13950,8 +13914,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1797782812}
 --- !u!1 &695400633
 GameObject:
@@ -14487,8 +14449,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 2010233674}
 --- !u!1001 &733607025
 PrefabInstance:
@@ -17582,8 +17542,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1116938702}
 --- !u!1 &930214678
 GameObject:
@@ -17820,8 +17778,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 11932118}
 --- !u!1 &939457619
 GameObject:
@@ -18234,8 +18190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 230618137}
 --- !u!1 &969346856
 GameObject:
@@ -18397,8 +18351,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 110094282}
 --- !u!1 &978291691
 GameObject:
@@ -19031,8 +18983,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 335033321}
 --- !u!1001 &1028207437
 PrefabInstance:
@@ -20475,8 +20425,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1456621339}
 --- !u!1 &1115906996
 GameObject:
@@ -21096,8 +21044,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1125155794}
 --- !u!1 &1154323482
 GameObject:
@@ -21259,8 +21205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 270871098}
 --- !u!1001 &1155045036
 PrefabInstance:
@@ -22542,8 +22486,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 50950227}
 --- !u!1001 &1230584582
 PrefabInstance:
@@ -24124,8 +24066,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1710426162}
 --- !u!1 &1283233111
 GameObject:
@@ -25994,8 +25934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 930214680}
 --- !u!1001 &1363631284
 PrefabInstance:
@@ -26927,8 +26865,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1430688447}
 --- !u!1 &1388204758
 GameObject:
@@ -27590,8 +27526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 708672953}
 --- !u!1 &1408597663
 GameObject:
@@ -27828,8 +27762,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 657315846}
 --- !u!1 &1414906297
 GameObject:
@@ -28644,8 +28576,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1494664727}
 --- !u!1 &1450736520
 GameObject:
@@ -29717,8 +29647,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1955700374}
 --- !u!1 &1479846298
 GameObject:
@@ -29880,8 +29808,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1702312924}
 --- !u!1 &1494664725
 GameObject:
@@ -30118,8 +30044,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1129866456}
 --- !u!1 &1507854816
 GameObject:
@@ -30571,8 +30495,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1208228630}
 --- !u!1 &1528828563
 GameObject:
@@ -30734,8 +30656,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 956981905}
 --- !u!1 &1532683669
 GameObject:
@@ -30897,8 +30817,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 990760986}
 --- !u!1 &1536736461
 GameObject:
@@ -31060,8 +30978,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 535151135}
 --- !u!1 &1539086545
 GameObject:
@@ -31223,8 +31139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 254790177}
 --- !u!1 &1541568633
 GameObject:
@@ -31463,8 +31377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1696876588}
 --- !u!1 &1548576514
 GameObject:
@@ -31626,8 +31538,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 324212268}
 --- !u!1 &1550526900
 GameObject:
@@ -31925,8 +31835,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 2147442029}
 --- !u!1001 &1565566020
 PrefabInstance:
@@ -32071,11 +31979,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98289c24d78aa4bb5816d7ba1ab2db5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp_by_trait: 0
-  move_speed_by_trait: 0
-  attack_power_by_trait: 0
-  attack_speed_by_trait: 0
-  attack_range_by_trait: 0
 --- !u!4 &1566434874
 Transform:
   m_ObjectHideFlags: 0
@@ -33411,8 +33314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 299439082}
 --- !u!1 &1628185400
 GameObject:
@@ -34245,8 +34146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 982499440}
 --- !u!1001 &1677572094
 PrefabInstance:
@@ -35073,8 +34972,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1112232218}
 --- !u!1 &1702312922
 GameObject:
@@ -35461,8 +35358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 433492259}
 --- !u!1001 &1718108678
 PrefabInstance:
@@ -36021,8 +35916,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1579031826}
 --- !u!1001 &1739063320
 PrefabInstance:
@@ -36513,8 +36406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 643845150}
 --- !u!1 &1775471045
 GameObject:
@@ -36812,8 +36703,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1847422493}
 --- !u!1 &1797782810
 GameObject:
@@ -37502,6 +37391,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   traitManager: {fileID: 1566434873}
+  traitName: {fileID: 1344334954}
+  traitLv: {fileID: 646443055}
+  traitScript: {fileID: 878135213}
+  traitImage: {fileID: 1462589831}
   levelText: {fileID: 233103553}
   expText: {fileID: 1550526902}
   maxHpText: {fileID: 279001685}
@@ -37519,7 +37412,7 @@ MonoBehaviour:
   difficultyLeftButton: {fileID: 316103771}
   difficultyRightButton: {fileID: 1257580932}
   difficultyLevelText: {fileID: 283780855}
-  recommandLvText: {fileID: 516839920}
+  recommendLvText: {fileID: 516839920}
   rewardExpText: {fileID: 1681774223}
   goalMoneyText: {fileID: 1580760127}
   enemyStatusText: {fileID: 169873619}
@@ -37527,10 +37420,7 @@ MonoBehaviour:
   eliteEnhanceText: {fileID: 218130193}
   dropRankText: {fileID: 598133619}
   enemyRespawnText: {fileID: 860269404}
-  traitName: {fileID: 1344334954}
-  traitLv: {fileID: 646443055}
-  traitScript: {fileID: 878135213}
-  traitImage: {fileID: 1462589831}
+  startButton: {fileID: 440368449}
   traitBoards:
   - {fileID: 1182829895}
   - {fileID: 1158619776}
@@ -37679,50 +37569,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8a7e9c8160fdf4d24941a794b971a983, type: 3}
   - {fileID: 21300000, guid: 8a7e9c8160fdf4d24941a794b971a983, type: 3}
   - {fileID: 21300000, guid: 8a7e9c8160fdf4d24941a794b971a983, type: 3}
-  addValueByTrait:
-    day: 0
-    difficulty: 0
-    assassinationCount: 0
-    level: 0
-    reqExp: 0
-    curExp: 0
-    money: 0
-    startMoney: 0
-    earnMoney: 0
-    maxHp: 0
-    curHp: 0
-    attackPower: 0
-    attackSpeed: 0
-    attackRange: 0
-    moveSpeed: 0
-    shieldDuration: 0
-    shieldPoint: 0
-    immuneDuration: 0
-    immuneCount: 0
-    dashable: 0
-    dashFreq: 0
-    dashSpeed: 0
-    dashDuration: 0
-    damageReductionRate: 0
-    dealOnMaxHp: 0
-    dealOnCurHp: 0
-    healByHit: 0
-    hpRegen: 0
-    shopSlot: 0
-    shopMinRank: 0
-    shopMaxRank: 0
-    dropRank: 0
-    dropRate: 0
-    itemSlot: 0
-    trait: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-    traitPoint: 1
-    equipment: []
-    item: []
-    equipmentAttackPower: 0
-    equipmentAttackSpeed: 0
-    equipmentAttackRange: 0
-    equipmentMoveSpeed: 0
-  startButton: {fileID: 440368449}
 --- !u!4 &1840047577
 Transform:
   m_ObjectHideFlags: 0
@@ -38793,8 +38639,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1401671397}
 --- !u!1 &1930488303
 GameObject:
@@ -38956,8 +38800,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 36730926}
 --- !u!1 &1932880954
 GameObject:
@@ -39527,8 +39369,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 102261088}
 --- !u!1 &1944155729
 GameObject:
@@ -40072,8 +39912,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1616331473}
 --- !u!1001 &1966486150
 PrefabInstance:
@@ -41327,8 +41165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 978291693}
 --- !u!1 &2033640569
 GameObject:
@@ -41701,8 +41537,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 532682455}
 --- !u!1 &2047307219
 GameObject:
@@ -42617,8 +42451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1307810010}
 --- !u!1001 &2077705725
 PrefabInstance:
@@ -43698,8 +43530,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 753931065}
 --- !u!1001 &2118413620
 PrefabInstance:
@@ -44078,8 +43908,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9413e62c56ca414fb838264d691ca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitManager: {fileID: 0}
-  preparationManager: {fileID: 0}
   traitImage: {fileID: 1253004165}
 --- !u!1 &2147442027
 GameObject:

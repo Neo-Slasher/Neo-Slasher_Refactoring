@@ -4,54 +4,57 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+// Preparation Manager를 수정할 때 씬에서의 연결이 끊어지지 않도록 주의할 것
+// 인스펙터와 관련된 코드가 많아 리펙토링에서 어느 정도 합의를 봄
 public class PreparationManager : MonoBehaviour
 {
-    public PreparationTraitManager traitManager;
+    [Header("Trait")]
+    [SerializeField] private PreparationTraitManager traitManager;
+    [SerializeField] private TextMeshProUGUI traitName;
+    [SerializeField] private TextMeshProUGUI traitLv;
+    [SerializeField] private TextMeshProUGUI traitScript;
+    [SerializeField] private Image traitImage;
 
-    public TextMeshProUGUI levelText;
-    public TextMeshProUGUI expText;
-    public TextMeshProUGUI maxHpText;
-    public TextMeshProUGUI addMaxHpText;
-    public TextMeshProUGUI moveSpeedText;
-    public TextMeshProUGUI addMoveSpeedText;
-    public TextMeshProUGUI attackPowerText;
-    public TextMeshProUGUI addAttackPowerText;
-    public TextMeshProUGUI attackSpeedText;
-    public TextMeshProUGUI addAttackSpeedText;
-    public TextMeshProUGUI attackRangeText;
-    public TextMeshProUGUI addAttackRangeText;
-    public TextMeshProUGUI startMoneyText;
-    public TextMeshProUGUI getMoneyText;
+    [Header("Player Stats")]
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI expText;
+    [SerializeField] private TextMeshProUGUI maxHpText;
+    [SerializeField] private TextMeshProUGUI addMaxHpText;
+    [SerializeField] private TextMeshProUGUI moveSpeedText;
+    [SerializeField] private TextMeshProUGUI addMoveSpeedText;
+    [SerializeField] private TextMeshProUGUI attackPowerText;
+    [SerializeField] private TextMeshProUGUI addAttackPowerText;
+    [SerializeField] private TextMeshProUGUI attackSpeedText;
+    [SerializeField] private TextMeshProUGUI addAttackSpeedText;
+    [SerializeField] private TextMeshProUGUI attackRangeText;
+    [SerializeField] private TextMeshProUGUI addAttackRangeText;
+    [SerializeField] private TextMeshProUGUI startMoneyText;
+    [SerializeField] private TextMeshProUGUI getMoneyText;
 
-    public Button difficultyLeftButton;
-    public Button difficultyRightButton;
-    public TextMeshProUGUI difficultyLevelText;
-    public TextMeshProUGUI recommandLvText;
-    public TextMeshProUGUI rewardExpText;
-    public TextMeshProUGUI goalMoneyText;
-    public TextMeshProUGUI enemyStatusText;
-    public TextMeshProUGUI normalEnhanceText;
-    public TextMeshProUGUI eliteEnhanceText;
-    public TextMeshProUGUI dropRankText;
-    public TextMeshProUGUI enemyRespawnText;
+    [Header("Difficulty")]
+    [SerializeField] private Button difficultyLeftButton;
+    [SerializeField] private Button difficultyRightButton;
+    [SerializeField] private TextMeshProUGUI difficultyLevelText;
+    [SerializeField] private TextMeshProUGUI recommendLvText;
+    [SerializeField] private TextMeshProUGUI rewardExpText;
+    [SerializeField] private TextMeshProUGUI goalMoneyText;
+    [SerializeField] private TextMeshProUGUI enemyStatusText;
+    [SerializeField] private TextMeshProUGUI normalEnhanceText;
+    [SerializeField] private TextMeshProUGUI eliteEnhanceText;
+    [SerializeField] private TextMeshProUGUI dropRankText;
+    [SerializeField] private TextMeshProUGUI enemyRespawnText;
 
+    [Header("Etc")]
+    [SerializeField] private Button startButton;
+    [SerializeField] private GameObject[] traitBoards;
+    [SerializeField] private Image[] levelSelects;
+    [SerializeField] private Sprite[] levelBackgrounds;
+    [SerializeField] private Sprite[] levelBackgroundSelects;
+    [SerializeField] private Button[] traitButtons;
+    [SerializeField] private Sprite[] traitImages;
 
-    public TextMeshProUGUI traitName;
-    public TextMeshProUGUI traitLv;
-    public TextMeshProUGUI traitScript;
-
-
-    public Image traitImage;
-
-    public GameObject[] traitBoards;
-    public Image[] levelSelects;
-    public Sprite[] levelBackgrounds;
-    public Sprite[] levelBackgroundSelects;
-    public Button[] traitButtons;
-    public Sprite[] traitImages;
-
-    public Player addValueByTrait;
-    public Button startButton;
+    private const int MIN_DIFFICULTY = 1;
+    private const int MAX_DIFFICULTY = 8;
 
     void Start()
     {
@@ -69,120 +72,147 @@ public class PreparationManager : MonoBehaviour
         CheckStartButton();
     }
 
-    public void LoadStat()
+    private void LoadStat()
     {
-        levelText.text = GameManager.Instance.player.level.ToString();
-        expText.text = $"Exp {GameManager.Instance.player.curExp}/{GameManager.Instance.player.reqExp}";
-        maxHpText.text = GameManager.Instance.player.maxHp.ToString();
-        moveSpeedText.text = GameManager.Instance.player.moveSpeed.ToString();
-        attackPowerText.text = GameManager.Instance.player.attackPower.ToString();
-        attackSpeedText.text = GameManager.Instance.player.attackSpeed.ToString();
-        attackRangeText.text = GameManager.Instance.player.attackRange.ToString();
-        startMoneyText.text = GameManager.Instance.player.money.ToString();
+        Player player = GameManager.Instance.player;
+
+        levelText.text = player.level.ToString();
+        expText.text = $"Exp {player.curExp}/{player.reqExp}";
+        maxHpText.text = player.maxHp.ToString("N0");
+        moveSpeedText.text = player.moveSpeed.ToString();
+        attackPowerText.text = player.attackPower.ToString("F0");
+        attackSpeedText.text = player.attackSpeed.ToString("F0");
+        attackRangeText.text = player.attackRange.ToString("F0");
+        startMoneyText.text = player.money.ToString("N0");
     }
 
-    public void LoadStatDifferenceByTrait()
+    private void LoadStatDifferenceByTrait()
     {
-        addMaxHpText.text = (traitManager.HpByTrait > 0 ? "+" : "") + traitManager.HpByTrait;
-        addMoveSpeedText.text = (traitManager.MoveSpeedByTrait > 0 ? "+" : "") + traitManager.MoveSpeedByTrait;
-        addAttackPowerText.text = (traitManager.AttackPowerByTrait > 0 ? "+" : "") + traitManager.AttackPowerByTrait;
-        addAttackSpeedText.text = (traitManager.AttackSpeedByTrait > 0 ? "+" : "") + traitManager.AttackSpeedByTrait;
-        addAttackRangeText.text = (traitManager.AttackRangeByTrait > 0 ? "+" : "") + traitManager.AttackRangeByTrait;
-        startMoneyText.text = GameManager.Instance.player.startMoney.ToString();
-        getMoneyText.text = GameManager.Instance.player.earnMoney.ToString();
+        Player player = GameManager.Instance.player;
+
+        addMaxHpText.text = FormatSignedValue(traitManager.HpByTrait);
+        addMoveSpeedText.text = FormatSignedValue(traitManager.MoveSpeedByTrait);
+        addAttackPowerText.text = FormatSignedValue(traitManager.AttackPowerByTrait);
+        addAttackSpeedText.text = FormatSignedValue(traitManager.AttackSpeedByTrait);
+        addAttackRangeText.text = FormatSignedValue(traitManager.AttackRangeByTrait);
+        startMoneyText.text = player.startMoney.ToString("N0");
+        getMoneyText.text = player.earnMoney.ToString("N0");
+    }
+
+    private string FormatSignedValue(double value)
+    {
+        string sign = value > 0 ? "+" : "";
+        return sign + value.ToString("F0");
     }
 
     private void LoadDifficulty()
     {
         int difficulty = GameManager.Instance.player.difficulty;
+        var difficultyData = DataManager.Instance.difficultyList.difficulty[difficulty - 1];
+
         difficultyLevelText.text = difficulty.ToString();
-        recommandLvText.text = $"권장 Lv.{DataManager.Instance.difficultyList.difficulty[difficulty].recommandLv}";
-        rewardExpText.text = $"보상 EXP {DataManager.Instance.difficultyList.difficulty[difficulty].rewardExp}";
-        goalMoneyText.text = $"- 목표금액 {DataManager.Instance.difficultyList.difficulty[difficulty].goalMoney}";
-        enemyStatusText.text = "- 적 체력, 이동속도, 공격력 " + (DataManager.Instance.difficultyList.difficulty[difficulty].enemyStatus * 100f).ToString() + "%";
-        normalEnhanceText.text = "- 일반 적이 " + (DataManager.Instance.difficultyList.difficulty[difficulty].normalEnhance * 100f).ToString() + "% 확률로 강화";
-        eliteEnhanceText.text = "- 정예 적이 " + (DataManager.Instance.difficultyList.difficulty[difficulty].eliteEnhance * 100f).ToString() + "% 확률로 강화";
-        dropRankText.text = "- 아이템 드롭률 " + (DataManager.Instance.difficultyList.difficulty[difficulty].dropRank * 100f).ToString() + "%";
-        enemyRespawnText.text = "- 적 개체수 " + (DataManager.Instance.difficultyList.difficulty[difficulty].enemyRespawn * 100f).ToString() + "%";
+        recommendLvText.text = $"권장 Lv.{difficultyData.recommandLv}";
+        rewardExpText.text = $"보상 EXP {difficultyData.rewardExp:N0}";
+        goalMoneyText.text = $"- 목표금액 {difficultyData.goalMoney:N0}";
+        enemyStatusText.text = $"- 적 체력, 이동속도, 공격력 {difficultyData.enemyStatus * 100:F0}%";
+        normalEnhanceText.text = $"- 일반 적이 {difficultyData.normalEnhance * 100:F0}% 확률로 강화";
+        eliteEnhanceText.text = $"- 정예 적이 {difficultyData.eliteEnhance * 100:F0}% 확률로 강화";
+        dropRankText.text = $"- 아이템 드롭률 {difficultyData.dropRank * 100:F0}%";
+        enemyRespawnText.text = $"- 적 개체수 {difficultyData.enemyRespawn * 100:F0}%";
     }
 
-    // TODO: Difficulty를 따로 관리하는 스크립트로 분리
-    public void UpdateDifficultyButton()
+    private void UpdateDifficultyButton()
     {
-        difficultyLeftButton.interactable = (GameManager.Instance.player.difficulty == 1) ? false : true;
-        difficultyRightButton.interactable = (GameManager.Instance.player.difficulty == 8) ? false : true;
+        int difficulty = GameManager.Instance.player.difficulty;
+        difficultyLeftButton.interactable = (difficulty > MIN_DIFFICULTY);
+        difficultyRightButton.interactable = (difficulty < MAX_DIFFICULTY);
     }
 
     public void OnClickDifficultyLeftButton()
     {
-        if (GameManager.Instance.player.difficulty == 1)
-        {
-            return;
-        }
-        GameManager.Instance.player.difficulty -= 1;
+        GameManager.Instance.player.difficulty = Mathf.Clamp(
+            GameManager.Instance.player.difficulty - 1,
+            MIN_DIFFICULTY,
+            MAX_DIFFICULTY
+        );
         LoadDifficulty();
         UpdateDifficultyButton();
     }
 
     public void OnClickDifficultyRightButton()
     {
-        if (GameManager.Instance.player.difficulty == 8)
-        {
-            return;
-        }
-        GameManager.Instance.player.difficulty += 1;
+        GameManager.Instance.player.difficulty = Mathf.Clamp(
+            GameManager.Instance.player.difficulty + 1,
+            MIN_DIFFICULTY,
+            MAX_DIFFICULTY
+        );
         LoadDifficulty();
         UpdateDifficultyButton();
     }
-
 
     private void LoadTraitButtonImage()
     {
         for (int index = 1; index < traitButtons.Length; ++index)
         {
             int imageIndex = DataManager.Instance.traitList.trait[index - 1].imageIndex;
-            Sprite traitSprite = traitImages[imageIndex];
 
-            traitButtons[index].GetComponent<TraitButton>().SetTraitSprite(traitSprite);
+            TraitButton traitButton = traitButtons[index].GetComponent<TraitButton>();
+            if (traitButton == null)
+            {
+                Logger.LogError($"TraitButton 컴포넌트를 찾을 수 없습니다. index: {index}");
+                continue;
+            }
+            traitButton.SetTraitSprite(traitImages[imageIndex]);
         }
     }
 
-    // 처음 씬이 시작될 때 기본적으로 보여줄 특성을 세팅
-    public void LoadSelectedTraitUI(int n)
+    private void LoadSelectedTraitUI(int n)
     {
-        Trait defaultTrait = DataManager.Instance.traitList.trait[n - 1];
-        traitName.text = defaultTrait.name;
-        traitLv.text = defaultTrait.requireLv.ToString() + " / " + (defaultTrait.rank == 0 ? "일반" : "핵심");
-        traitScript.text = defaultTrait.script;
+        Trait trait = DataManager.Instance.traitList.trait[n - 1];
+        traitName.text = trait.name;
+        traitLv.text = $"{trait.requireLv} / {(trait.rank == 0 ? "일반" : "핵심")}";
+        traitScript.text = trait.script;
         traitImage.sprite = traitButtons[n].GetComponent<Image>().sprite; // 인덱스는 1부터 시작
         traitImage.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = traitButtons[n].transform.GetChild(1).gameObject.GetComponent<Image>().sprite;
     }
 
     private int GetMaxTraitCount()
     {
+        int[] maxTraitCounts = {
+            0,    // 인덱스 0 (사용 안 함)
+            2,    // 레벨 1
+            5,    // 레벨 2
+            8,    // 레벨 3
+            10,   // 레벨 4
+            13,   // 레벨 5
+            15,   // 레벨 6
+            19,   // 레벨 7
+            22,   // 레벨 8
+            25,   // 레벨 9
+            29,   // 레벨 10
+            32,   // 레벨 11
+            35,   // 레벨 12
+            38,   // 레벨 13
+            41,   // 레벨 14
+            45,   // 레벨 15
+            48,   // 레벨 16
+            52,   // 레벨 17
+            55,   // 레벨 18
+            58,   // 레벨 19
+            62    // 레벨 20
+        };
+
         int level = GameManager.Instance.player.level;
-        if (level == 1) return 2;
-        else if (level == 2) return 5;
-        else if (level == 3) return 8;
-        else if (level == 4) return 10;
-        else if (level == 5) return 13;
-        else if (level == 6) return 15;
-        else if (level == 7) return 19;
-        else if (level == 8) return 22;
-        else if (level == 9) return 25;
-        else if (level == 10) return 29;
-        else if (level == 11) return 32;
-        else if (level == 12) return 35;
-        else if (level == 13) return 38;
-        else if (level == 14) return 41;
-        else if (level == 15) return 45;
-        else if (level == 16) return 48;
-        else if (level == 17) return 52;
-        else if (level == 18) return 55;
-        else if (level == 19) return 58;
-        else if (level == 20) return 62;
-        return 0;
+        return (level >= 1 && level <= 20) ? maxTraitCounts[level] : 0;
     }
+
+
+
+
+
+
+
+
 
     // 본인 레벨 이하의 특성만 선택 가능하도록 버튼 off
     // 선택된 특성은 상호작용 X 및 selected 이미지 활성화
