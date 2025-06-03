@@ -1,32 +1,30 @@
 using TMPro;
 using UnityEngine;
 
+// 2025.06.03 Refactoring Final Version
 public class FightingPower : MonoBehaviour
 {
+    [SerializeField] private TMP_Text money;
+    [SerializeField] private TMP_Text currentCpText;
+    [SerializeField] private TMP_Text stats;
+    [SerializeField] private TMP_Text statDiff;
+
+    // CP: Character Point(전투력)
     public int currentCP;
 
-    public TMP_Text money;
-    public TMP_Text currentcp;
-
-    public TMP_Text stacks;
-    public TMP_Text diffs;
-
-    double equipment_move_speed = 0;
-    double equipment_attack_power = 0;
-    double equipment_attack_speed = 0;
-    double equipment_attack_range = 0;
-
-    public void Awake()
-    {
-        CalculatePower();
-    }
 
     public void Start()
     {
         UpdateFightPower();
     }
 
-    public void CalculatePower()
+    public void UpdateFightPower()
+    {
+        CalculatePower();
+        UpdateUI();
+    }
+
+    private void CalculatePower()
     {
         Player player = GameManager.Instance.player;
 
@@ -37,89 +35,109 @@ public class FightingPower : MonoBehaviour
         double attackRange = player.attackRange;
 
         currentCP = (int)((maxHp * 1.5) + (moveSpeed * 3) + (attackPower * attackSpeed * attackRange * 0.02));
-        Debug.Log("currentCP: " + currentCP);
+        Logger.Log("currentCP: " + currentCP);
+    }
+
+    private void UpdateUI()
+    {
+        Player player = GameManager.Instance.player;
+
+        money.text = player.money.ToString() + "a / " + DataManager.Instance.difficultyList.difficulty[player.difficulty].goalMoney + "a";
+        currentCpText.text = currentCP.ToString();
+
+        UpdateStatUI();
+        UpdateStatDiffUI();
+    }
+
+    private void UpdateStatUI()
+    {
+        Player player = GameManager.Instance.player;
+
+
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine(player.maxHp.ToString());
+        sb.AppendLine(player.moveSpeed.ToString());
+        sb.AppendLine(player.attackSpeed.ToString());
+        sb.AppendLine(player.attackPower.ToString());
+        sb.AppendLine(player.attackRange.ToString());
+        sb.AppendLine(); // 의도된 개행
+        sb.AppendLine(player.startMoney.ToString());
+        sb.AppendLine(player.earnMoney.ToString());
+        stats.text = sb.ToString();
+    }
+
+    private void UpdateStatDiffUI()
+    {
+        Player player = GameManager.Instance.player;
+        var sb = new System.Text.StringBuilder();
+
+        double equipmentMoveSpeed = 0;
+        double equipmentAttackPower = 0;
+        double equipmentAttackSpeed = 0;
+        double equipmentAttackRange = 0;
+
+        foreach (var equipment in player.equipment)
+        {
+            if (equipment == null) continue;
+            equipmentMoveSpeed += equipment.moveSpeed;
+            equipmentAttackPower += equipment.attackPower;
+            equipmentAttackSpeed += equipment.attackSpeed;
+            equipmentAttackRange += equipment.attackRange;
+        }
+
+        void AppendStatLine(double value)
+        {
+            sb.AppendLine(value > 0 ? $"+{value}" : $"{value}");
+        }
+
+        sb.AppendLine(" "); // 의도적 개행
+        AppendStatLine(player.equipmentMoveSpeed);
+        AppendStatLine(player.attackPower);
+        AppendStatLine(player.attackSpeed);
+        AppendStatLine(player.attackRange);
+        sb.AppendLine(" "); // 의도적 개행
+        sb.AppendLine(" "); // 의도적 개행
+        sb.AppendLine(" "); // 의도적 개행
+
+        statDiff.text = sb.ToString();
     }
 
     public void RemoveEquipment(int part)
     {
         Player player = GameManager.Instance.player;
 
-        if (player.equipment[part].name != "")
+        // index == 0이면 빈 슬롯
+        if (player.equipment[part].index == 0)
         {
-            Equipment equipment = player.equipment[part];
-            player.equipmentAttackPower -= equipment.attackPower;
-            player.equipmentAttackSpeed -= equipment.attackSpeed;
-            player.equipmentAttackRange -= equipment.attackRange;
-            player.equipmentMoveSpeed -= equipment.moveSpeed;
-            player.equipment[part] = null;
+            Logger.Log("FightingPower: 해제하려고 하는 장비 파트가 존재하지 않습니다.");
+            return;
         }
+
+        Equipment equipment = player.equipment[part];
+        player.equipmentAttackPower -= equipment.attackPower;
+        player.equipmentAttackSpeed -= equipment.attackSpeed;
+        player.equipmentAttackRange -= equipment.attackRange;
+        player.equipmentMoveSpeed -= equipment.moveSpeed;
+
+        player.equipment[part] = new Equipment { index = 0 };
     }
 
     public void EquipEquipment(Equipment equipment)
     {
         Player player = GameManager.Instance.player;
 
+        if (player.equipment[equipment.part].index != 0)
+        {
+            RemoveEquipment(equipment.part);
+        }
+
         player.equipmentAttackPower += equipment.attackPower;
         player.equipmentAttackSpeed += equipment.attackSpeed;
         player.equipmentAttackRange += equipment.attackRange;
         player.equipmentMoveSpeed += equipment.moveSpeed;
 
-        Debug.Log($"장착하려는 장비명: {equipment.name}, {equipment.part}");
         player.equipment[equipment.part] = equipment;
+
+        Logger.Log($"장비 장착 완료: {equipment.name}, {equipment.part}");
     }
-
-    public void UpdateFightPower()
-    {
-        CalculatePower();
-
-        Player player = GameManager.Instance.player;
-
-        money.text = player.money.ToString() + "a / " + DataManager.Instance.difficultyList.difficulty[player.difficulty].goalMoney + "a";
-        
-        currentcp.text = currentCP.ToString();
-
-        stacks.text = player.maxHp.ToString() + "\n";
-        stacks.text += player.moveSpeed.ToString() + "\n";
-        stacks.text += player.attackSpeed.ToString() + "\n";
-        stacks.text += player.attackPower.ToString() + "\n";
-        stacks.text += player.attackRange.ToString() + "\n\n"; // 의도된 두 번 개행
-        stacks.text += player.startMoney.ToString() + "\n";
-        stacks.text += player.earnMoney.ToString() + "\n";
-
-        PrintFightPower();
-    }
-    public void PrintFightPower()
-    {
-        Player player = GameManager.Instance.player;
-
-        foreach (var equipment in player.equipment)
-        {
-            equipment_move_speed += equipment.moveSpeed;
-            equipment_attack_power += equipment.attackPower;
-            equipment_attack_speed += equipment.attackSpeed;
-            equipment_attack_range += equipment.attackRange;
-        }
-
-        if (player.equipmentMoveSpeed >= 0)
-            diffs.text = $"\n+{equipment_move_speed}\n";
-        else if (player.equipmentMoveSpeed < 0)
-            diffs.text = $"\n{equipment_move_speed}\n";
-
-        if (player.equipmentAttackPower >= 0)
-            diffs.text += $"+{equipment_attack_power}\n";
-        else if (player.equipmentAttackPower < 0)
-            diffs.text += $"{equipment_attack_power}\n";
-
-        if (player.equipmentAttackSpeed >= 0)
-            diffs.text += $"+{equipment_attack_speed}\n";
-        else if(player.equipmentAttackSpeed < 0)
-            diffs.text += $"{equipment_attack_speed}\n";
-
-        if (player.equipmentAttackRange >= 0)
-            diffs.text += $"+{equipment_attack_range}\n";
-        else if(player.equipmentAttackRange < 0)
-            diffs.text += $"{equipment_attack_range}\n";
-
-    }
-
 }

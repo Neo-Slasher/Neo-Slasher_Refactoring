@@ -17,6 +17,7 @@ public class DataManager : MonoBehaviour
 
     public Sprite[] consumableIcons = Array.Empty<Sprite>();
     public Sprite[] equipmentIcons = Array.Empty<Sprite>();
+    public Sprite[] itemGrids = Array.Empty<Sprite>();
 
     void Awake()
     {
@@ -54,6 +55,7 @@ public class DataManager : MonoBehaviour
     {
         SetConsumableIcons();
         SetEquipmentIcons();
+        SetItemGrids();
     }
 
     private T LoadJson<T>(string fileName) where T : new()
@@ -122,5 +124,22 @@ public class DataManager : MonoBehaviour
                 Logger.LogWarning($"아이템 아이콘 누락: {equipment.name}");
             }
         }
+    }
+
+    private void SetItemGrids()
+    {
+        itemGrids = new Sprite[4];
+
+        Sprite gridC = Resources.Load<Sprite>("Grid/" + "itemgrid C");
+        itemGrids[0] = gridC;
+
+        Sprite gridB = Resources.Load<Sprite>("Grid/" + "itemgrid B");
+        itemGrids[1] = gridB;
+
+        Sprite gridA = Resources.Load<Sprite>("Grid/" + "itemgrid A");
+        itemGrids[2] = gridA;
+
+        Sprite gridS = Resources.Load<Sprite>("Grid/" + "itemgrid S");
+        itemGrids[3] = gridS;
     }
 }

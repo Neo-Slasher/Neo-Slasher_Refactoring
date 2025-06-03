@@ -1,54 +1,51 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 using TMPro;
 
 
-// 낮 씬에서의 Footer에 있는 Toggle들을 control하는 기능
+// 2025.06.03 Refactoring Final Version
 public class Category : MonoBehaviour
 {
-    public GameObject[] Scenes;
-    public TMP_Text SName;
-    public GameObject inform;
-    public Image background;
-    public List<Sprite> backgrounds;
+    [SerializeField] private GameObject[] scenes;
+    [SerializeField] private TMP_Text sceneNameText;
+    [SerializeField] private GameObject informationPopup;
+    [SerializeField] private Image background;
+    [SerializeField] private List<Sprite> backgrounds;
 
 
-    public void Start()
+    private void Start() 
     {
         ChangeScene("상점");
     }
 
-    public void ChangeScene(string sceneName)
+    // 낮 씬에서의 Footer에 있는 Toggle들을 눌렀을 때 창을 변경하는 기능
+    public void ChangeScene(string targetSceneName)
     {
-        if (sceneName == "상점")
+        foreach (var scene in scenes)
         {
-            Scenes[0].SetActive(true);
-            Scenes[1].SetActive(false);
-            Scenes[2].SetActive(false);
-            inform.SetActive(true);
-            background.sprite = backgrounds[0];
-            SName.text = sceneName;
+            scene.SetActive(false);
         }
-        if (sceneName == "암살")
+
+        switch (targetSceneName)
         {
-            Scenes[0].SetActive(false);
-            Scenes[1].SetActive(true);
-            Scenes[2].SetActive(false);
-            inform.SetActive(false);
-            background.sprite = backgrounds[1];
-            SName.text = sceneName;
+            case "상점":
+                scenes[0].SetActive(true);
+                informationPopup.SetActive(true);
+                background.sprite = backgrounds[0];
+                break;
+
+            case "암살":
+                scenes[1].SetActive(true);
+                informationPopup.SetActive(false);
+                background.sprite = backgrounds[1];
+                break;
+            case "정비":
+                scenes[2].SetActive(true);
+                informationPopup.SetActive(true);
+                background.sprite = backgrounds[2];
+                break;
         }
-        if (sceneName == "정비")
-        {
-            Scenes[0].SetActive(false);
-            Scenes[1].SetActive(false);
-            Scenes[2].SetActive(true);
-            inform.SetActive(true);
-            background.sprite = backgrounds[2];
-            SName.text = sceneName;
-        }
+        sceneNameText.text = targetSceneName;
     }
 }

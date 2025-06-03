@@ -3,23 +3,24 @@ using UnityEngine.UI;
 using TMPro;
 
 
+// 2025.06.03 Refactoring Final Version
 // 상점에서 비교 버튼을 눌렀을 때 뜨는 팝업을 컨트롤 하는 스크립트
-public class ComparisonPopup : MonoBehaviour
+public class ComparisonPopupController : MonoBehaviour
 {
-    public ShopManager shopManager;
-    public FightingPower FightingPower;
+    [SerializeField] private ShopManager shopManager;
+    [SerializeField] private FightingPower fightingPower;
 
-    public GameObject PurchaseButton;
-    public GameObject comparisonPopup;
+    [SerializeField] private GameObject PurchaseButton;
+    [SerializeField] private GameObject comparisonPopup;
 
-    public Image[] playerComsumableImages;
+    [SerializeField] private Image[] playerComsumableImages;
 
-    public GameObject equipmentPanel;
-    public GameObject consumablePanel;
-    public GameObject consumableSelectedPlayerItemPanel;
-    public GameObject selectedItemInfoPanel;
+    [SerializeField] private GameObject equipmentPanel;
+    [SerializeField] private GameObject consumablePanel;
+    [SerializeField] private GameObject consumableSelectedPlayerItemPanel;
+    [SerializeField] private GameObject selectedItemInfoPanel;
 
-    Item itemToBuy;
+    private Item itemToBuy;
 
     // 플레이어가 버리고 싶어하는 아이템 인덱스
     public int playerConsumableIndex = -1;
@@ -28,20 +29,29 @@ public class ComparisonPopup : MonoBehaviour
     public void OnClickComparisonButton()
     {
         if (shopManager.selectedItem == null)
+        {
+            Logger.Log("비교할 아이템이 없습니다.");
             return;
+        }
 
         comparisonPopup.SetActive(true);
 
         itemToBuy = shopManager.selectedItem;
-        if (itemToBuy.GetItemType() == ItemType.Equipment)
+
+        switch (itemToBuy.GetItemType())
         {
-            equipmentPanel.SetActive(true);
-            PrintPlayerEquipment();
-        }
-        else if (itemToBuy.GetItemType() == ItemType.Consumable)
-        {
-            consumablePanel.SetActive(true);
-            PrintPlayerConsumable();
+            case ItemType.Equipment:
+                equipmentPanel.SetActive(true);
+                PrintPlayerEquipment();
+                break;
+            case ItemType.Consumable:
+
+                consumablePanel.SetActive(true);
+                PrintPlayerConsumable();
+                break;
+            default:
+                Logger.LogWarning($"처리되지 않은 아이템 타입: {itemToBuy.GetItemType()}");
+                break;
         }
 
         PrintSelectedItem();
@@ -52,39 +62,43 @@ public class ComparisonPopup : MonoBehaviour
         playerConsumableIndex = -1;
     }
 
-    void PrintPlayerEquipment() //장비창 출력
+    private void PrintPlayerEquipment() //장비창 출력
     {
         Player player = GameManager.Instance.player;
         int equipmentPart = ((Equipment)itemToBuy).part;
 
-        if (player.equipment[equipmentPart].index != 0)
-        {
-            Equipment playerEquipment = player.equipment[equipmentPart];
+        if (player.equipment[equipmentPart] == null || player.equipment[equipmentPart].index == 0)
+            return;
+        
+        
+        Equipment playerEquipment = player.equipment[equipmentPart];
 
-            Image image = equipmentPanel.transform.Find("background").Find("image").GetComponent<Image>();
-            TMP_Text name = equipmentPanel.transform.Find("name").GetComponent<TMP_Text>();
-            TMP_Text rank = equipmentPanel.transform.Find("rank").GetComponent<TMP_Text>();
-            TMP_Text part = equipmentPanel.transform.Find("part").GetComponent<TMP_Text>();
-            TMP_Text info = equipmentPanel.transform.Find("info").GetComponent<TMP_Text>();
+        Image grid = equipmentPanel.transform.Find("background").Find("grid").GetComponent<Image>();
+        Image image = equipmentPanel.transform.Find("background").Find("image").GetComponent<Image>();
+        TMP_Text name = equipmentPanel.transform.Find("name").GetComponent<TMP_Text>();
+        TMP_Text rank = equipmentPanel.transform.Find("rank").GetComponent<TMP_Text>();
+        TMP_Text part = equipmentPanel.transform.Find("part").GetComponent<TMP_Text>();
+        TMP_Text info = equipmentPanel.transform.Find("info").GetComponent<TMP_Text>();
 
-            image.sprite = Resources.Load<Sprite>("Equip/" + playerEquipment.name);
-            name.text = playerEquipment.name;
-            rank.text = playerEquipment.GetRank() + "등급";
-            part.text = "/ " + playerEquipment.GetCategory();
-            info.text = playerEquipment.script;
-        }
+        grid.sprite = DataManager.Instance.itemGrids[playerEquipment.rank];
+        image.sprite = DataManager.Instance.equipmentIcons[playerEquipment.index];
+        name.text = playerEquipment.name;
+        rank.text = playerEquipment.GetRank() + "등급";
+        part.text = "/ " + playerEquipment.GetCategory();
+        info.text = playerEquipment.script;
+        
     }
 
-    void PrintPlayerConsumable() //아이템 창 출력
+    private void PrintPlayerConsumable() //아이템 창 출력
     {
         Player player = GameManager.Instance.player;
 
         for (int i = 0; i < player.item.Length; i++)
         {
-            if (i < player.itemSlot && player.item[i].itemIdx != 0)
+            if (i < player.itemSlot && player.item[i] != null && player.item[i].itemIdx != 0)
             {
                 Consumable playerConsumable = player.item[i];
-                playerComsumableImages[i].sprite = Resources.Load<Sprite>("Item/" + playerConsumable.name);
+                playerComsumableImages[i].sprite = DataManager.Instance.consumableIcons[playerConsumable.itemIdx];
             }
             else
             {
@@ -93,8 +107,9 @@ public class ComparisonPopup : MonoBehaviour
         }
     }
 
-    void PrintSelectedItem()
+    private void PrintSelectedItem()
     {
+        Image grid = selectedItemInfoPanel.transform.Find("background").Find("grid").GetComponent<Image>();
         Image image = selectedItemInfoPanel.transform.Find("background").Find("image").GetComponent<Image>();
         TMP_Text name = selectedItemInfoPanel.transform.Find("name").GetComponent<TMP_Text>();
         TMP_Text rank = selectedItemInfoPanel.transform.Find("rank").GetComponent<TMP_Text>();
@@ -105,7 +120,8 @@ public class ComparisonPopup : MonoBehaviour
         {
             Equipment equipment = (Equipment)itemToBuy;
 
-            image.sprite = Resources.Load<Sprite>("Equip/" + equipment.name);
+            grid.sprite = DataManager.Instance.itemGrids[equipment.rank];
+            image.sprite = DataManager.Instance.equipmentIcons[equipment.index]; 
             name.text = equipment.name;
             rank.text = equipment.GetRank() + "등급";
             part.text = " / " + equipment.GetCategory();
@@ -115,19 +131,14 @@ public class ComparisonPopup : MonoBehaviour
         {
             Consumable consumable = (Consumable)itemToBuy;
 
+            grid.sprite = DataManager.Instance.itemGrids[consumable.rank];
             image.sprite = Resources.Load<Sprite>("item/" + consumable.name);
             name.text = consumable.name;
             rank.text = consumable.GetRank() + "등급";
             part.text = " / " + consumable.GetCategory();
-            info.text = "<size=20>" + consumable.GetConvertedScript(GameManager.Instance.player) + "</size>";
+            info.text = consumable.GetConvertedScript(GameManager.Instance.player);
         }
     }
-
-
-
-
-
-
 
     public void OnClickPurchaseButton()
     {
@@ -144,8 +155,7 @@ public class ComparisonPopup : MonoBehaviour
         {
             Equipment equipment = (Equipment)itemToBuy;
 
-            FightingPower.RemoveEquipment(equipment.part);
-            FightingPower.EquipEquipment(equipment);
+            fightingPower.EquipEquipment(equipment);
             player.money -= itemToBuy.GetPrice();
         }
         else // Consumable
@@ -162,16 +172,14 @@ public class ComparisonPopup : MonoBehaviour
                 }
             }
 
-
             if (playerItemSlotIndex == -1)
             {
 
                 if (playerConsumableIndex == -1)
                 {
-                    Debug.LogWarning("아이템 슬롯이 가득 찼습니다. 버릴 아이템을 선택하세요.");
+                    Logger.LogWarning("아이템 슬롯이 가득 찼습니다. 버릴 아이템을 선택하세요.");
                     return;
                 }
-
                 else
                 {
                     player.item[playerConsumableIndex] = consumable;
@@ -186,17 +194,9 @@ public class ComparisonPopup : MonoBehaviour
         }
 
         shopManager.ResetSlotAfterPurchase();
-
-        FightingPower.UpdateFightPower();
-
+        fightingPower.UpdateFightPower();
         OnClickCancelButton();
     }
-
-
-
-
-
-
 
     public void OnClickConsumablePanelItemButton(int buttonNumber)
     {
@@ -205,47 +205,46 @@ public class ComparisonPopup : MonoBehaviour
         Player player = GameManager.Instance.player;
         Consumable consumable = player.item[buttonNumber];
 
+        Image grid = consumableSelectedPlayerItemPanel.transform.Find("background").Find("grid").GetComponent<Image>();
         Image image = consumableSelectedPlayerItemPanel.transform.Find("background").Find("image").GetComponent<Image>();
         TMP_Text name = consumableSelectedPlayerItemPanel.transform.Find("name").GetComponent<TMP_Text>();
         TMP_Text rank = consumableSelectedPlayerItemPanel.transform.Find("rank").GetComponent<TMP_Text>();
         TMP_Text part = consumableSelectedPlayerItemPanel.transform.Find("part").GetComponent<TMP_Text>();
         TMP_Text info = consumableSelectedPlayerItemPanel.transform.Find("info").GetComponent<TMP_Text>();
 
-        image.sprite = Resources.Load<Sprite>("item/" + consumable.name);
+        grid.sprite = DataManager.Instance.itemGrids[consumable.rank];
+        image.sprite = DataManager.Instance.consumableIcons[consumable.itemIdx];
         name.text = consumable.name;
-        rank.text = consumable.GetRank() + "등급";
-        part.text = " / " + consumable.GetCategory();
-        info.text = "<size=20>" + consumable.GetConvertedScript(player) + "</size>";
-
-        Debug.Log("chosen" + playerConsumableIndex.ToString());
+        rank.text = $"{consumable.GetRank()}등급";
+        part.text = $" / {consumable.GetCategory()}";
+        info.text = consumable.GetConvertedScript(player);
     }
 
     public void OnClickCancelButton()
     {
         consumablePanel.SetActive(false);
         equipmentPanel.SetActive(false);
-
         comparisonPopup.SetActive(false);
 
         ResetSelectedItemInfoPanel();
     }
 
-
-    public void ResetSelectedItemInfoPanel()
+    private void ResetSelectedItemInfoPanel()
     {
+        Image grid = consumableSelectedPlayerItemPanel.transform.Find("background").Find("grid").GetComponent<Image>();
         Image image = consumableSelectedPlayerItemPanel.transform.Find("background").Find("image").GetComponent<Image>();
         TMP_Text name = consumableSelectedPlayerItemPanel.transform.Find("name").GetComponent<TMP_Text>();
         TMP_Text rank = consumableSelectedPlayerItemPanel.transform.Find("rank").GetComponent<TMP_Text>();
         TMP_Text part = consumableSelectedPlayerItemPanel.transform.Find("part").GetComponent<TMP_Text>();
         TMP_Text info = consumableSelectedPlayerItemPanel.transform.Find("info").GetComponent<TMP_Text>();
 
+        grid.sprite = Resources.Load<Sprite>("slotBack");
         image.sprite = Resources.Load<Sprite>("slotBack");
         name.text = "";
         rank.text = "";
         part.text = "";
         info.text = "";
     }
-
 }
 
 

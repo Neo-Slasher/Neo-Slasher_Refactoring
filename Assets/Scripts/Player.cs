@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class Player
 {
-    public const string file_path = "UserData.json";
+    private const string saveFileName = "UserData.json";
 
     // defalut
     public int day; //정윤석: 날짜를 세이브하기 위해서 넣었습니다. 제이슨도 바꿨어요.
@@ -102,33 +102,28 @@ public class Player
 
         // earn money 관련 데이터 없어서 추가 
         earnMoney = 1.0F;
-
-        for (int i = 0; i < equipment.Length; i++)
-        {
-            equipment[i] = new Equipment();
-        }
     }
 
 
     public static void Save(Player instance)
     {
-        string player_file_path = Path.Combine(Application.persistentDataPath, file_path);
+        string saveFilePath = Path.Combine(Application.persistentDataPath, saveFileName);
         string json = JsonUtility.ToJson(instance);
-        File.WriteAllText(player_file_path, json);
+        File.WriteAllText(saveFilePath, json);
 
 
-        Debug.Log("플레이어 데이터가 저장되었습니다.");
+        Logger.Log("플레이어 데이터가 저장되었습니다.");
     }
 
     public static Player Load()
     {
-        string player_file_path = Path.Combine(Application.persistentDataPath, file_path);
-        if (!File.Exists(player_file_path))
+        string saveFilePath = Path.Combine(Application.persistentDataPath, saveFileName);
+        if (!File.Exists(saveFilePath))
         {
-            Debug.Log("세이브 데이터가 존재하지 않습니다.");
+            Logger.Log("세이브 데이터가 존재하지 않습니다.");
             return null;
         }
-        string savedData = File.ReadAllText(player_file_path);
+        string savedData = File.ReadAllText(saveFilePath);
         return JsonUtility.FromJson<Player>(savedData);
     }
 
