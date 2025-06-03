@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+// 2025.06.03 Refactoring Final Version
 // Preparation Manager를 수정할 때 씬에서의 연결이 끊어지지 않도록 주의할 것
-// 인스펙터와 관련된 코드가 많아 리펙토링에서 어느 정도 합의를 봄
+// Tolelom: 인스펙터와 관련된 코드가 많아 리펙토링에서 어느 정도 합의를 봄
 public class PreparationManager : MonoBehaviour
 {
     [Header("Trait")]
@@ -56,6 +57,30 @@ public class PreparationManager : MonoBehaviour
     private const int MIN_DIFFICULTY = 1;
     private const int MAX_DIFFICULTY = 8;
 
+    private static readonly (int start, int end)[] TraitLevelRanges = new (int, int)[]
+    {
+        (1, 2),    // Level 1
+        (3, 5),    // Level 2
+        (6, 8),    // Level 3
+        (9, 10),   // Level 4
+        (11, 13),  // Level 5
+        (14, 15),  // Level 6
+        (16, 19),  // Level 7
+        (20, 22),  // Level 8
+        (23, 25),  // Level 9
+        (26, 29),  // Level 10
+        (30, 32),  // Level 11
+        (33, 35),  // Level 12
+        (36, 38),  // Level 13
+        (39, 41),  // Level 14
+        (42, 45),  // Level 15
+        (46, 48),  // Level 16
+        (49, 52),  // Level 17
+        (53, 55),  // Level 18
+        (56, 58),  // Level 19
+        (59, 62)   // Level 20
+    };
+
     void Start()
     {
         LoadStat();
@@ -66,7 +91,7 @@ public class PreparationManager : MonoBehaviour
 
         LoadTraitButtonImage();
         LoadSelectedTraitUI(1);
-        UnactiveTraitButton();
+        DeactivateTraitButton();
         SetTraitBoard();
 
         CheckStartButton();
@@ -206,31 +231,41 @@ public class PreparationManager : MonoBehaviour
         return (level >= 1 && level <= 20) ? maxTraitCounts[level] : 0;
     }
 
-
-
-
-
-
-
-
-
     // 본인 레벨 이하의 특성만 선택 가능하도록 버튼 off
     // 선택된 특성은 상호작용 X 및 selected 이미지 활성화
-    private void UnactiveTraitButton()
+    private void DeactivateTraitButton()
     {
         int maxTraitButton = GetMaxTraitCount();
-        for (int i = 1; i <= maxTraitButton; ++i)
+        int buttonCount = traitButtons.Length;
+        int traitCount = GameManager.Instance.player.trait.Length;
+
+        for (int i = 1; i < buttonCount && i < traitCount; ++i)
         {
-            if (GameManager.Instance.player.trait[i])
+            Button btn = traitButtons[i].GetComponent<Button>();
+            Transform selected = traitButtons[i].transform.Find("Selected");
+
+            if (i <= maxTraitButton)
             {
-                traitButtons[i].GetComponent<Button>().interactable = false;
-                Transform selected = traitButtons[i].transform.Find("Selected");
-                selected.gameObject.SetActive(true);
+                if (GameManager.Instance.player.trait[i])
+                {
+                    btn.interactable = false;
+                    if (selected != null)
+                        selected.gameObject.SetActive(true);
+                }
+                else
+                {
+                    btn.interactable = true;
+                    if (selected != null)
+                        selected.gameObject.SetActive(false);
+                }
             }
-        }
-        for (int i = maxTraitButton + 1; i <= 62; ++i)
-        {
-            traitButtons[i].GetComponent<Button>().interactable = false;
+
+            else
+            {
+                btn.interactable = false;
+                if (selected != null)
+                    selected.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -244,13 +279,12 @@ public class PreparationManager : MonoBehaviour
 
     public void OnClickTraitBoardButton(int n)
     {
-        for (int i = 0; i < 4; ++i)
+        for (int i = 0; i < traitBoards.Length; ++i)
         {
             traitBoards[i].SetActive(n == i);
             levelSelects[i].sprite = (n == i) ? levelBackgroundSelects[i] : levelBackgrounds[i];
         }
     }
-
 
     public void OnClickStartButton()
     {
@@ -263,27 +297,39 @@ public class PreparationManager : MonoBehaviour
         SceneManager.LoadScene("MainScene");
     }
 
-
-
     public void OnClickTraitButton()
     {
         GameObject button = EventSystem.current.currentSelectedGameObject;
-        int traitNumber = int.Parse(button.name);
+        if (button == null)
+        {
+            Logger.LogError("No button selected.");
+            return;
+        }
+
+        if (!int.TryParse(button.name, out int traitNumber))
+        {
+            Logger.LogError($"Invalid trait button name: {button.name}");
+            return;
+        }
 
         DisableTraitInSameLevel(traitNumber);
-
-        // activae trait
         traitManager.ActivateTrait(traitNumber);
 
-        button.transform.GetChild(2).gameObject.SetActive(true); // selected object
-        button.GetComponent<Button>().interactable = false;
+        var selectedObj = button.transform.Find("Selected");
+        if (selectedObj != null)
+            selectedObj.gameObject.SetActive(true);
+        else
+            Logger.LogError($"'Selected' object not found in {button.name}");
 
+        var btnComp = button.GetComponent<Button>();
+        if (btnComp != null)
+            btnComp.interactable = false;
+        else
+            Logger.LogError($"Button component not found in {button.name}");
 
         LoadSelectedTraitUI(traitNumber);
-
         LoadStat();
         LoadStatDifferenceByTrait();
-
         CheckStartButton();
     }
 
@@ -292,226 +338,26 @@ public class PreparationManager : MonoBehaviour
         startButton.interactable = (GameManager.Instance.player.traitPoint == 0 && GameManager.Instance.player.difficulty != 8);
     }
 
-
-    void DisableTrait(int traitNumber)
+    private void DisableTrait(int traitNumber)
     {
-        Debug.Log($"disable {traitNumber}");
         traitManager.DeactivateTrait(traitNumber);
         traitButtons[traitNumber].interactable = true;
-        traitButtons[traitNumber].transform.GetChild(2).gameObject.SetActive(false);
+        traitButtons[traitNumber].transform.Find("Selected").gameObject.SetActive(false);
     }
 
-    public void DisableTraitInSameLevel(int traitNumber)
+    private void DisableTraitInSameLevel(int traitNumber)
     {
-        switch (traitNumber)
+        foreach (var (start, end) in TraitLevelRanges)
         {
-            case 1:
-            case 2:
-                if (GameManager.Instance.player.trait[1])
-                    DisableTrait(1);
-                if (GameManager.Instance.player.trait[2])
-                    DisableTrait(2);
+            if (traitNumber >= start && traitNumber <= end)
+            {
+                for (int i = start; i <= end; i++)
+                {
+                    if (GameManager.Instance.player.trait[i])
+                        DisableTrait(i);
+                }
                 break;
-            case 3:
-            case 4:
-            case 5:
-                if (GameManager.Instance.player.trait[3])
-                    DisableTrait(3);
-                if (GameManager.Instance.player.trait[4])
-                    DisableTrait(4);
-                if (GameManager.Instance.player.trait[5])
-                    DisableTrait(5);
-                break;
-            case 6:
-            case 7:
-            case 8:
-                if (GameManager.Instance.player.trait[6])
-                    DisableTrait(6);
-                if (GameManager.Instance.player.trait[7])
-                    DisableTrait(7);
-                if (GameManager.Instance.player.trait[8])
-                    DisableTrait(8);
-                break;
-            case 9:
-            case 10:
-                if (GameManager.Instance.player.trait[9])
-                    DisableTrait(9);
-                if (GameManager.Instance.player.trait[10])
-                    DisableTrait(10);
-                break;
-            case 11:
-            case 12:
-            case 13:
-                if (GameManager.Instance.player.trait[11])
-                    DisableTrait(11);
-                if (GameManager.Instance.player.trait[12])
-                    DisableTrait(12);
-                if (GameManager.Instance.player.trait[13])
-                    DisableTrait(13);
-                break;
-            case 14:
-            case 15:
-                if (GameManager.Instance.player.trait[14])
-                    DisableTrait(14);
-                if (GameManager.Instance.player.trait[15])
-                    DisableTrait(15);
-                break;
-            case 16:
-            case 17:
-            case 18:
-            case 19:
-                if (GameManager.Instance.player.trait[16])
-                    DisableTrait(16);
-                if (GameManager.Instance.player.trait[17])
-                    DisableTrait(17);
-                if (GameManager.Instance.player.trait[18])
-                    DisableTrait(18);
-                if (GameManager.Instance.player.trait[19])
-                    DisableTrait(19);
-                break;
-            case 20:
-            case 21:
-            case 22:
-                if (GameManager.Instance.player.trait[20])
-                    DisableTrait(20);
-                if (GameManager.Instance.player.trait[21])
-                    DisableTrait(21);
-                if (GameManager.Instance.player.trait[22])
-                    DisableTrait(22);
-                break;
-            case 23:
-            case 24:
-            case 25:
-                if (GameManager.Instance.player.trait[23])
-                    DisableTrait(23);
-                if (GameManager.Instance.player.trait[24])
-                    DisableTrait(24);
-                if (GameManager.Instance.player.trait[25])
-                    DisableTrait(25);
-                break;
-            case 26:
-            case 27:
-            case 28:
-            case 29:
-                if (GameManager.Instance.player.trait[26])
-                    DisableTrait(26);
-                if (GameManager.Instance.player.trait[27])
-                    DisableTrait(27);
-                if (GameManager.Instance.player.trait[28])
-                    DisableTrait(28);
-                if (GameManager.Instance.player.trait[29])
-                    DisableTrait(29);
-                break;
-            case 30:
-            case 31:
-            case 32:
-                if (GameManager.Instance.player.trait[30])
-                    DisableTrait(30);
-                if (GameManager.Instance.player.trait[31])
-                    DisableTrait(31);
-                if (GameManager.Instance.player.trait[32])
-                    DisableTrait(32);
-                break;
-            case 33:
-            case 34:
-            case 35:
-                if (GameManager.Instance.player.trait[33])
-                    DisableTrait(33);
-                if (GameManager.Instance.player.trait[34])
-                    DisableTrait(34);
-                if (GameManager.Instance.player.trait[35])
-                    DisableTrait(35);
-                break;
-            case 36:
-            case 37:
-            case 38:
-                if (GameManager.Instance.player.trait[36])
-                    DisableTrait(36);
-                if (GameManager.Instance.player.trait[37])
-                    DisableTrait(37);
-                if (GameManager.Instance.player.trait[38])
-                    DisableTrait(38);
-                break;
-            case 39:
-            case 40:
-            case 41:
-                if (GameManager.Instance.player.trait[39])
-                    DisableTrait(39);
-                if (GameManager.Instance.player.trait[40])
-                    DisableTrait(40);
-                if (GameManager.Instance.player.trait[41])
-                    DisableTrait(41);
-                break;
-            case 42:
-            case 43:
-            case 44:
-            case 45:
-                if (GameManager.Instance.player.trait[42])
-                    DisableTrait(42);
-                if (GameManager.Instance.player.trait[43])
-                    DisableTrait(43);
-                if (GameManager.Instance.player.trait[44])
-                    DisableTrait(44);
-                if (GameManager.Instance.player.trait[45])
-                    DisableTrait(45);
-                break;
-            case 46:
-            case 47:
-            case 48:
-                if (GameManager.Instance.player.trait[46])
-                    DisableTrait(46);
-                if (GameManager.Instance.player.trait[47])
-                    DisableTrait(47);
-                if (GameManager.Instance.player.trait[48])
-                    DisableTrait(48);
-                break;
-            case 49:
-            case 50:
-            case 51:
-            case 52:
-                if (GameManager.Instance.player.trait[49])
-                    DisableTrait(49);
-                if (GameManager.Instance.player.trait[50])
-                    DisableTrait(50);
-                if (GameManager.Instance.player.trait[51])
-                    DisableTrait(51);
-                if (GameManager.Instance.player.trait[52])
-                    DisableTrait(52);
-                break;
-            case 53:
-            case 54:
-            case 55:
-                if (GameManager.Instance.player.trait[53])
-                    DisableTrait(53);
-                if (GameManager.Instance.player.trait[54])
-                    DisableTrait(54);
-                if (GameManager.Instance.player.trait[55])
-                    DisableTrait(55);
-                break;
-            case 56:
-            case 57:
-            case 58:
-                if (GameManager.Instance.player.trait[56])
-                    DisableTrait(56);
-                if (GameManager.Instance.player.trait[57])
-                    DisableTrait(57);
-                if (GameManager.Instance.player.trait[58])
-                    DisableTrait(58);
-                break;
-            case 59:
-            case 60:
-            case 61:
-            case 62:
-                if (GameManager.Instance.player.trait[59])
-                    DisableTrait(59);
-                if (GameManager.Instance.player.trait[60])
-                    DisableTrait(60);
-                if (GameManager.Instance.player.trait[61])
-                    DisableTrait(61);
-                if (GameManager.Instance.player.trait[62])
-                    DisableTrait(62);
-                break;
-
+            }
         }
     }
 }
