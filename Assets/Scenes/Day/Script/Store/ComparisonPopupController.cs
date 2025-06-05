@@ -132,7 +132,7 @@ public class ComparisonPopupController : MonoBehaviour
             Consumable consumable = (Consumable)itemToBuy;
 
             grid.sprite = DataManager.Instance.itemGrids[consumable.rank];
-            image.sprite = Resources.Load<Sprite>("item/" + consumable.name);
+            image.sprite = DataManager.Instance.consumableIcons[consumable.itemIdx];
             name.text = consumable.name;
             rank.text = consumable.GetRank() + "등급";
             part.text = " / " + consumable.GetCategory();

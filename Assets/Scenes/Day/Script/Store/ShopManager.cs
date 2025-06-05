@@ -1,21 +1,23 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 
+// 2025.06.05 Refactoring Final Version
 // 상점의 아이템 슬롯 3개를 세팅하는 역할
 public class ShopManager : MonoBehaviour
 {
-    public Button[] slots;
-    public List<Item> selectedItems = new();
-    public GameObject selected;
+    [SerializeField] private Button[] slots;
+    [SerializeField] private List<Item> selectedItems = new();
+    [SerializeField] private GameObject selected;
 
-    public Button comparisonButton;
-    public GameObject comparisonPopup;
+    [SerializeField] private Button comparisonButton;
+    [SerializeField] private GameObject comparisonPopup;
 
-    public int selectedNumber;
+    [SerializeField] private int selectedNumber;
+
     public Item selectedItem;
 
 
@@ -29,54 +31,37 @@ public class ShopManager : MonoBehaviour
         Player player = GameManager.Instance.player;
 
         // 판매할 수 있는 후보 아이템 뽑기
-        int shop_min_rank = player.shopMinRank;
-        int shop_max_rank = player.shopMaxRank;
+        int shopMinRank = player.shopMinRank;
+        int shopMaxRank = player.shopMaxRank;
 
-        List<Equipment> equipments = new();
-        for (int i = 0; i < DataManager.Instance.equipmentList.equipment.Count; i++)
-        {
-            Equipment equipment = DataManager.Instance.equipmentList.equipment[i];
-            if (shop_min_rank <= equipment.rank && equipment.rank <= shop_max_rank)
-                equipments.Add(equipment);
-        }
+        List<Equipment> equipments = DataManager.Instance.equipmentList.equipment
+            .Where(e => shopMinRank <= e.rank && e.rank <= shopMaxRank)
+            .ToList();
 
-        List<Consumable> consumables = new();
-        for (int i = 0; i < DataManager.Instance.consumableList.item.Count; i++)
-        {
-            Consumable consumable = DataManager.Instance.consumableList.item[i];
-            if (shop_min_rank <= consumable.rank && consumable.rank <= shop_max_rank)
-                consumables.Add(consumable);
-        }
+        List<Consumable> consumables = DataManager.Instance.consumableList.item
+            .Where(c => shopMinRank <= c.rank && c.rank <= shopMaxRank)
+            .ToList();
 
+        List<Equipment> shuffledEquipments = equipments.OrderBy(x => Random.value).ToList();
+        List<Consumable> shuffledConsumables = consumables.OrderBy(x => Random.value).ToList();
 
+        int equipmentIndex = 0;
+        int consumableIndex = 0;
 
         // 후보 중 판매할 아이템 선택
         for (int i = 0; i < player.shopSlot; i++)
         {
-            int equip_or_item = UnityEngine.Random.Range(0, 10);
+            int equipOrItem = Random.Range(0, 10);
 
-            if (equip_or_item < 6) // 장비의 확률 60%
+            if (equipOrItem < 6 && equipmentIndex < shuffledEquipments.Count) // 60%
             {
-                Equipment equip;
-                do
-                {
-                    int equip_num = UnityEngine.Random.Range(0, equipments.Count);
-                    equip = equipments[equip_num];
-                } while (selectedItems.Contains(equip));
-
-                selectedItems.Add(equip);
+                selectedItems.Add(shuffledEquipments[equipmentIndex++]);
             }
-            else if (6 <= equip_or_item && equip_or_item <= 9) // 소비 아이템 확률 40%
+            else if (equipOrItem >= 6 && equipOrItem <= 9 && consumableIndex < shuffledConsumables.Count) // 40%
             {
-                Consumable consumable;
-                do
-                {
-                    int consumable_num = UnityEngine.Random.Range(0, consumables.Count);
-                    consumable = consumables[consumable_num];
-                } while (selectedItems.Contains(consumable));
-
-                selectedItems.Add(consumable);
+                selectedItems.Add(shuffledConsumables[consumableIndex++]);
             }
+            // 후보가 소진된 경우는 건너뜀
         }
 
 
@@ -85,33 +70,39 @@ public class ShopManager : MonoBehaviour
         {
             if (i < player.shopSlot)
             {
-                Image item_image = slots[i].gameObject.GetComponent<Image>();
-                TMP_Text item_price = slots[i].transform.Find("alpha").gameObject.GetComponent<TMP_Text>();
-                TMP_Text item_rank = slots[i].transform.Find("rank").gameObject.GetComponent<TMP_Text>();
+                var slot = slots[i];
+                var item = selectedItems[i];
 
-                if (selectedItems[i].GetItemType() == ItemType.Equipment)
+                Image itemImage = slot.GetComponent<Image>();
+                Image grid = slot.transform.Find("grid").GetComponent<Image>();
+                TMP_Text itemPrice = slot.transform.Find("alpha").GetComponent<TMP_Text>();
+                TMP_Text itemRank = slot.transform.Find("rank").GetComponent<TMP_Text>();
+
+                if (item.GetItemType() == ItemType.Equipment)
                 {
                     Equipment equipment = (Equipment)selectedItems[i];
 
-                    item_image.sprite = Resources.Load<Sprite>("Equip/" + equipment.name);
-                    item_price.text = equipment.price + "α";
-                    item_rank.text = equipment.GetRank();
+                    itemImage.sprite = DataManager.Instance.equipmentIcons[equipment.index];
+                    grid.sprite = DataManager.Instance.itemGrids[equipment.rank];
+                    itemPrice.text = equipment.price + "α";
+                    itemRank.text = equipment.GetRank();
                 }
-                else if (selectedItems[i].GetItemType() == ItemType.Consumable)
+                else if (item.GetItemType() == ItemType.Consumable)
                 {
-                    Consumable item = (Consumable)selectedItems[i];
+                    Consumable consumable = (Consumable)item;
 
-                    item_image.sprite = Resources.Load<Sprite>("Item/" + item.name);
-                    item_price.text = item.price + "α";
-                    item_rank.text = item.GetRank();
+                    itemImage.sprite = DataManager.Instance.consumableIcons[consumable.itemIdx];
+                    grid.sprite = DataManager.Instance.itemGrids[consumable.rank];
+                    itemPrice.text = consumable.price + "α";
+                    itemRank.text = consumable.GetRank();
                 }
             }
             else
             {
-                Transform lockedTransform = slots[i].transform.Find("locked");
-                if (lockedTransform != null)
+                Transform locked = slots[i].transform.Find("locked");
+                if (locked != null)
                 {
-                    lockedTransform.gameObject.SetActive(true);
+                    locked.gameObject.SetActive(true);
                     slots[i].GetComponent<Button>().interactable = false;
                 }
             }
@@ -121,7 +112,9 @@ public class ShopManager : MonoBehaviour
 
     public void OnClickSlotButton(int slot)
     {
+
         Image image = selected.transform.Find("background").Find("image").GetComponent<Image>();
+        Image grid = selected.transform.Find("background").Find("grid").GetComponent<Image>();
         TMP_Text name = selected.transform.Find("name").GetComponent<TMP_Text>();
         TMP_Text rank = selected.transform.Find("rank").GetComponent<TMP_Text>();
         TMP_Text part = selected.transform.Find("part").GetComponent<TMP_Text>();
@@ -133,56 +126,53 @@ public class ShopManager : MonoBehaviour
 
         if (item == null)
         {
-            Debug.LogWarning("슬롯 버튼에 해당된 아이템이 존재하지 않습니다.");
+            Logger.LogWarning("슬롯 버튼에 해당된 아이템이 존재하지 않습니다.");
             return;
         }
 
         ActiveChecked(slot);
 
-        if (item.GetItemType() == ItemType.Consumable)
-        {
-            Consumable consumable = (Consumable)item;
-            selectedItem = consumable;
 
-            image.sprite = Resources.Load<Sprite>("Item/" + consumable.name);
-            name.text = consumable.name;
-            rank.text = consumable.GetRank() + "등급";
-            part.text = "/ " + consumable.GetCategory();
-            info.text = consumable.GetConvertedScript(GameManager.Instance.player);
-        }
-        else if (item.GetItemType() == ItemType.Equipment)
+        switch (item.GetItemType())
         {
-            Equipment equipment = (Equipment)item;
-            selectedItem = equipment;
+            case ItemType.Consumable:
+                Consumable consumable = (Consumable)item;
+                selectedItem = consumable;
 
-            image.sprite = Resources.Load<Sprite>("Equip/" + equipment.name);
-            name.text = equipment.name;
-            rank.text = equipment.GetRank() + "등급";
-            part.text = "/ " + equipment.GetCategory();
-            info.text = equipment.script;
-        }
-        else
-        {
-            Debug.LogWarning("알 수 없는 아이템 타입(무기, 소비)");
+                image.sprite = DataManager.Instance.consumableIcons[consumable.itemIdx];
+                grid.sprite = DataManager.Instance.itemGrids[consumable.rank];
+                name.text = consumable.name;
+                rank.text = consumable.GetRank() + "등급";
+                part.text = "/ " + consumable.GetCategory();
+                info.text = consumable.GetConvertedScript(GameManager.Instance.player);
+                break;
+            case ItemType.Equipment:
+                Equipment equipment = (Equipment)item;
+                selectedItem = equipment;
+
+                image.sprite = DataManager.Instance.equipmentIcons[equipment.index];
+                grid.sprite = DataManager.Instance.itemGrids[equipment.rank];
+                name.text = equipment.name;
+                rank.text = equipment.GetRank() + "등급";
+                part.text = "/ " + equipment.GetCategory();
+                info.text = equipment.script;
+                break;
+            default:
+                Logger.LogWarning("알 수 없는 아이템 타입(무기, 소비)");
+                break;
         }
     }
 
 
-    public void ActiveChecked(int index)
+    private void ActiveChecked(int index)
     {
         for (int i = 0; i < 3; ++i)
         {
-            if (index == i)
-            {
-                slots[i].transform.Find("checked").gameObject.SetActive(true);
-            }
-            else
-            {
-                slots[i].transform.Find("checked").gameObject.SetActive(false);
-            }
+            slots[i].transform.Find("checked").gameObject.SetActive(index == i);
         }
     }
 
+    // ComparisonPopupController에서 호출 중
     public void ResetSlotAfterPurchase()
     {
         slots[selectedNumber].transform.Find("checked").gameObject.SetActive(false);
@@ -191,5 +181,4 @@ public class ShopManager : MonoBehaviour
         slots[selectedNumber].transform.Find("alpha").GetComponent<TMP_Text>().text = "";
         slots[selectedNumber].transform.Find("rank").GetComponent<TMP_Text>().text = "";
     }
-
 }

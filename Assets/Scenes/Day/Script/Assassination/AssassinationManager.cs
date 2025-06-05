@@ -1,37 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// 2025.06.05 Refactoring Final Version
 public class AssassinationManager : MonoBehaviour
 {
-    public FightingPower FightingPower;
+    [SerializeField] private FightingPower FightingPower;
 
-    public GameObject[] StepButtons;
+    [SerializeField] private GameObject[] StepButtons;
 
-
-    public TMP_Text[] StageRecCps;
-    public TMP_Text[] CPGaps;
-    public GameObject[] CheckMarks;
-    public TMP_Text[] assassinationInfos;
+    [SerializeField] private TMP_Text[] StageRecCps;
+    [SerializeField] private TMP_Text[] CPGaps;
+    [SerializeField] private GameObject[] CheckMarks;
+    [SerializeField] private TMP_Text[] assassinationInfos;
 
     private void Start()
     {
         InitStepData();
     }
 
-    public void InitStepData()
+    private void InitStepData()
     {
         for (int i = 0; i < StepButtons.Length; i++)
         {
             int stageRecCP = DataManager.Instance.assassinationStageList.assassinationStage[i].stageRecCP;
 
             int currentCP = FightingPower.currentCP;
-            double cpGap = ((double)(currentCP - stageRecCP) / (double)stageRecCP) * 100;
+
 
             int diffCP = currentCP - stageRecCP;
+            double cpGap = ((double)(currentCP - stageRecCP) / stageRecCP) * 100;
+
 
             if (cpGap > 10)
                 CPGaps[i].text = $"<color=green>{diffCP}</color>";
@@ -42,26 +41,26 @@ public class AssassinationManager : MonoBehaviour
 
             StageRecCps[i].text = stageRecCP.ToString();
 
-
             InitAssassinationStageInfomation(i);
         }
     }
 
-    public void InitAssassinationStageInfomation(int i)
-    {
-        string dropRank = "";
-        int normalReward = DataManager.Instance.assassinationStageList.assassinationStage[i].normalReward;
-        int eliteReward = DataManager.Instance.assassinationStageList.assassinationStage[i].eliteReward;
-        int stageDropRank = DataManager.Instance.assassinationStageList.assassinationStage[i].stageDropRank;
 
-        if (stageDropRank <= 7)
-            dropRank = "C";
-        else if (stageDropRank >= 8 && stageDropRank <= 16)
-            dropRank = "B";
-        else if (stageDropRank >= 17 && stageDropRank <= 30)
-            dropRank = "A";
-        else if (stageDropRank >= 31)
-            dropRank = "S";
+    private void InitAssassinationStageInfomation(int i)
+    {
+        var stageData = DataManager.Instance.assassinationStageList.assassinationStage[i];
+
+        int normalReward = stageData.normalReward;
+        int eliteReward = stageData.eliteReward;
+        int stageDropRank = stageData.stageDropRank;
+
+        string dropRank = stageData.stageDropRank switch
+        {
+            <= 7 => "C",
+            >= 8 and <= 16 => "B",
+            >= 17 and <= 30 => "A",
+            >= 31 => "S",
+        };
 
         assassinationInfos[i].text = $"-일반 적 현상금 : {normalReward}α\n" + $"-정예 적 현상금 : {eliteReward}α\n-" + dropRank + "등급 아이템 드롭";
     }
@@ -76,13 +75,9 @@ public class AssassinationManager : MonoBehaviour
     public void OnClickStepButton(int step)
     {
         GameManager.Instance.player.assassinationCount = step;
-
         for (int i = 0; i < StepButtons.Length; i++)
         {
-            if (i == step)
-                CheckMarks[i].SetActive(true);
-            else
-                CheckMarks[i].SetActive(false);
+            CheckMarks[i].SetActive(i == step);
         }
     }
 }
