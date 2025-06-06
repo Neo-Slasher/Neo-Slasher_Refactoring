@@ -1,39 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
+
 
 public class Character : MonoBehaviour
 {
-    [Header("Managers")]
-    [SerializeField] public NightManager nightManager;
-    [SerializeField] public ItemManager itemManager;
-
     // 플레이어 데이터
-    [SerializeField]
-    Player player;
+    public Player player;
 
-    [SerializeField]
-    GameObject hpBar;
+    [Header("HpBar")]
+    [SerializeField] GameObject hpBar;
+    private HealthBar hpBarScript;
 
+    [Header("HitBox")]
+    [SerializeField] GameObject hitBox;
+    private HitBox hitBoxScript;
+    private Rigidbody2D hitBoxRigid;
 
-    [SerializeField]
-    Rigidbody2D characterRigid;
-    [SerializeField]
-    SpriteRenderer characterSpriteRanderer;
+    private Rigidbody2D characterRigid;
+    private SpriteRenderer characterSpriteRenderer;
 
-    [SerializeField]
-    Rigidbody2D hitBoxRigid;
-
-
-
-    [SerializeField]
-    GameObject hitBox;
-    [SerializeField]
-    HitBox hitBoxScript;
 
 
     const float HIT_BOX_DISTANCE = 3; //히트박스와 캐릭터와의 거리
@@ -41,10 +28,9 @@ public class Character : MonoBehaviour
     public Vector3 nowDir;
     public Vector3 fixPos = Vector3.zero;
 
-    bool isAttack;
+    //bool isAttack;
     public bool canChange = false;
     public bool isAbsorb = false;
-    public double nowMoveSpeed;
 
     //아이템 관련
     public bool isDoubleAttack = false;
@@ -62,80 +48,139 @@ public class Character : MonoBehaviour
     public Animator[] hologramAnimatorArr;
     public SpriteRenderer[] hologramRendererArr;
 
+    private float pixelMoveSpeed;
+
+    // 코루틴
+    private Coroutine hpRegenCoroutine;
+    private Coroutine attackCoroutine;
+    private Coroutine hitBoxCoroutine;
+
+    private Vector3 currentAttackDirection; // 공격 시점의 방향 고정
+
     private void Awake()
     {
         player = GameManager.Instance.player;
 
-        // Tolelom: 밤 씬 시작시에는 체력을 최대 체력으로 변경할 지 고민 중
-        if (player.curHp == 0)
-            player.curHp = player.maxHp;
-
         characterRigid = GetComponent<Rigidbody2D>();
-        characterSpriteRanderer = GetComponent<SpriteRenderer>();
-        characterSpriteRanderer.flipX = false;
-
+        characterSpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
 
-        //캐릭터의 스테이터스를 장비 등 변화에 따라 변화시킨다.
-        hitBoxScript.getAttackPower = player.attackPower;    //무기 공격력 임시로 줌
-        nowMoveSpeed = player.moveSpeed;
+        if (hpBar != null)
+            hpBarScript = hpBar.GetComponent<HealthBar>();
+
+        if (hitBox != null)
+        {
+            hitBoxScript = hitBox.GetComponent<HitBox>();
+            hitBoxRigid = hitBox.GetComponent<Rigidbody2D>();
+        }
     }
 
     private void Start()
     {
-        SetHitBoxScale();
+        InitializeCharacter();
+        InitializeHitBox();
         StartAttack();
+    }
+
+    public void SetMoveSpeed(double moveSpeed)
+    {
+        player.moveSpeed = moveSpeed;
+        SetPixelMoveSpeed();
+    }
+
+
+    private void InitializeCharacter()
+    {
+        HealToMaxHp();
+        LookRight();
+        SetPixelMoveSpeed();
 
         if (player.hpRegen > 0)
-            HpRegen();
+            StartHpRegen();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void HealToMaxHp()
     {
-        //캐릭터 데미지 받을 때
-        CharacterDamaged(collision);
+        player.curHp = player.maxHp;
+    }
+    private void LookRight()
+    {
+        characterSpriteRenderer.flipX = false;
     }
 
+    private void SetPixelMoveSpeed()
+    {
+        pixelMoveSpeed = ConvertMoveSpeedToPixelSpeed(player.moveSpeed);
+    }
 
+    private void InitializeHitBox()
+    {
+        SetHitBoxScale();
+    }
 
-
-
-
-
-
-
-
-
-
-
-    void SetHitBoxScale()
+    private void SetHitBoxScale()
     {
         float goalY = (float)GameManager.Instance.player.attackRange * 0.15f;
         Vector3 goalScale = new Vector3(1, goalY, 1);
 
         hitBox.transform.localScale = goalScale;
     }
+    private float ConvertMoveSpeedToPixelSpeed(double getMoveSpeed)
+    {
+        return ((float)getMoveSpeed * 25) / 100;
+    }
 
 
 
-    // 아래는 이동 관련 로직(이 주석은 리팩토링이 끝나면 지울 것)
+    private void StartHpRegen()
+    {
+        if (player.hpRegen <= 0f) return;
+        if (hpRegenCoroutine == null)
+            hpRegenCoroutine = StartCoroutine(HpRegenCoroutine());
+    }
+
+    private void StopHpRegen()
+    {
+        if (hpRegenCoroutine != null)
+        {
+            StopCoroutine(hpRegenCoroutine);
+            hpRegenCoroutine = null;
+        }
+    }
+
+    private IEnumerator HpRegenCoroutine()
+    {
+        const float HP_REGEN_TICK = 1;
+        while (!NightManager.Instance.isStageEnd)
+        {
+            if (player.curHp < player.maxHp)
+            {
+                player.curHp = Mathf.Min((float)(player.curHp + player.hpRegen), (float)player.maxHp);
+                hpBarScript.UpdateBar();
+            }
+            yield return new WaitForSeconds(HP_REGEN_TICK);
+        }
+
+        hpRegenCoroutine = null;
+    }
+
+
+
+
+
+
+
     public void StartMove(Vector3 joystickDir)
     {
         nowDir = joystickDir.normalized;
-        characterRigid.linearVelocity = joystickDir.normalized * ConvertMoveSpeedToPixelSpeed(player.moveSpeed);
+        characterRigid.linearVelocity = nowDir * pixelMoveSpeed;
+
         animator.SetBool("move", true);
-        characterSpriteRanderer.flipX = (nowDir.x < 0) ? false : true;
+        characterSpriteRenderer.flipX = nowDir.x > 0;
 
-        //홀로그램도 같이 움직이도록
-        if (isHologramAnimate)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                hologramAnimatorArr[i].SetBool("move", true);
-                hologramRendererArr[i].flipX = (nowDir.x < 0) ? false : true;
-            }
-        }
+        UpdateHologramMoveAndFlip(true, nowDir.x > 0);
 
+        // 자식 오브젝트까지 반전해야하면 사용
         //transform.localScale = (nowDir.x < 0) ? new Vector3(1, 1, 1) : new Vector3(-1, 1, 1);     아이템도 같이 이동해서 주석처리했어
     }
 
@@ -145,111 +190,136 @@ public class Character : MonoBehaviour
         characterRigid.linearVelocity = Vector3.zero;
         animator.SetBool("move", false);
 
-        //홀로그램도 같이 움직이도록
-        if (isHologramAnimate)
+        UpdateHologramMoveAndFlip(false, nowDir.x > 0);
+    }
+
+    private void UpdateHologramMoveAndFlip(bool isMoving, bool flipX)
+    {
+        if (!isHologramAnimate) return;
+
+        foreach (Animator hologramAnimator in hologramAnimatorArr)
         {
-            for (int i = 0; i < 2; i++)
-            {
-                hologramAnimatorArr[i].SetBool("move", false);
-            }
+            if (hologramAnimator != null)
+                hologramAnimator.SetBool("move", isMoving);
+        }
+
+        foreach (SpriteRenderer hologramRenderer in hologramRendererArr)
+        {
+            if (hologramRenderer != null)
+                hologramRenderer.flipX = flipX;
         }
     }
 
-    float ConvertMoveSpeedToPixelSpeed(double getMoveSpeed)
-    {
-        return ((float)getMoveSpeed * 25) / 100;
-    }
 
-    //Character 스크립트에서는 공격 애니메이션과 히트 박스 온오프만 사용
-    //실질적 데이터 교환은 enemy 스크립트에서 이루어짐.
+
+
+
+
+
+
+
+
+
+
     public void StartAttack()
     {
-        if (!isAttack)
+        if (attackCoroutine == null)
         {
-            isAttack = true;
-            StartCoroutine(AttackCoroutine());
+            attackCoroutine = StartCoroutine(AttackCoroutine());
         }
     }
 
     public void StopAttack()
     {
-        StopCoroutine(AttackCoroutine());
-    }
-
-    IEnumerator AttackCoroutine()
-    {
-        float attackSpeed = 10 / (float)GameManager.Instance.player.attackSpeed;
-
-        while (!nightManager.isStageEnd)
+        if (attackCoroutine != null)
         {
-            if (!isDoubleAttack)
-            {
-                //공격 애니메이션 진행
-                animator.SetTrigger("attack");
-
-                //홀로그램도 같이 움직이도록
-                if (isHologramAnimate)
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        hologramAnimatorArr[i].SetTrigger("attack");
-                    }
-                }
-
-                hitBox.SetActive(true);
-                SetHitbox();
-                yield return new WaitForSeconds(0.2f);
-                hitBox.SetActive(false);
-
-                isMoveBackOn = false;
-            }
-            else
-            {
-                itemManager.SetMultiSlasherSprite(true);
-                hitBox.SetActive(true);
-                SetHitbox();
-                yield return new WaitForSeconds(0.1f);
-                hitBox.SetActive(false);
-
-                yield return new WaitForSeconds(0.1f);
-
-                hitBox.SetActive(true);
-                SetHitbox();
-                yield return new WaitForSeconds(0.2f);
-                hitBox.SetActive(false);
-                itemManager.SetMultiSlasherSprite(false);
-
-                isDoubleAttack = false;
-                isMoveBackOn = false;
-            }
-
-            //다음 공격까지 대기
-            yield return new WaitForSeconds(attackSpeed);
-            isAbsorb = false;
-            isAttack = false;
+            StopCoroutine(attackCoroutine);
+            attackCoroutine = null;
         }
     }
 
-    //이동속도 컨트롤
-    public void SetMoveSpeed(double moveSpeed)
+    private IEnumerator AttackCoroutine()
     {
-        player.moveSpeed = moveSpeed;
+        try
+        {
+            while (!NightManager.Instance.isStageEnd)
+            {
+                float attackSpeed = 10 / (float)GameManager.Instance.player.attackSpeed;
+
+                if (!isDoubleAttack) // single attack
+                {
+                    currentAttackDirection = nowDir.normalized;
+
+                    animator.SetTrigger("attack");
+
+                    if (isHologramAnimate && hologramAnimatorArr != null)
+                    {
+                        foreach (var hologramAnimator in hologramAnimatorArr)
+                            hologramAnimator.SetTrigger("attack");
+                    }
+
+                    hitBox.SetActive(true);
+                    SetHitbox();
+                    yield return new WaitForSeconds(0.2f);
+                    hitBox.SetActive(false);
+
+                    isMoveBackOn = false;
+                }
+                else // double attack
+                {
+                    ItemManager.Instance.SetMultiSlasherSprite(true);
+                    hitBox.SetActive(true);
+                    SetHitbox();
+                    yield return new WaitForSeconds(0.1f);
+                    hitBox.SetActive(false);
+
+                    yield return new WaitForSeconds(0.1f);
+
+                    hitBox.SetActive(true);
+                    SetHitbox();
+                    yield return new WaitForSeconds(0.2f);
+                    hitBox.SetActive(false);
+                    ItemManager.Instance.SetMultiSlasherSprite(false);
+
+                    isDoubleAttack = false;
+                    isMoveBackOn = false;
+                }
+
+                //다음 공격까지 대기
+                yield return new WaitForSeconds(attackSpeed);
+                isAbsorb = false;
+            }
+        }
+        finally
+        {
+            attackCoroutine = null;
+        }
     }
+
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //캐릭터 데미지 받을 때
+        CharacterDamaged(collision);
+    }
+
 
     //이동 방향에 따라 히트박스 위치 조절하는 함수
     public void SetHitbox()
     {
-        fixPos = (nowDir.normalized != Vector3.zero) ? nowDir.normalized : ((fixPos == Vector3.zero) ? Vector3.left : fixPos);
+        Vector3 newDirection = nowDir.normalized;
+        if (newDirection == Vector3.zero)
+            newDirection = ((fixPos == Vector3.zero) ? Vector3.left : fixPos);
+        fixPos = newDirection;
 
+        if (hitBox == null) return;
         hitBox.transform.localPosition = this.transform.position + fixPos * HIT_BOX_DISTANCE;
-        float dot = Vector3.Dot(fixPos, new Vector3(1, 0, 0));
-        float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
 
-        if (fixPos.y >= 0)
-            hitBox.transform.rotation = Quaternion.Euler(0, 0, angle);
-        else
-            hitBox.transform.rotation = Quaternion.Euler(0, 0, 360 - angle);
+        float angle = Mathf.Atan2(fixPos.y, fixPos.x) * Mathf.Rad2Deg;
+        hitBox.transform.rotation = Quaternion.Euler(0, 0, angle);
 
+        if (!isActiveAndEnabled) return;
         StartCoroutine(SetHitBoxCoroutine());
     }
 
@@ -257,15 +327,40 @@ public class Character : MonoBehaviour
     {
         while (hitBox.gameObject.activeSelf == true)
         {
-            hitBoxRigid.linearVelocity = nowDir.normalized * ConvertMoveSpeedToPixelSpeed(player.moveSpeed);
+            hitBoxRigid.linearVelocity = nowDir.normalized * pixelMoveSpeed;
             yield return null;
         }
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // 나중에 리팩토링 할 예정
     // 1. 함수명
     // 2. 로직
+    // 플레이어가 피흡이 존재할 때, 피흡 계산하는 로직
     public void AbsorbAttack()   //canChange가 참이면 최대 체력일때 쉴드로 전환 가능
     {
         if (player.healByHit > 0 && !isAbsorb)
@@ -275,7 +370,7 @@ public class Character : MonoBehaviour
             if (player.curHp + player.healByHit < player.maxHp)
             {
                 player.curHp += player.healByHit;
-                hpBar.GetComponent<HealthBar>().UpdateBar();
+                hpBarScript.UpdateBar();
                 //SetShieldImage();
             }
             else
@@ -302,38 +397,12 @@ public class Character : MonoBehaviour
                 }
 
                 player.curHp = player.maxHp;
-                hpBar.GetComponent<HealthBar>().UpdateBar();
+                hpBarScript.UpdateBar();
             }
         }
     }
 
-    void HpRegen()
-    {
-        StartCoroutine(HpRegenCoroutine());
-    }
 
-    IEnumerator HpRegenCoroutine()
-    {
-        while (!nightManager.isStageEnd)
-        {
-            if (player.curHp < player.maxHp)
-            {
-                if (player.curHp + player.hpRegen >= player.maxHp)
-                {
-                    player.curHp = player.maxHp;
-                }
-                else
-                {
-                    player.curHp += player.hpRegen;
-                }
-
-                hpBar.GetComponent<HealthBar>().UpdateBar();
-                yield return new WaitForSeconds(1);
-            }
-            else
-                yield return new WaitForSeconds(1);
-        }
-    }
 
 
 
@@ -351,28 +420,26 @@ public class Character : MonoBehaviour
         GameObject enemy = enemyCollision.gameObject;
         double nowAttackPower = 0;
 
-        if (enemy.tag == "Normal")
+        switch (enemy.tag)
         {
-            nowAttackPower = enemy.GetComponent<NormalEnemy>().GetEnemyAttackPower();
-            enemy.GetComponent<NormalEnemy>().SetIsAttacked();
-        }
-        else if (enemy.tag == "Elite")
-        {
-            nowAttackPower = enemy.GetComponent<EliteEnemy>().GetEnemyAttackPower();
-            enemy.GetComponent<EliteEnemy>().SetIsAttacked();
-        }
-        else if (enemy.tag == "Projectile")
-        {
-            if (enemy.GetComponent<Projectile>().isEnemy)
-            {
-                nowAttackPower = enemy.transform.parent.GetComponent<EliteEnemy>().GetEnemyAttackPower();
-                enemy.transform.parent.GetComponent<EliteEnemy>().SetIsAttacked();
-            }
-        }
-        else
-        {
-            Debug.Log(enemy.name + "이 정상적이지 않아서 공격력을 받아올 수 없음");
-            return;
+            case "Normal":
+                nowAttackPower = enemy.GetComponent<NormalEnemy>().GetEnemyAttackPower();
+                enemy.GetComponent<NormalEnemy>().SetIsAttacked();
+                break;
+            case "Elite":
+                nowAttackPower = enemy.GetComponent<EliteEnemy>().GetEnemyAttackPower();
+                enemy.GetComponent<EliteEnemy>().SetIsAttacked();
+                break;
+            case "Projectile":
+                if (enemy.GetComponent<Projectile>().isEnemy)
+                {
+                    nowAttackPower = enemy.transform.parent.GetComponent<EliteEnemy>().GetEnemyAttackPower();
+                    enemy.transform.parent.GetComponent<EliteEnemy>().SetIsAttacked();
+                }
+                break;
+            default:
+                Logger.Log(enemy.name + "이 정상적이지 않아서 공격력을 받아올 수 없음");
+                return;
         }
 
 
@@ -400,17 +467,17 @@ public class Character : MonoBehaviour
             if (player.shieldPoint >= getAttackData)
             {
                 player.shieldPoint -= getAttackData;
-                hpBar.GetComponent<HealthBar>().UpdateBar();
+                hpBarScript.UpdateBar();
             }
             else
             {
                 double nowAttactDamage = getAttackData - (float)player.shieldPoint;
                 player.shieldPoint = 0;
-                hpBar.GetComponent<HealthBar>().UpdateBar();
+                hpBarScript.UpdateBar();
 
                 player.curHp -= nowAttactDamage;
                 //감소한 만큼 플레이어 체력바 줄어들게
-                hpBar.GetComponent<HealthBar>().UpdateBar();
+                hpBarScript.UpdateBar();
             }
         }
         else
@@ -420,7 +487,7 @@ public class Character : MonoBehaviour
             {
                 Debug.Log("damaged");
                 player.curHp -= getAttackData;
-                hpBar.GetComponent<HealthBar>().UpdateBar();
+                hpBarScript.UpdateBar();
             }
             else
             {
@@ -439,11 +506,11 @@ public class Character : MonoBehaviour
                 }
 
                 player.curHp = 0;
-                hpBar.GetComponent<HealthBar>().UpdateBar();
+                hpBarScript.UpdateBar();
 
                 this.GetComponent<BoxCollider2D>().enabled = false;
 
-                nightManager.SetStageEnd();
+                NightManager.Instance.SetStageEnd();
             }
         }
     }
@@ -469,13 +536,13 @@ public class Character : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            Color nowColor = characterSpriteRanderer.color;
+            Color nowColor = characterSpriteRenderer.color;
             nowColor.a = 0.7f;
-            characterSpriteRanderer.color = nowColor;
+            characterSpriteRenderer.color = nowColor;
             yield return new WaitForSeconds(0.2f);
 
             nowColor.a = 1f;
-            characterSpriteRanderer.color = nowColor;
+            characterSpriteRenderer.color = nowColor;
             yield return new WaitForSeconds(0.3f);
         }
     }
@@ -484,14 +551,14 @@ public class Character : MonoBehaviour
     public void SetStartShieldPointData(float getShieldPoint)
     {
         player.shieldPoint = (float)player.maxHp * getShieldPoint;
-        hpBar.GetComponent<HealthBar>().UpdateBar();
+        hpBarScript.UpdateBar();
     }
 
     //해당 숫자만큼 쉴드 생성
     public void SetShieldPointData(float getShieldPoint)
     {
         player.shieldPoint = getShieldPoint;
-        hpBar.GetComponent<HealthBar>().UpdateBar();
+        hpBarScript.UpdateBar();
     }
 
 
@@ -555,7 +622,6 @@ public class Character : MonoBehaviour
     public void SetCharacterAttackPower(double getAttackPower)
     {
         player.attackPower = getAttackPower;
-        hitBoxScript.getAttackPower = player.attackPower;
     }
 
     public void SetAbsorbAttackData(float getHealByHit)
@@ -574,27 +640,14 @@ public class Character : MonoBehaviour
         return player.itemSlot;
     }
 
-    public void UpdateKillCount()
-    {
-        nightManager.UpdateKillCount();
-    }
-    public void UpdateKillNormalCount()
-    {
-        nightManager.killNormal++;
-    }
-    public void UpdateKillEliteCount()
-    {
-        nightManager.killElite++;
-    }
-
-    public double ReturnCharacterMoveSpeed()
+    public double GetMoveSpeed()
     {
         return player.moveSpeed;
     }
 
     public Vector3 ReturnSpeed()
     {
-        return nowDir.normalized * ConvertMoveSpeedToPixelSpeed(player.moveSpeed);
+        return nowDir.normalized * pixelMoveSpeed;
     }
 
     //아이템 6번 퍼스트 에이드에서 체력 회복할 때 쓰려고 만듬
@@ -630,11 +683,11 @@ public class Character : MonoBehaviour
                 if (player.curHp >= player.maxHp)
                 {
                     player.curHp = player.maxHp;
-                    hpBar.GetComponent<HealthBar>().UpdateBar();
+                    hpBarScript.UpdateBar();
                     break;
                 }
 
-                hpBar.GetComponent<HealthBar>().UpdateBar();
+                hpBarScript.UpdateBar();
             }
             yield return null;
         }

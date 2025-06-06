@@ -1,9 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HitBox : MonoBehaviour
 {
-    public double getAttackPower;
+    public Character character;
+
+    private void Start()
+    {
+        character = GameObject.FindWithTag("Player").transform.Find("CharacterImage").GetComponent<Character>();
+    }
+    
     public bool isAttacked;
 }

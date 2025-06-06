@@ -85,7 +85,7 @@ public class DisasterDrone : MonoBehaviour
     void AttackEnemys(Collider2D getCol)
     {
         getEnemyScript = getCol.GetComponent<Enemy>();
-        damage = getEnemyScript.ReturnEnemyHitPointMax();
+        damage = getEnemyScript.stats.maxHp;
 
         damage *= enemyDamageRate;
 

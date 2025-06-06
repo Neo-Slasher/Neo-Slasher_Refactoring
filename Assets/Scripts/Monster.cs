@@ -40,6 +40,7 @@ public class Monster
     public int imageIndex;
     public int soundIndex;
 
+    public MonsterType type;
     public Monster(MonsterType monsterType)
     {
         Monster data = null;
@@ -66,5 +67,6 @@ public class Monster
             imageIndex = data.imageIndex;
             soundIndex = data.soundIndex;
         }
+        type = monsterType;
     }
 }

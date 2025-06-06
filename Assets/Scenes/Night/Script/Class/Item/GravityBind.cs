@@ -87,20 +87,20 @@ public class GravityBind : MonoBehaviour
     void SlowEnemy(Collider2D getCol)
     {
         getEnemyScript = getCol.GetComponent<Enemy>();
-        getEnemySpeed = getEnemyScript.ReturnEnemyMoveSpeed();
+        getEnemySpeed = getEnemyScript.stats.moveSpeed;
 
         getEnemyScript.isSlow = true;
-        getEnemyScript.SetEnemyMoveSpeed(getEnemySpeed * (1 - slowRate));
+        getEnemyScript.stats.moveSpeed = (getEnemySpeed * (1 - slowRate));
     }
 
     void ExitSlowEnemy(Collider2D getCol)
     {
         getEnemyScript = getCol.GetComponent<Enemy>();
 
-        getEnemySpeed = getEnemyScript.ReturnEnemyMoveSpeed();
+        getEnemySpeed = getEnemyScript.stats.moveSpeed;
 
         getEnemyScript.isSlow = false;
-        getEnemyScript.SetEnemyMoveSpeed(getEnemySpeed / (1 - slowRate));
+        getEnemyScript.stats.moveSpeed = (getEnemySpeed / (1 - slowRate));
     }
 
     IEnumerator SpinGravityBindCoroutine()

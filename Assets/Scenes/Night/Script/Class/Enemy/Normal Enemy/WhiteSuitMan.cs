@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class WhiteSuitMan : NormalEnemy
 {
-
-    private void Awake()
+    protected override void Start()
     {
+        base.Start();
+
         stats = new Monster(MonsterType.WhiteSuitMan);
-        SetEnemyStatus(GameManager.Instance.player.level);
+        SetEnemyStatus();
     }
 }

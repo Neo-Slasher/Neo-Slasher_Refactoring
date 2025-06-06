@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TimerManager : MonoBehaviour
-{
-    [SerializeField] NightManager nightManager;
+{    
+    public static TimerManager Instance { get; private set; }
+
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] int startTime = 60;
 
@@ -23,12 +24,23 @@ public class TimerManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
 
 
     private void Start()
     {
-        Debug.Assert(nightManager != null, "NightManager 참조 필요");
+        Debug.Assert(NightManager.Instance != null, "NightManager 참조 필요");
         Debug.Assert(timerText != null, "Timer Text 참조 필요");
         StartTimer();
     }
@@ -42,13 +54,13 @@ public class TimerManager : MonoBehaviour
 
     IEnumerator TimerCoroutine()
     {
-        while (timerCount > 0)
+        while (timerCount >= 0)
         {
-            if (nightManager.isStageEnd) break;
+            if (NightManager.Instance.isStageEnd) break;
 
             if (timerCount == 0)
             {
-                nightManager.SetStageEnd();
+                NightManager.Instance.SetStageEnd();
                 break;
             }
 

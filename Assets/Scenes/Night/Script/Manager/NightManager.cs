@@ -1,16 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public class NightManager : MonoBehaviour
 {
-    [Header("Managers")]
-    [SerializeField] ItemManager itemManager;
-    [SerializeField] TimerManager timerManager;
-    [SerializeField] NightSFXManager nightSFXManager;
+    public static NightManager Instance { get; private set; }
 
 
     [Header("UI")]
@@ -46,7 +41,17 @@ public class NightManager : MonoBehaviour
     public int killCount = 0;
     public int killNormal = 0;
     public int killElite = 0;
-
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -95,10 +100,10 @@ public class NightManager : MonoBehaviour
         float spawnTime = (float)(1 / spawnRate);
         yield return new WaitForSeconds(spawnTime);
 
-        while (!isStageEnd && timerManager.timerCount > 1)
+        while (!isStageEnd && TimerManager.Instance.timerCount > 1)
         {
             GameObject enemy = Instantiate(prefabs[index], SetEnemyPosition(), Quaternion.identity);
-            enemy.GetComponent<Enemy>().SetEnforceData(GameManager.Instance.player.level, false);
+            enemy.GetComponent<Enemy>().SetEnforceData();
             enemy.transform.SetParent(enemies);
             yield return new WaitForSeconds(spawnTime);
         }
@@ -205,7 +210,7 @@ public class NightManager : MonoBehaviour
         TMP_Text aliveOrDie = UIs.Find("AliveOrDieText").GetComponent<TMP_Text>();
         TMP_Text day = UIs.Find("DayText").GetComponent<TMP_Text>();
 
-        aliveOrDie.text = (timerManager.timerCount == 0) ? "생존" : "사망";
+        aliveOrDie.text = (TimerManager.Instance.timerCount == 0) ? "생존" : "사망";
         day.text = player.day + "일차 D-" + (7 - player.day);
 
         TMP_Text normalCount = enemytTexts.Find("NormalKill").Find("NormalKillCount").GetComponent<TMP_Text>();
@@ -397,7 +402,7 @@ public class NightManager : MonoBehaviour
         TMP_Text itemPart = haveItem.Find("Ipart").GetComponent<TMP_Text>();
         TMP_Text itemInfo = haveItem.Find("Iinfo").GetComponent<TMP_Text>();
 
-        itemImage.sprite = itemManager.itemIconArr[player.item[itemIdx].imgIdx];
+        itemImage.sprite = ItemManager.Instance.itemIconArr[player.item[itemIdx].imgIdx];
         itemImage.gameObject.SetActive(true);
 
         itemName.text = player.item[itemIdx].name;
@@ -453,7 +458,7 @@ public class NightManager : MonoBehaviour
     public void UpdateKillCount()
     {
         killCount++;
-        itemManager.ChargingReaperGauge();  //차징 리퍼 쓰면 동작
+        ItemManager.Instance.ChargingReaperGauge();  //차징 리퍼 쓰면 동작
     }
 
 

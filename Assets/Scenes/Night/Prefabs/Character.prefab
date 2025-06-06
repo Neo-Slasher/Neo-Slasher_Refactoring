@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3514429689775917778}
   m_Layer: 0
   m_Name: HitBox
-  m_TagString: Untagged
+  m_TagString: CharacterAttackHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3514429689775917769}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 2.72, y: 0.02, z: 0}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3514429690357883042}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3514429689775917783
 SpriteRenderer:
@@ -52,6 +52,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -95,11 +98,32 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3514429689775917769}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -110,7 +134,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &3514429689775917781
@@ -129,7 +152,7 @@ MonoBehaviour:
   isAttacked: 0
 --- !u!50 &3514429689775917778
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -140,10 +163,16 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -178,13 +207,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3514429690322398352}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3514429690357883042}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3514429690322398365
 SpriteRenderer:
@@ -203,6 +232,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -246,11 +278,32 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3514429690322398352}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: -0.1, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -261,12 +314,11 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 1.2, y: 3.7}
   m_EdgeRadius: 0
 --- !u!50 &3514429690322398367
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -277,10 +329,16 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -299,32 +357,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nightManager: {fileID: 0}
   itemManager: {fileID: 0}
-  characterObject: {fileID: 3514429690322398352}
-  characterRigid: {fileID: 0}
-  hitBoxRigid: {fileID: 3514429689775917778}
-  characterSpriteRanderer: {fileID: 0}
-  hpBarParent: {fileID: 0}
-  hpBarImage: {fileID: 0}
-  shieldBarImage: {fileID: 0}
-  hitBox: {fileID: 3514429689775917769}
-  hitBoxScript: {fileID: 3514429689775917781}
-  characterData:
-    playingGame: 0
-    day: 0
+  player:
+    day: 1
     difficulty: 0
     assassinationCount: 0
-    level: 0
-    reqExp: 0
+    level: 1
+    reqExp: 2
     curExp: 0
     money: 0
     startMoney: 0
-    earnMoney: 0
-    maxHp: 0
-    curHp: 0
-    attackPower: 0
-    attackSpeed: 0
-    attackRange: 0
-    moveSpeed: 0
+    earnMoney: 1
+    maxHp: 25
+    curHp: 25
+    attackPower: 7
+    attackSpeed: 10
+    attackRange: 10
+    moveSpeed: 10
     shieldDuration: 0
     shieldPoint: 0
     immuneDuration: 0
@@ -338,20 +386,101 @@ MonoBehaviour:
     dealOnCurHp: 0
     healByHit: 0
     hpRegen: 0
-    shopSlot: 0
+    shopSlot: 1
     shopMinRank: 0
-    shopMaxRank: 0
+    shopMaxRank: 1
     dropRank: 0
-    dropRate: 0
-    itemSlot: 0
+    dropRate: 1
+    itemSlot: 1
     trait: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-    equipment: []
-    item: []
-    bgm_volume: 0
-    sfx_volume: 0
-    joyStickSize: 0
-  isCheat: 1
-  hpBarPositionController: 0
+    traitPoint: 1
+    equipment:
+    - index: 0
+      name: 
+      rank: 0
+      price: 0
+      script: 
+      imageIndex: 0
+      part: 0
+      attackPower: 0
+      attackSpeed: 0
+      attackRange: 0
+      moveSpeed: 0
+    - index: 0
+      name: 
+      rank: 0
+      price: 0
+      script: 
+      imageIndex: 0
+      part: 0
+      attackPower: 0
+      attackSpeed: 0
+      attackRange: 0
+      moveSpeed: 0
+    - index: 0
+      name: 
+      rank: 0
+      price: 0
+      script: 
+      imageIndex: 0
+      part: 0
+      attackPower: 0
+      attackSpeed: 0
+      attackRange: 0
+      moveSpeed: 0
+    item:
+    - itemIdx: 0
+      name: 
+      rank: 0
+      showCooltime: 0
+      price: 0
+      script: 
+      imgIdx: 0
+      category: 0
+      attackPowerCalc: 0
+      attackPowerValue: 0
+      attackSpeedCalc: 0
+      attackSpeedValue: 0
+      attackRangeCalc: 0
+      attackRangeValue: 0
+    - itemIdx: 0
+      name: 
+      rank: 0
+      showCooltime: 0
+      price: 0
+      script: 
+      imgIdx: 0
+      category: 0
+      attackPowerCalc: 0
+      attackPowerValue: 0
+      attackSpeedCalc: 0
+      attackSpeedValue: 0
+      attackRangeCalc: 0
+      attackRangeValue: 0
+    - itemIdx: 0
+      name: 
+      rank: 0
+      showCooltime: 0
+      price: 0
+      script: 
+      imgIdx: 0
+      category: 0
+      attackPowerCalc: 0
+      attackPowerValue: 0
+      attackSpeedCalc: 0
+      attackSpeedValue: 0
+      attackRangeCalc: 0
+      attackRangeValue: 0
+    equipmentAttackPower: 0
+    equipmentAttackSpeed: 0
+    equipmentAttackRange: 0
+    equipmentMoveSpeed: 0
+  hpBar: {fileID: 0}
+  characterRigid: {fileID: 0}
+  characterSpriteRanderer: {fileID: 0}
+  hitBoxRigid: {fileID: 3514429689775917778}
+  hitBox: {fileID: 3514429689775917769}
+  hitBoxScript: {fileID: 3514429689775917781}
   nowDir: {x: 0, y: 0, z: 0}
   fixPos: {x: 0, y: 0, z: 0}
   canChange: 0
@@ -362,11 +491,13 @@ MonoBehaviour:
   isHologramAnimate: 0
   isAntiPhenetOn: 0
   isMoveBackOn: 0
+  isBoosterOn: 0
+  basicSpeed: 0
   hologramAnimatorArr: []
   hologramRendererArr: []
 --- !u!95 &3514429690322398362
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -380,6 +511,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -427,11 +559,32 @@ PolygonCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3514429690322398352}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -486,6 +639,7 @@ PolygonCollider2D:
       - {x: -0.47500002, y: -1.395}
       - {x: -0.905, y: -1.605}
       - {x: -0.84499997, y: -1.855}
+  m_UseDelaunayMesh: 0
 --- !u!1 &3514429690357883045
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,6 +664,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3514429690357883045}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -518,7 +673,6 @@ Transform:
   - {fileID: 3514429690322398366}
   - {fileID: 3514429689775917782}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3514429690357883043
 SpriteRenderer:
@@ -537,6 +691,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

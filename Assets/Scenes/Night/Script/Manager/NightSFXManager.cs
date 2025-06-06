@@ -13,6 +13,8 @@ public enum AudioClipName
 
 public class NightSFXManager : MonoBehaviour
 {
+    public static NightSFXManager Instance { get; private set; }
+
     public AudioSource bgmPlayer;
     public AudioSource sfxPlayer;
 
@@ -25,6 +27,18 @@ public class NightSFXManager : MonoBehaviour
     AudioClip[] bgmArr;
     [SerializeField]
     AudioClip[] sfxArr;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {

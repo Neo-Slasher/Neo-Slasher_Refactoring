@@ -1,49 +1,57 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
     public Monster stats;
 
+    [SerializeField] protected GameObject player; // 플레이어 오브젝트
 
-    [SerializeField]
-    GameObject player; // 몬스터의 적, 즉 플레이어를 뜻함
 
-    
-    Rigidbody2D enemyRigid;
-    //테스트용
-    SpriteRenderer enemyRenderer;
+    protected Rigidbody2D enemyRigid;
+    protected SpriteRenderer enemyRenderer;
+
+    protected Coroutine moveCoroutine = null;
+    protected Coroutine knockbackCoroutine;
+    protected Coroutine damagedEffectCoroutine;
 
     protected Vector3 moveDir;
 
     public bool isSlow = false;
-    protected bool isStageEnd = false; // isStageEnd = true라면 이동을 멈춤
-    public bool isStop = false;         //오브젝트 움직임을 컨트롤하기 위해 만듦
-    public bool isAttacked = false;     //공격을 했다면 2초간 true로 변환
+    protected bool isStageEnd = false; // true라면 이동을 멈춤
+    public bool isStop = false;        // 오브젝트 움직임 제어용
+    public bool isAttacked = false;    // 공격 시 2초간 true
 
-    Coroutine moveCoroutine = null;
-
-
+    public float damageCooldown = 0.2f;    // 피격 효과 시간
 
 
-
-
-    protected void Start()
+    protected virtual void Awake()
     {
         enemyRigid = GetComponent<Rigidbody2D>();
         enemyRenderer = GetComponent<SpriteRenderer>();
+    }
 
+    protected virtual void Start()
+    {
         player = GameObject.FindWithTag("Player").transform.Find("CharacterImage").gameObject;
-
         EnemyMove();
     }
+
     public void EnemyMove()
     {
         if (moveCoroutine == null)
             moveCoroutine = StartCoroutine(EnemyMoveCoroutine());
+    }
+
+    public void StopEnemyMove()
+    {
+        if (moveCoroutine != null)
+        {
+            // 아래 주석 코드가 필요한 지 아직 모름, 테스트 후 결정할 것
+            //enemyRigid.linearVelocity = Vector3.zero;
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
     }
 
     IEnumerator EnemyMoveCoroutine()
@@ -54,7 +62,6 @@ public class Enemy : MonoBehaviour
             {
                 enemyRigid.linearVelocity = Vector3.zero;
                 yield return null;
-                continue;
             }
 
             Vector3 playerPosition = player.transform.position;
@@ -67,23 +74,19 @@ public class Enemy : MonoBehaviour
             float moveSpeed = SetMoveSpeed(stats.moveSpeed);
             enemyRigid.linearVelocity = moveDir.normalized * moveSpeed;
 
-            yield return new WaitForSeconds(1);
+            yield return null;
         }
 
         enemyRigid.linearVelocity = Vector3.zero;
+        moveCoroutine = null;
     }
 
-    // Tolelom: set이라기 보다는 get에 가깝지 않나..
-    // 추가로 저런 식이 왜 나온걸까?
+    // XXX: 저런 식이 왜 나온걸까?
     protected float SetMoveSpeed(double getMoveSpeed)
     {
         return ((float)getMoveSpeed * 25) / 100;
     }
 
-    public void StopMove()
-    {
-        isStageEnd = true;
-    }
 
 
 
@@ -92,26 +95,178 @@ public class Enemy : MonoBehaviour
 
 
 
+
+
+    // TODO: 몬스터가 닿은 오브젝트는
+    // 1. 몬스터가 피격당하거나 (현재는 피격만 구현되어 있음)
+    // 2. 몬스터가 공격하거나(피격 로직은 피격 오브젝트에서 담당)
+    // 3. 무시해도 되는 오브젝트이거나
     private void OnTriggerEnter2D(Collider2D collision)
     {
         EnemyDamaged(collision);
     }
 
-    public void SetEnemyStatus(int getLevel = 1)
+    private void EnemyDamaged(Collider2D collision)
     {
-        // 선택한 난이도에 따라 스테이터스 변경
-        int difficulty = GameManager.Instance.player.difficulty;
+        double damage = 0;
+
+        if (collision.CompareTag("CharacterAttackHitbox"))
+        {
+            damage = collision.gameObject.GetComponent<HitBox>().character.player.attackPower;
+            collision.gameObject.GetComponent<HitBox>().isAttacked = true;
+        }
+        else if (collision.CompareTag("Projectile"))
+        {
+            if (collision.name == "CentryBallProjPrefab(Clone)")
+            {
+                damage = collision.GetComponent<Projectile>().projPower;
+            }
+        }
+        else if (collision.CompareTag("Item"))
+        {
+            if (collision.name == "ChargingReaperImage")
+            {
+                damage = collision.transform.parent.GetComponent<ChargingReaper>().reaperAttackDamaege;
+            }
+        }
+        else
+        {
+            return;
+        }
+
+        if (damage <= 0)
+            return;
+
+        //피흡 있으면 회복 (이것도 캐릭터로 이전할 것)
+        player.GetComponent<Character>().AbsorbAttack();
+        EnemyKnockback();
+
+        if (stats.curHp > damage)
+        {
+            StartCoroutine(EnemyDamagedEffectCoroutine());
+            stats.curHp -= damage;
+        }
+        else
+        {
+            Die();
+        }
+    }
+
+    IEnumerator EnemyDamagedEffectCoroutine()
+    {
+        try
+        {
+            if (!Mathf.Approximately(enemyRenderer.color.a, 1f)) yield break;
+
+            Color originalColor = enemyRenderer.color;
+            enemyRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.7f);
+
+            yield return new WaitForSeconds(damageCooldown);
+        }
+        finally // 예외 발생 시에도 색상 복구
+        {
+            Color color = enemyRenderer.color;
+            color.a = 1f;
+            enemyRenderer.color = color;
+            damagedEffectCoroutine = null;
+        }
+    }
+
+    private void EnemyKnockback()
+    {
+        if (player.GetComponent<Character>().isMoveBackOn && !stats.isResist)
+        {
+            isStop = true;
+            Vector3 start = transform.position;
+
+            if (knockbackCoroutine != null)
+                StopCoroutine(knockbackCoroutine);
+
+            StartCoroutine(EnemyKnockbackCoroutine(start));
+        }
+    }
+
+    IEnumerator EnemyKnockbackCoroutine(Vector3 start)
+    {
+        const float KNOCKBACK_DISTANCE = 1.5f; // 150px
+        const float KNOCKBACK_SPEED = 5f;      // 넉백 속도
+
+        Vector3 nowVelocity = enemyRigid.linearVelocity;
+        moveDir = (transform.position - player.transform.position).normalized;
+        enemyRigid.linearVelocity = moveDir * KNOCKBACK_SPEED;
+
+        // 투명도 임시 효과
+        Color nowColor = enemyRenderer.color;
+        nowColor.a = 0.5f;
+        enemyRenderer.color = nowColor;
+
+        //적 초기 위치 기준 150px 튕김
+        while ((start - this.transform.position).magnitude <= KNOCKBACK_DISTANCE)
+        {
+            enemyRigid.linearVelocity = moveDir * KNOCKBACK_SPEED;
+            yield return null;
+        }
+
+        // 상태 복구
+        nowColor.a = 1f;
+        enemyRenderer.color = nowColor;
+        enemyRigid.linearVelocity = nowVelocity;
+        isStop = false;
+    }
+
+    private void Die()
+    {
+        UpdateKillCount();
+        Destroy(gameObject);
+    }
+    private void UpdateKillCount()
+    {
+        NightManager nightManager = NightManager.Instance;
+        if (nightManager == null) return;
+
+        nightManager.UpdateKillCount();
+
+        if (gameObject.CompareTag("Normal"))
+            nightManager.killNormal++;
+        else if (gameObject.CompareTag("Elite"))
+            nightManager.killElite++;
+    }
+
+    public void SetEnemyStatus()
+    {
+        // 선택한 난이도에 따라 스테이터스 배율 설정
+        // DataManager에 접근 할 때 -1
+        int difficulty = GameManager.Instance.player.difficulty - 1;
         stats.maxHp *= DataManager.Instance.difficultyList.difficulty[difficulty].enemyStatus;
         stats.curHp *= DataManager.Instance.difficultyList.difficulty[difficulty].enemyStatus;
         stats.attackPower *= DataManager.Instance.difficultyList.difficulty[difficulty].enemyStatus;
     }
 
-
-
-    //몬스터가 강화되었는지
-    public void SetEnforceData(int getLevel, bool isElite = false)
+    // Tolelom: 동일한 함수명이 존재함
+    // 다양한 형태의 공격에 맞았을 때 공격한 오브젝트 측에서 사용하는 함수로 추측됨
+    // 추측대로라면 위에 피격 로직에 합치는게 합리적일 수도
+    public void EnemyDamaged(double getDamage)
     {
-        if (IsEnforce(getLevel, isElite))
+        if (getDamage > 0)
+        {
+
+            if (stats.curHp > getDamage)
+            {
+                StartCoroutine(EnemyDamagedEffectCoroutine());
+                stats.curHp -= getDamage;
+            }
+            else
+            {
+                NightManager.Instance.UpdateKillCount();
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    //몬스터가 강화되었을 때 스텟 증폭시키는 함수
+    public void SetEnforceData()
+    {
+        if (IsEnforce())
         {
             stats.isEnforce = true;
 
@@ -122,13 +277,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    bool IsEnforce(int getLevel, bool isElite = false)
+    bool IsEnforce()
     {
         double nowProb;
         double randomProb = Random.value;
 
-        int difficulty = GameManager.Instance.player.difficulty;
-        if (!isElite)
+        // DataManager에 접근할 때는 -1 해줘야 함
+        int difficulty = GameManager.Instance.player.difficulty - 1;
+        if (!stats.isElite)
             nowProb = DataManager.Instance.difficultyList.difficulty[difficulty].normalEnhance;
         else
             nowProb = DataManager.Instance.difficultyList.difficulty[difficulty].eliteEnhance;
@@ -160,92 +316,16 @@ public class Enemy : MonoBehaviour
         isAttacked = false;
     }
 
-    void EnemyDamaged(Collider2D collision)
-    {
-        double getDamage = 0;
-
-        if (collision.name == "HitBox")
-        {
-            getDamage = collision.gameObject.GetComponent<HitBox>().getAttackPower;
-            collision.gameObject.GetComponent<HitBox>().isAttacked = true;
-        }
-        else if (collision.name == "CentryBallProjPrefab(Clone)")
-        {
-            getDamage = collision.GetComponent<Projectile>().projPower;
-        }
-        else if (collision.tag == "Item")
-        {
-            Debug.Log(collision.name);
-            if (collision.name == "ChargingReaperImage")
-            {
-                getDamage = collision.transform.parent.GetComponent<ChargingReaper>().reaperAttackDamaege;
-            }
-        }
-
-        if (getDamage > 0)
-        {
-            //피흡 있으면 여기서 회복
-            player.GetComponent<Character>().AbsorbAttack();
-            EnemyMoveBack();
-
-            if (stats.curHp > getDamage)
-            {
-                StartCoroutine(EnemyDamagedAlphaCoroutine());
-                stats.curHp -= getDamage;
-            }
-            else
-            {
-                player.GetComponent<Character>().UpdateKillCount();
-
-                if (this.gameObject.tag == "Normal")
-                    player.GetComponent<Character>().UpdateKillNormalCount();
-                else if (this.gameObject.tag == "Elite")
-                    player.GetComponent<Character>().UpdateKillEliteCount();
-
-                Destroy(this.gameObject);
-            }
-        }
-    }
 
 
-    public void EnemyDamaged(double getDamage)
-    {
-        if (getDamage > 0)
-        {
 
-            if (stats.curHp > getDamage)
-            {
-                StartCoroutine(EnemyDamagedAlphaCoroutine());
-                stats.curHp -= getDamage;
-            }
-            else
-            {
-                player.GetComponent<Character>().UpdateKillCount();
-                Destroy(this.gameObject);
-            }
-        }
-    }
 
-    IEnumerator EnemyDamagedAlphaCoroutine()
-    {
-        Debug.Log(enemyRenderer.color.a + "@@@@@@@@@@@@@@@@@@@@@@@@@");
-        if (enemyRenderer.color.a == 1)
-        {
-            Color color = enemyRenderer.color;
-            color.a = 0.7f;
-            enemyRenderer.color = color;
 
-            yield return new WaitForSeconds(0.2f);
 
-            color.a = 1;
-            enemyRenderer.color = color;
-        }
-    }
 
     public void DrugEnemy()
     {
-        Vector3 start;
-        start = this.transform.position;
+        Vector3 start = transform.position;
         StartCoroutine(DrugEnemyCoroutine(start));
     }
 
@@ -299,60 +379,9 @@ public class Enemy : MonoBehaviour
         isStop = false;
     }
 
-    public double ReturnEnemyMoveSpeed()
-    {
-        return stats.moveSpeed;
-    }
 
-    public void EnemyStop()
-    {
-        enemyRigid.linearVelocity = Vector3.zero;
-        StopCoroutine(moveCoroutine);
-        moveCoroutine = null;
-    }
 
-    public double ReturnEnemyHitPointMax()
-    {
-        return stats.maxHp;
-    }
 
-    public void SetEnemyMoveSpeed(double getEnemySpeed)
-    {
-        stats.moveSpeed = getEnemySpeed;
-    }
 
-    void EnemyMoveBack()
-    {
-        if (player.GetComponent<Character>().isMoveBackOn && !stats.isResist)
-        {
-            isStop = true;
-            Vector3 start;
-            start = this.transform.position;
-            StartCoroutine(EnemyMoveBackCoroutine(start));
-        }
-    }
 
-    IEnumerator EnemyMoveBackCoroutine(Vector3 start)
-    {
-        Vector3 nowVelocity = enemyRigid.linearVelocity;
-        moveDir = start - player.transform.position;
-        enemyRigid.linearVelocity = moveDir.normalized * 5; Debug.Log(moveDir + " " + enemyRigid.linearVelocity);
-
-        //투명도로 확인하려고 임시로 만들어둠
-        Color nowColor = enemyRenderer.color;
-        nowColor.a = 0.5f;
-        enemyRenderer.color = nowColor;
-
-        //적 초기 위치 기준 150px 튕김
-        while ((start - this.transform.position).magnitude <= 1.5f)
-        {
-            //enemyRigid.AddForceAtPosition(moveDir, this.transform.position);
-            yield return null;
-        }
-        Debug.Log("end");
-        nowColor.a = 1f;
-        enemyRenderer.color = nowColor;
-        enemyRigid.linearVelocity = nowVelocity;
-        isStop = false;
-    }
 }

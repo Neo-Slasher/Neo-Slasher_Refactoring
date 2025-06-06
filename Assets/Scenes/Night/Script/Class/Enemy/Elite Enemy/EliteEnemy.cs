@@ -1,28 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EliteEnemy : Enemy
 {
-    [SerializeField]
-    GameObject projectileObject;
-    [SerializeField]
-    GameObject[] projectilesPulling;
+    [SerializeField] GameObject projectileObject;
+    [SerializeField] GameObject[] projectilesPulling;
+
+
     int pullingScale = 100;
     [SerializeField] int nowPullingIndex = 0;
 
     bool isShoot = false;
 
     LayerMask characterLayer;
-    [SerializeField]
-    float detectRadius;
+    [SerializeField] float detectRadius;
 
-    private void Start()
+    protected override void Start()
     {
         base.Start();
         SetProjectile();
-
     }
+
     //공격 함수 들어갈 예정 + 범위는 overlap
     void SetProjectile()
     {

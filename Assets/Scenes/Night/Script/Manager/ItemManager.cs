@@ -17,11 +17,10 @@ public enum ItemName
 
 public class ItemManager : MonoBehaviour
 {
+    public static ItemManager Instance { get; private set; }
+
+
     //아이템 사용을 여기서 할거임
-    [SerializeField]
-    NightManager nightManager;
-    [SerializeField]
-    NightSFXManager nightSFXManager;
     [SerializeField]
     GameObject characterParent;
     [SerializeField]
@@ -66,7 +65,17 @@ public class ItemManager : MonoBehaviour
     //사운드 변수
     bool isReaperSoundPlay = false;
 
-
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     private void Start()
     {
         SetItemIdxArr();
@@ -182,7 +191,7 @@ public class ItemManager : MonoBehaviour
         centryBallPos.y += 7;
 
         centryBall.transform.localPosition = centryBallPos;
-        while (!nightManager.isStageEnd)
+        while (!NightManager.Instance.isStageEnd)
         {
             if (Time.timeScale != 0)
             {
@@ -210,14 +219,14 @@ public class ItemManager : MonoBehaviour
         Transform reaperImageTransform = chargingReaperParent.transform.GetChild(0);
         StartCoroutine(chargingReaperScript.SetCoolTime(coolTimeImageArr[iconIdx]));
 
-        while (!nightManager.isStageEnd)
+        while (!NightManager.Instance.isStageEnd)
         {
             if (chargingReaperScript.IsChargingGaugeFull())
             {
                 if (!isReaperSoundPlay)
                 {
                     isReaperSoundPlay = true;
-                    nightSFXManager.PlayAudioClip(AudioClipName.chargingReaper);
+                    NightSFXManager.Instance.PlayAudioClip(AudioClipName.chargingReaper);
                 }
                 reaperDeg += Time.deltaTime * reaperSpeed;
                 if (reaperDeg < 360)
@@ -258,7 +267,7 @@ public class ItemManager : MonoBehaviour
         disasterDroneParent.transform.SetParent(character.transform);
         disasterDroneParent.transform.localPosition = character.transform.position;
         disasterDroneParent.GetComponent<DisasterDrone>().character = character;
-        disasterDroneParent.GetComponent<DisasterDrone>().nightManager = nightManager;
+        disasterDroneParent.GetComponent<DisasterDrone>().nightManager = NightManager.Instance;
         disasterDroneParent.GetComponent<DisasterDrone>().SetItemRank(getRank);
     }
 
@@ -290,7 +299,7 @@ public class ItemManager : MonoBehaviour
         }
 
         //2회 연속공격 + 에너지파
-        while (!nightManager.isStageEnd)
+        while (!NightManager.Instance.isStageEnd)
         {
             character.isDoubleAttack = true;
 
@@ -300,7 +309,7 @@ public class ItemManager : MonoBehaviour
             }
             Debug.Log("end");
 
-            nightSFXManager.PlayAudioClip(AudioClipName.multiSlash);
+            NightSFXManager.Instance.PlayAudioClip(AudioClipName.multiSlash);
             ShootSwordAura(slashAttackPower, attackRange, getRank);
 
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
@@ -370,8 +379,8 @@ public class ItemManager : MonoBehaviour
         RailPiercer railPiercerScript = railPiercerParent.GetComponent<RailPiercer>();
 
         railPiercerScript.character = character;
-        railPiercerScript.nightManager = nightManager;
-        railPiercerScript.nightSFXManager = nightSFXManager;
+        railPiercerScript.nightManager = NightManager.Instance;
+        railPiercerScript.nightSFXManager = NightSFXManager.Instance;
 
         railPiercerScript.coolTimeImage = coolTimeImageArr[iconIdx];
         railPiercerScript.SetItemRank(getRank);
@@ -415,7 +424,7 @@ public class ItemManager : MonoBehaviour
                 break;
         }
 
-        while (!nightManager.isStageEnd)
+        while (!NightManager.Instance.isStageEnd)
         {
             //왜인지는 모르겠는데 현재 체력이 0으로 받아오는 버그가 있음 근데 이유를 모르겠음;;
             while (nowHp == 0)
@@ -433,7 +442,7 @@ public class ItemManager : MonoBehaviour
             coolTimeImageArr[iconIdx].fillAmount = 1;
             character.HealHp(healHp, firstAdeParent);
 
-            nightSFXManager.PlayAudioClip(AudioClipName.firstAde);
+            NightSFXManager.Instance.PlayAudioClip(AudioClipName.firstAde);
             StartCoroutine(SetCooltimeCoroutine(iconIdx, coolTime));
             yield return new WaitForSeconds(coolTime);
         }
@@ -475,10 +484,10 @@ public class ItemManager : MonoBehaviour
                 break;
         }
 
-        while (!nightManager.isStageEnd)
+        while (!NightManager.Instance.isStageEnd)
         {
             character.SetShieldPointData(shieldPoint);
-            nightSFXManager.PlayAudioClip(AudioClipName.barrior);
+            NightSFXManager.Instance.PlayAudioClip(AudioClipName.barrior);
             barriorScript.CreateBarrior();
 
             yield return new WaitUntil(() => character.ReturnCharacterShieldPoint() == 0);
@@ -550,9 +559,9 @@ public class ItemManager : MonoBehaviour
 
         timeCount *= -1;
 
-        while (!nightManager.isStageEnd)
+        while (!NightManager.Instance.isStageEnd)
         {
-            nightSFXManager.PlayAudioClip(AudioClipName.hologramTrick);
+            NightSFXManager.Instance.PlayAudioClip(AudioClipName.hologramTrick);
             character.isHologramTrickOn = true;
             yield return new WaitForSeconds(duration);
             character.isHologramTrickOn = false;
@@ -624,7 +633,7 @@ public class ItemManager : MonoBehaviour
         gravityBindParent.transform.SetParent(characterParent.transform);
         gravityBindParent.transform.localPosition = character.transform.position;
         gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().character = character;
-        gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().nightManager = nightManager;
+        gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().nightManager = NightManager.Instance;
         gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().SetItemRank(getRank);
     }
 
@@ -654,9 +663,9 @@ public class ItemManager : MonoBehaviour
 
         timeCount *= -1;
 
-        while (!nightManager.isStageEnd)
+        while (!NightManager.Instance.isStageEnd)
         {
-            nightSFXManager.PlayAudioClip(AudioClipName.moveBack);
+            NightSFXManager.Instance.PlayAudioClip(AudioClipName.moveBack);
             character.isMoveBackOn = true;
             GameObject moveBackImage = Instantiate(itemPrefabArr[12]);
             moveBackImage.GetComponent<MoveBackImage>().character = character.transform;
@@ -680,7 +689,7 @@ public class ItemManager : MonoBehaviour
         //아이콘 인덱스 찾기
         int iconIdx = FindIconIdx((int)ItemName.Booster);
 
-        float getBasicSpeed = (float)character.ReturnCharacterMoveSpeed();
+        float getBasicSpeed = (float)character.GetMoveSpeed();
         float getAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
         float getAttackRange = (float)character.ReturnCharacterAttackRange();
         float getAttackPower = (float)character.ReturnCharacterAttackPower();
@@ -713,9 +722,9 @@ public class ItemManager : MonoBehaviour
                 break;
         }
 
-        while (!nightManager.isStageEnd)
+        while (!NightManager.Instance.isStageEnd)
         {
-            nightSFXManager.PlayAudioClip(AudioClipName.booster);
+            NightSFXManager.Instance.PlayAudioClip(AudioClipName.booster);
             character.SetMoveSpeed(speed);
             boosterParent.SetActive(true);
             Debug.Log("AAAAAAAAAAAAAAAAAAAAAA");
@@ -765,8 +774,8 @@ public class ItemManager : MonoBehaviour
         interceptDroneParent.transform.SetParent(character.transform);
         interceptDroneParent.transform.localPosition = character.transform.position;
         interceptDroneParent.GetComponent<InterceptDrone>().character = character;
-        interceptDroneParent.GetComponent<InterceptDrone>().nightManager = nightManager;
-        interceptDroneParent.GetComponent<InterceptDrone>().nightSFXManager = nightSFXManager;
+        interceptDroneParent.GetComponent<InterceptDrone>().nightManager = NightManager.Instance;
+        interceptDroneParent.GetComponent<InterceptDrone>().nightSFXManager = NightSFXManager.Instance;
         interceptDroneParent.GetComponent<InterceptDrone>().coolTimeImage = coolTimeImageArr[iconIdx];
         interceptDroneParent.GetComponent<InterceptDrone>().SetItemRank(getRank);
 

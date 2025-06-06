@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class MachineArmorSoldier : NormalEnemy
 {
-    private void Awake()
+    protected override void Start()
     {
+        base.Start();
+
         stats = new Monster(MonsterType.MachineArmorSoldier);
-        SetEnemyStatus(GameManager.Instance.player.level);
+        SetEnemyStatus();
     }
 }

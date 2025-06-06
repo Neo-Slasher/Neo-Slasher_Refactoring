@@ -161,9 +161,7 @@ public class TraitManager : MonoBehaviour
             drugEnemyEffect.SetActive(true);
             effectAnimator.SetBool("isPlay", true);
 
-#if UNITY_EDITOR
-            Debug.Log("DrugEnemy");
-#endif
+            Logger.Log("DrugEnemy");
 
             Collider2D[] getCols =
                 character.ReturnOverLapColliders((float)getTrait.effectValue3 / 100, (float)getTrait.effectValue2 / 100);
@@ -232,8 +230,8 @@ public class TraitManager : MonoBehaviour
     }
     IEnumerator GetMoveSpeed(Trait getTrait)
     {
-        double defaultMoveSpeed = character.nowMoveSpeed;
-        double upgradeMoveSpeed = character.nowMoveSpeed * (1 + getTrait.effectValue3);
+        double defaultMoveSpeed = character.player.moveSpeed;
+        double upgradeMoveSpeed = character.player.moveSpeed * (1 + getTrait.effectValue3);
 
         //60~54초
         character.SetMoveSpeed(upgradeMoveSpeed);
@@ -277,7 +275,7 @@ public class TraitManager : MonoBehaviour
             {
                 if (enemyCloneParent.childCount != 0)
                 {
-                    enemyCloneParent.GetChild(i).GetComponent<Enemy>().EnemyStop();
+                    enemyCloneParent.GetChild(i).GetComponent<Enemy>().StopEnemyMove();
                 }
             }
 
