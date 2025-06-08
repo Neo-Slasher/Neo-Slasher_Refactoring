@@ -4,15 +4,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum ItemName
+// 구현해야 하는 아이템 15개
+public enum ItemTypes
 {
-    None
         //공격
-        , CentryBall = 1, ChargingReaper, DisasterDrone, MultiSlash, RailPiercer
+        CentryBall = 0, ChargingReaper, DisasterDrone, MultiSlash, RailPiercer,
         //방어
-        , FirstAde = 6, Barrior, HologramTrick, AntiPhenet, RegenerationArmor
+        FirstAde = 5, Barrior, HologramTrick, AntiPhenet, RegenerationArmor,
         //보조
-        , GravityBind = 11, MoveBack, Booster, BioSnach, InterceptDrone
+        GravityBind = 10, MoveBack, Booster, BioSnach, InterceptDrone
 }
 
 public class ItemManager : MonoBehaviour
@@ -60,7 +60,7 @@ public class ItemManager : MonoBehaviour
     [SerializeField]
     List<Image> coolTimeImageArr;
 
-    public List<int> arr;
+    public List<Consumable> activeItemList;
 
     //사운드 변수
     bool isReaperSoundPlay = false;
@@ -78,106 +78,131 @@ public class ItemManager : MonoBehaviour
     }
     private void Start()
     {
-        SetItemIdxArr();
-        SetItemIconArr();
+        GetPlayerItemInfomations();
+        InitItemIcons();
         StartItem();
     }
 
 
-    void SetItemIdxArr()
+    void GetPlayerItemInfomations()
     {
         Player player = GameManager.Instance.player;
-        for (int i = 0; i < player.itemSlot; i++) 
+
+        for (int i = 0; i < player.itemSlot; i++)
         {
-            if (player.item[i].itemIdx == 0) continue;
-            itemIdxArr[i] = player.item[i].itemIdx;
-            itemRankArr[i] = player.item[i].rank;
+            Consumable item = player.item[i];
+            if (item.itemIdx == 0) continue;
+
+            activeItemList.Add(item);
+
+            itemIdxArr[i] = item.itemIdx;
+            itemRankArr[i] = item.rank;
             itemIdxArr[i] -= (itemRankArr[i] * 15);     //아이템 인덱스로 ItemName을 구분하기 때문에 강제로 만든 식입니다.
                                                         //아이템 인덱스 - 랭크*15 = itemName
         }
     }
 
-    void SetItemIconArr()
+    // TODO: activeItemList를 활용해서 코드 개선할 것
+    void InitItemIcons()
     {
+        const int MAX_SLOT_COUNT = 3;
         Player player = GameManager.Instance.player;
 
-        for (int i = 0; i < 3; i++)
+        int playerSlotNumber = 0;
+        for (int i = 0; i < MAX_SLOT_COUNT; i++)
         {
-            if (i >= player.itemSlot)
+            Consumable item = null;
+
+            for (; playerSlotNumber < player.itemSlot; playerSlotNumber++)
             {
+                if (player.item[playerSlotNumber].itemIdx != 0)
+                {
+                    item = player.item[playerSlotNumber];
+                    break;
+                }
+            }
+
+            if (item  == null)
                 nowItemUIArr[i].SetActive(false);
-            }
             else
-            {
-                Consumable consumable = DataManager.Instance.consumableList.item[itemIdxArr[i]];
-                nowItemUIArr[i].transform.GetChild(0).GetComponent<Image>().sprite = DataManager.Instance.consumableIcons[consumable.itemIdx];
-            }
+                nowItemUIArr[i].transform.GetChild(0).GetComponent<Image>().sprite = DataManager.Instance.consumableIcons[item.itemIdx];
         }
     }
 
     void StartItem()
     {
-        for (int i = 0; i < itemIdxArr.Length; i++)
+        foreach (Consumable item in activeItemList)
         {
-            FindItem(itemIdxArr[i], itemRankArr[i]);
+            ItemTypes type = GetItemType(item);
+            int getRank = item.rank;
+            switch (type)
+            {
+                case ItemTypes.CentryBall:
+                    StartCoroutine(CentryBallCoroutine(getRank));
+                    break;
+                case ItemTypes.ChargingReaper:
+                    StartCoroutine(ChargingReaperCoroutine(getRank));
+                    break;
+                case ItemTypes.DisasterDrone:
+                    DisasterDrone(getRank);
+                    break;
+                case ItemTypes.MultiSlash:
+                    StartCoroutine(MultiSlashCoroutine(getRank));
+                    break;
+                case ItemTypes.RailPiercer:
+                    RailPiercer(getRank);
+                    break;
+                case ItemTypes.FirstAde:
+                    StartCoroutine(FirstAdeCoroutine(getRank));
+                    break;
+                case ItemTypes.Barrior:
+                    StartCoroutine(BarriorCoroutine(getRank));
+                    break;
+                case ItemTypes.HologramTrick:
+                    StartCoroutine(HologramTrickCoroutine(getRank));
+                    break;
+                case ItemTypes.AntiPhenet:
+                    AntiPhenet(getRank);
+                    break;
+                case ItemTypes.RegenerationArmor:
+                    RegenerationArmor(getRank);
+                    break;
+                case ItemTypes.GravityBind:
+                    GravityBind(getRank);
+                    break;
+                case ItemTypes.MoveBack:
+                    StartCoroutine(MoveBack(getRank));
+                    break;
+                case ItemTypes.Booster:
+                    StartCoroutine(BoosterCoroutine(getRank));
+                    break;
+                case ItemTypes.BioSnach:
+                    BioSnach(getRank);
+                    break;
+                case ItemTypes.InterceptDrone:
+                    InterceptDroneCoroutine(getRank);
+                    break;
+            }
         }
     }
 
-    void FindItem(int getIdx, int getRank)
+    private ItemTypes GetItemType(Consumable item)
     {
-        ItemName nowItemName = (ItemName)getIdx;
-        Debug.Log(nowItemName.ToString());
-        switch (nowItemName)
-        {
-            case ItemName.None:
-                break;
-            case ItemName.CentryBall:
-                StartCoroutine(CentryBallCoroutine(getRank));
-                break;
-            case ItemName.ChargingReaper:
-                StartCoroutine(ChargingReaperCoroutine(getRank));
-                break;
-            case ItemName.DisasterDrone:
-                DisasterDrone(getRank);
-                break;
-            case ItemName.MultiSlash:
-                StartCoroutine(MultiSlashCoroutine(getRank));
-                break;
-            case ItemName.RailPiercer:
-                RailPiercer(getRank);
-                break;
-            case ItemName.FirstAde:
-                StartCoroutine(FirstAdeCoroutine(getRank));
-                break;
-            case ItemName.Barrior:
-                StartCoroutine(BarriorCoroutine(getRank));
-                break;
-            case ItemName.HologramTrick:
-                StartCoroutine(HologramTrickCoroutine(getRank));
-                break;
-            case ItemName.AntiPhenet:
-                AntiPhenet(getRank);
-                break;
-            case ItemName.RegenerationArmor:
-                RegenerationArmor(getRank);
-                break;
-            case ItemName.GravityBind:
-                GravityBind(getRank);
-                break;
-            case ItemName.MoveBack:
-                StartCoroutine(MoveBack(getRank));
-                break;
-            case ItemName.Booster:
-                StartCoroutine(BoosterCoroutine(getRank));
-                break;
-            case ItemName.BioSnach:
-                BioSnach(getRank);
-                break;
-            case ItemName.InterceptDrone:
-                InterceptDroneCoroutine(getRank);
-                break;
-        }
+        return (ItemTypes)(item.itemIdx % 15);
     }
+
+
+    
+
+
+
+
+
+
+
+
+
+
 
     IEnumerator CentryBallCoroutine(int getitemRank)
     {
@@ -208,7 +233,7 @@ public class ItemManager : MonoBehaviour
     IEnumerator ChargingReaperCoroutine(int getRank)
     {
         //아이콘 인덱스 찾기
-        int iconIdx = FindIconIdx((int)ItemName.ChargingReaper);
+        int iconIdx = FindIconIdx((int)ItemTypes.ChargingReaper);
 
         isChargingReaperUse = true;
         GameObject chargingReaperParent = Instantiate(itemPrefabArr[2]);
@@ -274,7 +299,7 @@ public class ItemManager : MonoBehaviour
     IEnumerator MultiSlashCoroutine(int getRank)
     {
         //아이콘 인덱스 찾기
-        int iconIdx = FindIconIdx((int)ItemName.MultiSlash);
+        int iconIdx = FindIconIdx((int)ItemTypes.MultiSlash);
 
         //랭크에 따라 다른 작업 추가
         float slashTime = 6;
@@ -372,7 +397,7 @@ public class ItemManager : MonoBehaviour
     void RailPiercer(int getRank)
     {
         //아이콘 인덱스 찾기
-        int iconIdx = FindIconIdx((int)ItemName.RailPiercer);
+        int iconIdx = FindIconIdx((int)ItemTypes.RailPiercer);
 
         GameObject railPiercerParent = Instantiate(itemPrefabArr[5]);
         railPiercerParent.transform.SetParent(characterParent.transform);
@@ -392,7 +417,7 @@ public class ItemManager : MonoBehaviour
     IEnumerator FirstAdeCoroutine(int getRank)
     {
         //아이콘 인덱스 찾기
-        int iconIdx = FindIconIdx((int)ItemName.FirstAde);
+        int iconIdx = FindIconIdx((int)ItemTypes.FirstAde);
 
         GameObject firstAdeParent = Instantiate(itemPrefabArr[6]);
         firstAdeParent.transform.SetParent(character.transform);
@@ -451,7 +476,7 @@ public class ItemManager : MonoBehaviour
     IEnumerator BarriorCoroutine(int getRank)
     {
         //아이콘 인덱스 찾기
-        int iconIdx = FindIconIdx((int)ItemName.Barrior);
+        int iconIdx = FindIconIdx((int)ItemTypes.Barrior);
 
         GameObject barriorParent = Instantiate(itemPrefabArr[7]);
         barriorParent.transform.SetParent(character.transform);
@@ -503,7 +528,7 @@ public class ItemManager : MonoBehaviour
     IEnumerator HologramTrickCoroutine(int getRank)
     {
         //아이콘 인덱스 찾기
-        int iconIdx = FindIconIdx((int)ItemName.HologramTrick);
+        int iconIdx = FindIconIdx((int)ItemTypes.HologramTrick);
 
         GameObject[] hologramParentArr = new GameObject[2];
         Vector3 hologramVector;
@@ -640,7 +665,7 @@ public class ItemManager : MonoBehaviour
     IEnumerator MoveBack(int getRank)
     {
         //아이콘 인덱스 찾기
-        int iconIdx = FindIconIdx((int)ItemName.MoveBack);
+        int iconIdx = FindIconIdx((int)ItemTypes.MoveBack);
 
         float getAttackSpeed = (float)character.player.attackSpeed;
         float timeCount = 200 / getAttackSpeed;
@@ -687,7 +712,7 @@ public class ItemManager : MonoBehaviour
         boosterParent.transform.localPosition = character.transform.position + new Vector3(2.13f, 0, 0);
         boosterParent.GetComponent<Booster>().character = character.GetComponent<SpriteRenderer>();
         //아이콘 인덱스 찾기
-        int iconIdx = FindIconIdx((int)ItemName.Booster);
+        int iconIdx = FindIconIdx((int)ItemTypes.Booster);
 
         float getBasicSpeed = (float)character.player.moveSpeed;
         float getAttackSpeed = (float)character.player.attackSpeed;
@@ -743,7 +768,7 @@ public class ItemManager : MonoBehaviour
 
     void BioSnach(int getRank)
     {
-        int iconIdx = FindIconIdx((int)ItemName.BioSnach);
+        int iconIdx = FindIconIdx((int)ItemTypes.BioSnach);
         Debug.Log(iconIdx + " iconidx");
         float getAbsorbAttackData = 1;
 
@@ -768,7 +793,7 @@ public class ItemManager : MonoBehaviour
     void InterceptDroneCoroutine(int getRank)
     {
         //아이콘 인덱스 찾기
-        int iconIdx = FindIconIdx((int)ItemName.InterceptDrone);
+        int iconIdx = FindIconIdx((int)ItemTypes.InterceptDrone);
 
         GameObject interceptDroneParent = Instantiate(itemPrefabArr[15]);
         interceptDroneParent.transform.SetParent(character.transform);

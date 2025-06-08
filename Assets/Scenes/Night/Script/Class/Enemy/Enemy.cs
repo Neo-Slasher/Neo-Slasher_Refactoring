@@ -117,12 +117,19 @@ public class Enemy : MonoBehaviour
         {
             // TODO: 나중에 리팩토링 할 일이 생기면 함수로 뺄 것
             Character character = collision.gameObject.GetComponent<HitBox>().character;
-            damage = character.player.attackPower;
+            
+            // 기본 데미지
+            if (character.player.attackPower > 0)
+                damage += character.player.attackPower;
+
+            // 최대 체력 비례 데미지
             float dealOnMax = character.player.dealOnMaxHp;
             if (dealOnMax > 0)
             {
                 damage += stats.maxHp * dealOnMax;
             }
+
+            // 현재 체력 비례 데미지
             float dealOnHp = character.player.dealOnCurHp;
             if (dealOnHp > 0)
             {
