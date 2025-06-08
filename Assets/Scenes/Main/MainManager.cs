@@ -52,7 +52,7 @@ public class MainManager : MonoBehaviour
     }
     private void StartNewGame()
     {
-        GameManager.Instance.player = Player.SoftReset(GameManager.Instance.player);
+        GameManager.Instance.player = Player.Reset(GameManager.Instance.player);
         SceneManager.LoadScene(CUT_SCENE_NAME);
     }
 

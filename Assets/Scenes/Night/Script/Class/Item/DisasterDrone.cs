@@ -11,7 +11,7 @@ public class DisasterDrone : MonoBehaviour
     [SerializeField]
     float detectRadius;
     [SerializeField]
-    double damage;
+    float damage;
 
     int itemRank;
     float getAttackRangeValue;
@@ -37,19 +37,19 @@ public class DisasterDrone : MonoBehaviour
         switch (itemRank)
         {
             case 0:
-                detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
+                detectRadius = (float)character.player.attackRange * 0.15f * getAttackRangeValue;
                 enemyDamageRate = 0.07f;
                 break;
             case 1:
-                detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
+                detectRadius = (float)character.player.attackRange * 0.15f * getAttackRangeValue;
                 enemyDamageRate = 0.10f;
                 break;
             case 2:
-                detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
+                detectRadius = (float)character.player.attackRange * 0.15f * getAttackRangeValue;
                 enemyDamageRate = 0.13f;
                 break;
             case 3:
-                detectRadius = (float)character.ReturnCharacterAttackRange() * 0.15f * getAttackRangeValue;
+                detectRadius = (float)character.player.attackRange * 0.15f * getAttackRangeValue;
                 enemyDamageRate = 0.16f;
                 break;
         }

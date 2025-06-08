@@ -32,11 +32,11 @@ public class Consumable : Item
     public int imgIdx;
     public int category;
     public bool attackPowerCalc;
-    public double attackPowerValue;
+    public float attackPowerValue;
     public bool attackSpeedCalc;
-    public double attackSpeedValue;
+    public float attackSpeedValue;
     public bool attackRangeCalc;
-    public double attackRangeValue;
+    public float attackRangeValue;
 
     public override ItemType GetItemType()
     {

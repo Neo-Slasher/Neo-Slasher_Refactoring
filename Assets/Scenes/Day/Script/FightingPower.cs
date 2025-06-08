@@ -91,10 +91,10 @@ public class FightingPower : MonoBehaviour
         }
 
         sb.AppendLine(" "); // 의도적 개행
-        AppendStatLine(player.equipmentMoveSpeed);
-        AppendStatLine(player.attackPower);
-        AppendStatLine(player.attackSpeed);
-        AppendStatLine(player.attackRange);
+        AppendStatLine(equipmentMoveSpeed);
+        AppendStatLine(equipmentAttackPower);
+        AppendStatLine(equipmentAttackSpeed);
+        AppendStatLine(equipmentAttackRange);
         sb.AppendLine(" "); // 의도적 개행
         sb.AppendLine(" "); // 의도적 개행
         sb.AppendLine(" "); // 의도적 개행
@@ -113,12 +113,6 @@ public class FightingPower : MonoBehaviour
             return;
         }
 
-        Equipment equipment = player.equipment[part];
-        player.equipmentAttackPower -= equipment.attackPower;
-        player.equipmentAttackSpeed -= equipment.attackSpeed;
-        player.equipmentAttackRange -= equipment.attackRange;
-        player.equipmentMoveSpeed -= equipment.moveSpeed;
-
         player.equipment[part] = new Equipment { index = 0 };
     }
 
@@ -130,11 +124,6 @@ public class FightingPower : MonoBehaviour
         {
             RemoveEquipment(equipment.part);
         }
-
-        player.equipmentAttackPower += equipment.attackPower;
-        player.equipmentAttackSpeed += equipment.attackSpeed;
-        player.equipmentAttackRange += equipment.attackRange;
-        player.equipmentMoveSpeed += equipment.moveSpeed;
 
         player.equipment[equipment.part] = equipment;
 

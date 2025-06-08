@@ -10,7 +10,7 @@ public class GravityBind : MonoBehaviour
     [SerializeField]
     float detectScale;
     [SerializeField]
-    double getEnemySpeed;
+    float getEnemySpeed;
     [SerializeField]
     float spinSpeed;
 
@@ -39,8 +39,8 @@ public class GravityBind : MonoBehaviour
 
     void SetGravityBindData()
     {
-        float characterAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
-        float characterAttackRange = (float)character.ReturnCharacterAttackRange();
+        float characterAttackSpeed = (float)character.player.attackSpeed;
+        float characterAttackRange = (float)character.player.attackRange;
 
         switch (itemRank)
         {

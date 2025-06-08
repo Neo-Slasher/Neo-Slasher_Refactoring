@@ -157,10 +157,8 @@ public class NightManager : MonoBehaviour
     {
         isStageEnd = true;
 
-        //플레이어 공격 정지
         Character characterComp = character.GetComponent<Character>();
-        characterComp.StopAttack();
-        characterComp.EndMove();
+        characterComp.NightEnd();
 
         //조이스틱 사용은 nightManager.isStageEnd를 매번 받기 때문에 알아서 꺼짐
 
@@ -219,7 +217,7 @@ public class NightManager : MonoBehaviour
         normalCount.text = killNormal.ToString();
         eliteCount.text = killElite.ToString();
 
-        character.GetComponent<Character>().NightEnd();
+        character.GetComponent<Character>().Pause();
 
 
         // 얻은 돈은 이 함수에서 직접 처리 (적절한 처리는 아님)

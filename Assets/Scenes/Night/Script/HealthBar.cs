@@ -14,18 +14,24 @@ public class HealthBar : MonoBehaviour
     public Image shieldBar;
     public double curShield = 50;
 
-    private float velocity = 0.0f;
-    private float shieldMinVelocity = 0f;
-    private float shieldMaxVelocity = 0f;
+    [SerializeField] private CharacterHealth CharacterHealth;
 
-
-    // 임시로 Update 함수에서 UpdateBar를 호출 중 
-    // 리팩토링 중 UpdateBar를 실행할 부분이 확인되면 추가 후 삭제할 것
-    // 이밴트 형식으로 변경해도 좋음
-    private void Update()
+    private void OnEnable()
     {
-        UpdateBar();
+        if (CharacterHealth != null)
+        {
+            CharacterHealth.OnHpChanged += UpdateBar;
+        }
     }
+
+    private void OnDisable()
+    {
+        if (CharacterHealth != null)
+        {
+            CharacterHealth.OnHpChanged -= UpdateBar;
+        }
+    }
+
 
     public void UpdateBar()
     {
@@ -38,7 +44,7 @@ public class HealthBar : MonoBehaviour
         if (totalAmount <= maxHp)
         {
             float hpFill = (float)(curHp / maxHp);
-            hpBar.fillAmount = Mathf.SmoothDamp(hpBar.fillAmount, hpFill, ref velocity, 0.3f);
+            hpBar.fillAmount = hpFill; 
 
             float shieldRatio = (float)(curShield / maxHp);
             float targetMinX = hpBar.fillAmount;
@@ -47,10 +53,8 @@ public class HealthBar : MonoBehaviour
             float currentMinX = shieldBarRect.anchorMin.x;
             float currentMaxX = shieldBarRect.anchorMax.x;
 
-            shieldBarRect.anchorMin = new Vector2(
-                Mathf.SmoothDamp(currentMinX, targetMinX, ref shieldMinVelocity, 0.3f), 0f);
-            shieldBarRect.anchorMax = new Vector2(
-                Mathf.SmoothDamp(currentMaxX, targetMaxX, ref shieldMaxVelocity, 0.3f), 1f);
+            shieldBarRect.anchorMin = new Vector2(hpFill, 0f);
+            shieldBarRect.anchorMax = new Vector2(targetMaxX, 1f);
         }
         else // totalAmount > maxHp (curHp <= maxHp)
         {

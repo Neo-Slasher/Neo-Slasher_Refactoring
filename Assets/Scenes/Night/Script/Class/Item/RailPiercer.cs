@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,9 +17,8 @@ public class RailPiercer : MonoBehaviour
     [SerializeField]
     SpriteRenderer railPiercerImageRenderer;
     Rigidbody2D railPiercerRigid;
-    [SerializeField] double attackPower = 500;
-    [SerializeField] double attackTime;
-    float hitBoxScale;
+    [SerializeField] float attackPower = 500;
+    [SerializeField] float attackTime;
     bool isWatchRight = true;
     bool isShoot = false;
 
@@ -46,8 +43,8 @@ public class RailPiercer : MonoBehaviour
 
     void SetRailPiercerData()
     {
-        float characterAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
-        float characterAttackPower = (float)character.ReturnCharacterAttackPower();
+        float characterAttackSpeed = (float)character.player.attackSpeed;
+        float characterAttackPower = (float)character.player.attackPower;
 
         switch (itemRank)
         {
@@ -73,16 +70,6 @@ public class RailPiercer : MonoBehaviour
     public void ShootRailPiercer()
     {
         railPiercerHitBox.SetActive(false);
-
-        //������ �ٶ󺸸� �������� ���̰� �����
-        if (isWatchRight)
-        {
-            hitBoxScale = 2;
-        }
-        else
-        {
-            hitBoxScale = 2;
-        }
         StartCoroutine(ShootRailPiercerCoroutine());
     }
 
@@ -96,7 +83,7 @@ public class RailPiercer : MonoBehaviour
 
             //��Ʈ�ڽ��� ���� ���⿡ ��� x ��ǥ�� ������
             Vector3 hitBoxPos = Vector3.zero;
-            if (character.nowDir.x >= 0)
+            if (character.Movement.MoveDirection.x >= 0)
             {
                 isWatchRight = true;
             }
@@ -125,7 +112,7 @@ public class RailPiercer : MonoBehaviour
     {
         Transform railPiercerTransform = this.transform;
         float angle;
-        Vector3 watchDir = character.nowDir;
+        Vector3 watchDir = character.Movement.MoveDirection;
 
         angle = Mathf.Atan2(watchDir.y, watchDir.x) * Mathf.Rad2Deg;
         railPiercerTransform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
@@ -152,7 +139,7 @@ public class RailPiercer : MonoBehaviour
             //������ �Ƚ�� ���� ��
             if (!isShoot)
             {
-                if (character.nowDir.x >= 0)
+                if (character.Movement.MoveDirection.x >= 0)
                 {
                     railPiercerImageRenderer.flipX = true;
                     nowPos.x -= 2;
@@ -174,7 +161,7 @@ public class RailPiercer : MonoBehaviour
             nowPos.y += 2;
 
             this.transform.position = nowPos;
-            railPiercerRigid.linearVelocity = character.ReturnSpeed();
+            railPiercerRigid.linearVelocity = character.GetVelocity();
             yield return null;
         }
     }

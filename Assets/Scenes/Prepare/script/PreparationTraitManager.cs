@@ -3,11 +3,11 @@ using UnityEngine;
 // 2025.06.03 Refactoring Final Version
 public class PreparationTraitManager : MonoBehaviour
 {
-    public double HpByTrait { get; private set; }
-    public double MoveSpeedByTrait { get; private set; }
-    public double AttackPowerByTrait { get; private set; }
-    public double AttackSpeedByTrait { get; private set; }
-    public double AttackRangeByTrait { get; private set; }
+    public float HpByTrait { get; private set; }
+    public float MoveSpeedByTrait { get; private set; }
+    public float AttackPowerByTrait { get; private set; }
+    public float AttackSpeedByTrait { get; private set; }
+    public float AttackRangeByTrait { get; private set; }
     public enum EffectType
     {
         None,
@@ -86,7 +86,7 @@ public class PreparationTraitManager : MonoBehaviour
             DisapplyTrait((EffectType)trait.effectType4, trait.effectValue4, trait.effectMulti4);
     }
 
-    private void ApplyTrait(EffectType type, double value, bool multi)
+    private void ApplyTrait(EffectType type, float value, bool multi)
     {
         Player player = GameManager.Instance.player;
         switch (type)
@@ -115,7 +115,7 @@ public class PreparationTraitManager : MonoBehaviour
                 player.startMoney += (int)value;
                 break;
             case EffectType.EarnMoney:
-                player.earnMoney += (float)value;
+                player.earnMoney += value;
                 break;
             case EffectType.ShopSlot:
                 player.shopSlot += (int)value;
@@ -154,7 +154,7 @@ public class PreparationTraitManager : MonoBehaviour
 
     }
 
-    private void DisapplyTrait(EffectType type, double value, bool multi)
+    private void DisapplyTrait(EffectType type, float value, bool multi)
     {
         ApplyTrait(type, -value, multi);
     }

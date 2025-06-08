@@ -16,10 +16,10 @@ public class Difficulty
     public int recommandLv;
     public int rewardExp;
     public int goalMoney;
-    public double enemyStatus;
-    public double enemyRespawn;
-    public double normalEnhance;
-    public double eliteEnhance;
+    public float enemyStatus;
+    public float enemyRespawn;
+    public float normalEnhance;
+    public float eliteEnhance;
     public int dropRank;
-    public double recommandCP;
+    public float recommandCP;
 }

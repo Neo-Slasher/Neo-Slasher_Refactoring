@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwordAura : MonoBehaviour
 {
-    public double attackDamage = 500;
+    public float attackDamage = 500;
     public int itemRank;
     public float attackRange;
     public float goalDistance = 0;

@@ -289,6 +289,9 @@ public class PreparationManager : MonoBehaviour
     public void OnClickStartButton()
     {
         Player.Save(GameManager.Instance.player);
+
+        GameManager.Instance.player.money = GameManager.Instance.player.startMoney;
+
         SceneManager.LoadScene("DayScene");
     }
 

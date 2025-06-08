@@ -60,10 +60,10 @@ public class TouchScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
 
             joyStickRectTransform.anchoredPosition = clampedPos;
-            
+
             moveVector = (currVector - startPos).normalized;
 
-            character.StartMove(moveVector);
+            character.Movement.StartMove((Vector2)moveVector);
         }
     }
 
@@ -72,7 +72,7 @@ public class TouchScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if (!NightManager.Instance.isStageEnd)
         {
             joyStick.SetActive(false);
-            character.EndMove();
+            character.Movement.EndMove();
             startPos = Vector3.zero;
             moveVector = Vector3.zero;
         }

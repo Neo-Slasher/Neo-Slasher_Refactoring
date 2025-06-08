@@ -279,8 +279,8 @@ public class ItemManager : MonoBehaviour
         //랭크에 따라 다른 작업 추가
         float slashTime = 6;
         float attackPowerRate = (float)DataManager.Instance.consumableList.item[3].attackPowerValue;
-        float slashAttackPower = (float)character.ReturnCharacterAttackPower() * attackPowerRate;
-        float attackRange = (float)character.ReturnCharacterAttackRange();
+        float slashAttackPower = (float)character.player.attackPower * attackPowerRate;
+        float attackRange = (float)character.player.attackRange;
 
         switch (getRank)
         {
@@ -301,9 +301,9 @@ public class ItemManager : MonoBehaviour
         //2회 연속공격 + 에너지파
         while (!NightManager.Instance.isStageEnd)
         {
-            character.isDoubleAttack = true;
+            character.Attack.isDoubleAttack = true;
 
-            while (character.isDoubleAttack)
+            while (character.Attack.isDoubleAttack)
             {
                 yield return null;
             }
@@ -345,20 +345,20 @@ public class ItemManager : MonoBehaviour
         //swordAura.GetComponent<SpriteRenderer>().color = swordAuraColor;
         SetSwordAuraAngle(swordAura);
 
-        if (character.fixPos != Vector3.zero)
-            swordAura.GetComponent<Rigidbody2D>().linearVelocity = character.fixPos.normalized * 10;
+        if (character.Movement.LastMoveDirection != Vector2.zero)
+            swordAura.GetComponent<Rigidbody2D>().linearVelocity = character.Movement.LastMoveDirection.normalized * 10;
         else
             swordAura.GetComponent<Rigidbody2D>().linearVelocity = Vector3.right * 10;
     }
 
     void SetSwordAuraAngle(GameObject getSwordAura)
     {
-        if (character.fixPos != Vector3.zero)
+        if (character.Movement.LastMoveDirection != Vector2.zero)
         {
-            float dot = Vector3.Dot(character.fixPos, new Vector3(1, 0, 0));
+            float dot = Vector3.Dot(character.Movement.LastMoveDirection, new Vector3(1, 0, 0));
             float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
 
-            if (character.fixPos.y >= 0)
+            if (character.Movement.LastMoveDirection.y >= 0)
                 getSwordAura.transform.rotation = Quaternion.Euler(0, 0, angle);
             else
                 getSwordAura.transform.rotation = Quaternion.Euler(0, 0, 360 - angle);
@@ -400,8 +400,8 @@ public class ItemManager : MonoBehaviour
         firstAdeParent.SetActive(false);
 
         double nowHp = GameManager.Instance.player.curHp;
-        double firstAdeHp = character.ReturnCharacterHitPointMax() * 0.4f;
-        float healHp = (float)character.ReturnCharacterAttackPower();
+        double firstAdeHp = character.player.maxHp * 0.4f;
+        float healHp = (float)character.player.attackPower;
         int coolTime = 30;
 
         switch (getRank)
@@ -458,8 +458,8 @@ public class ItemManager : MonoBehaviour
         barriorParent.transform.position = character.transform.position;
         Barrior barriorScript = barriorParent.GetComponent<Barrior>();
 
-        float characterAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
-        float characterAttackPower = (float)character.ReturnCharacterAttackPower();
+        float characterAttackSpeed = (float)character.player.attackSpeed;
+        float characterAttackPower = (float)character.player.attackPower;
         float shieldPoint = characterAttackPower;
 
         double timeCount = 50 / characterAttackSpeed;
@@ -490,7 +490,7 @@ public class ItemManager : MonoBehaviour
             NightSFXManager.Instance.PlayAudioClip(AudioClipName.barrior);
             barriorScript.CreateBarrior();
 
-            yield return new WaitUntil(() => character.ReturnCharacterShieldPoint() == 0);
+            yield return new WaitUntil(() => character.player.shieldPoint == 0);
             barriorScript.SetBarriorActive(false);
             Debug.Log(timeCount);
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
@@ -531,8 +531,8 @@ public class ItemManager : MonoBehaviour
             character.hologramRendererArr[i] = hologramParent.GetComponent<SpriteRenderer>();
         }
 
-        float characterAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
-        float characterAttackRange = (float)character.ReturnCharacterAttackRange();
+        float characterAttackSpeed = (float)character.player.attackSpeed;
+        float characterAttackRange = (float)character.player.attackRange;
 
         float duration = characterAttackRange;
         float timeCount = 1200 / characterAttackSpeed;
@@ -599,8 +599,8 @@ public class ItemManager : MonoBehaviour
     void RegenerationArmor(int getRank)
     {
 
-        float addHp = (float)character.ReturnCharacterAttackPower();
-        float addHpRegen = (float)character.ReturnCharacterAttackRange();
+        float addHp = (float)character.player.attackPower;
+        float addHpRegen = (float)character.player.attackRange;
 
         switch (getRank)
         {
@@ -623,8 +623,8 @@ public class ItemManager : MonoBehaviour
                 break;
         }
 
-        character.SetCharacterHitPointMax(addHp);
-        character.SetCharacterHpRegen(addHpRegen);
+        character.Health.HealToMaxHp();
+        character.player.hpRegen = addHpRegen;
     }
 
     void GravityBind(int getRank)
@@ -642,7 +642,7 @@ public class ItemManager : MonoBehaviour
         //아이콘 인덱스 찾기
         int iconIdx = FindIconIdx((int)ItemName.MoveBack);
 
-        float getAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
+        float getAttackSpeed = (float)character.player.attackSpeed;
         float timeCount = 200 / getAttackSpeed;
 
         switch (getRank)
@@ -689,14 +689,14 @@ public class ItemManager : MonoBehaviour
         //아이콘 인덱스 찾기
         int iconIdx = FindIconIdx((int)ItemName.Booster);
 
-        float getBasicSpeed = (float)character.GetMoveSpeed();
-        float getAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
-        float getAttackRange = (float)character.ReturnCharacterAttackRange();
-        float getAttackPower = (float)character.ReturnCharacterAttackPower();
+        float getBasicSpeed = (float)character.player.moveSpeed;
+        float getAttackSpeed = (float)character.player.attackSpeed;
+        float getAttackRange = (float)character.player.attackRange;
+        float getAttackPower = (float)character.player.attackPower;
 
         float timeCount = 300 / getAttackSpeed;
         float duration = getAttackRange;
-        double speed = getAttackPower;
+        float speed = getAttackPower;
 
         switch (getRank)
         {
@@ -725,12 +725,12 @@ public class ItemManager : MonoBehaviour
         while (!NightManager.Instance.isStageEnd)
         {
             NightSFXManager.Instance.PlayAudioClip(AudioClipName.booster);
-            character.SetMoveSpeed(speed);
+            character.Movement.SetMoveSpeed(speed);
             boosterParent.SetActive(true);
             Debug.Log("AAAAAAAAAAAAAAAAAAAAAA");
             yield return new WaitForSeconds(duration);
             Debug.Log("BBBBBBBBBBBBBBBBBBBBBBBB");
-            character.SetMoveSpeed(getBasicSpeed);
+            character.Movement.SetMoveSpeed(getBasicSpeed);
             boosterParent.SetActive(false);
 
             if (coolTimeImageArr[iconIdx].fillAmount == 0)
@@ -762,7 +762,7 @@ public class ItemManager : MonoBehaviour
                 getAbsorbAttackData = 5;
                 break;
         }
-        character.SetItemAbsorbAttackData(getAbsorbAttackData);
+        character.player.healByHit = getAbsorbAttackData;
     }
 
     void InterceptDroneCoroutine(int getRank)
@@ -779,8 +779,8 @@ public class ItemManager : MonoBehaviour
         interceptDroneParent.GetComponent<InterceptDrone>().coolTimeImage = coolTimeImageArr[iconIdx];
         interceptDroneParent.GetComponent<InterceptDrone>().SetItemRank(getRank);
 
-        float getAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
-        float getAttackRange = (float)character.ReturnCharacterAttackRange();
+        float getAttackSpeed = (float)character.player.attackSpeed;
+        float getAttackRange = (float)character.player.attackRange;
 
         interceptDroneParent.GetComponent<InterceptDrone>().SetInterceptDrone(getAttackRange, getAttackSpeed);
     }

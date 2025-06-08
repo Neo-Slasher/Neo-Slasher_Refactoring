@@ -83,7 +83,7 @@ public class CentryBall : MonoBehaviour
                 attackPowerRate = (float)DataManager.Instance.consumableList.item[45].attackPowerValue;
                 break;
         }
-        projPower = (float)character.ReturnCharacterAttackPower() * attackPowerRate;
+        projPower = (float)character.player.attackPower * attackPowerRate;
     }
 
     //���� �Լ� �� ���� + ������ overlap
@@ -150,9 +150,9 @@ public class CentryBall : MonoBehaviour
     {
         int layerMask = (1 << enemyLayer);
         Collider2D shortestCol = null;
-        detectRadius = (float)character.ReturnCharacterAttackRange() * 15 * 0.01f * attackRangeRate;
+        detectRadius = (float)character.player.attackRange * 15 * 0.01f * attackRangeRate;
         detectRadius += 1.95f;
-        shootTime = 10 / ((float)character.ReturnCharacterAttackSpeed() * attackSpeedRate);
+        shootTime = 10 / ((float)character.player.attackSpeed * attackSpeedRate);
 
         while (!nightManager.isStageEnd)
         { 

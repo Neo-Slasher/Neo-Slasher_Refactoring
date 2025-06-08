@@ -21,31 +21,31 @@ public class Player
     public float earnMoney;
 
     // status
-    public double maxHp;
-    public double curHp;
-    public double attackPower;
-    public double attackSpeed;
-    public double attackRange;
-    public double moveSpeed;
-    public double shieldDuration;
-    public double shieldPoint;
-    public double immuneDuration;
+    public float maxHp;
+    public float curHp;
+    public float attackPower;
+    public float attackSpeed;
+    public float attackRange;
+    public float moveSpeed;
+    public float shieldDuration;
+    public float shieldPoint;
+    public float immuneDuration;
     public int immuneCount;
     public bool dashable;
-    public double dashFreq;
-    public double dashSpeed;
-    public double dashDuration;
-    public double damageReductionRate;
-    public double dealOnMaxHp;
-    public double dealOnCurHp;
-    public double healByHit;
-    public double hpRegen;
+    public float dashFreq;
+    public float dashSpeed;
+    public float dashDuration;
+    public float damageReductionRate;
+    public float dealOnMaxHp;
+    public float dealOnCurHp;
+    public float healByHit;
+    public float hpRegen;
 
     public int shopSlot;
     public int shopMinRank;
     public int shopMaxRank;
     public int dropRank;
-    public double dropRate;
+    public float dropRate;
     public int itemSlot;
 
     // 1~62까지 인덱스를 사용합니다.
@@ -56,12 +56,6 @@ public class Player
 
     public Consumable[] item = new Consumable[3];
 
-
-    // 장비 착용으로 인해 올라가는 능력치
-    public double equipmentAttackPower;
-    public double equipmentAttackSpeed;
-    public double equipmentAttackRange;
-    public double equipmentMoveSpeed;
 
     public Player()
     {
@@ -111,7 +105,6 @@ public class Player
         string json = JsonUtility.ToJson(instance);
         File.WriteAllText(saveFilePath, json);
 
-
         Logger.Log("플레이어 데이터가 저장되었습니다.");
     }
 
@@ -127,7 +120,7 @@ public class Player
         return JsonUtility.FromJson<Player>(savedData);
     }
 
-    public static Player SoftReset(Player player)
+    public static Player Reset(Player player)
     {
         player = new Player();
         return player;

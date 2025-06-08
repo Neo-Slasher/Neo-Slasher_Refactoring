@@ -50,8 +50,8 @@ public class InterceptDrone : MonoBehaviour
 
     void SetInterceptDroneData()
     {
-        float characterAttackSpeed = (float)character.ReturnCharacterAttackSpeed();
-        float characterAttackRange = (float)character.ReturnCharacterAttackRange();
+        float characterAttackSpeed = (float)character.player.attackSpeed;
+        float characterAttackRange = (float)character.player.attackRange;
 
         switch (itemRank)
         {

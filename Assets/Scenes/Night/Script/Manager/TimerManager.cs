@@ -34,6 +34,9 @@ public class TimerManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        // 시간을 활용하는 특성(초전도 등)이 Start에서 timerCount를 참조하므로 Awake에서 시간을 세팅
+        timerCount = startTime;
     }
 
 
@@ -48,7 +51,6 @@ public class TimerManager : MonoBehaviour
     void StartTimer()
     {
         StopTimer();
-        timerCount = startTime;
         timerCoroutine = StartCoroutine(TimerCoroutine());
     }
 

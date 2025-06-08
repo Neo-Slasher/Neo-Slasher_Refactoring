@@ -18,18 +18,18 @@ public enum MonsterType
 public class Monster
 {
     public int index;
-    public double width;
-    public double length;
+    public float width;
+    public float length;
 
-    public double maxHp;
-    public double curHp;
-    public double moveSpeed;
-    public double attackPower;
+    public float maxHp;
+    public float curHp;
+    public float moveSpeed;
+    public float attackPower;
 
     public bool dashAble;
-    public double dashFreq;
-    public double dashSpeed;
-    public double dashDuration;
+    public float dashFreq;
+    public float dashSpeed;
+    public float dashDuration;
 
     public bool isElite;
     public bool isEnforce;

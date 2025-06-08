@@ -1578,8 +1578,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0539c8cdd342342924a8a70ceb7c6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nightManager: {fileID: 1563751325}
-  nightSFXManager: {fileID: 1657796862}
   characterParent: {fileID: 182467907}
   character: {fileID: 889106807}
   hitBox: {fileID: 1410340655}
@@ -2447,6 +2445,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: HpBar
       objectReference: {fileID: 0}
+    - target: {fileID: 7809016767407216826, guid: 1cad304058f6c06409a437daa96b7925, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809016767407216826, guid: 1cad304058f6c06409a437daa96b7925, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7809016767407216826, guid: 1cad304058f6c06409a437daa96b7925, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777833785370950353, guid: 1cad304058f6c06409a437daa96b7925, type: 3}
+      propertyPath: CharacterHealth
+      value: 
+      objectReference: {fileID: 889106821}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3136,11 +3150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ae91dd28d2a7640a2ff234a6995e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nightManager: {fileID: 1563751325}
   character: {fileID: 889106807}
   joyStick: {fileID: 1042171535}
   handle: {fileID: 722415061}
-  joyStickRecTransform: {fileID: 1042171536}
+  joyStickRectTransform: {fileID: 0}
   joyStickSlider: {fileID: 1712519449}
   joyStickTransform: {fileID: 1042171536}
   joyStickRange: 100
@@ -3363,58 +3376,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683043826}
   m_CullTransparentMesh: 1
---- !u!1 &701504054
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 701504055}
-  - component: {fileID: 701504056}
-  m_Layer: 0
-  m_Name: TraitManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &701504055
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701504054}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1501833780}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &701504056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701504054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dde9e9fbced5d34c9f3ecc786146b6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nightManager: {fileID: 1563751325}
-  timerManager: {fileID: 1924763514}
-  character: {fileID: 889106807}
-  enemyCloneParent: {fileID: 562037683}
-  activeTraitList: []
-  traitEffectArr:
-  - {fileID: 5155332618958625825, guid: 0786a2b26bace7141855c2d65cb63181, type: 3}
-  - {fileID: 249910879997566390, guid: b846d2e64fb978f4eb94f78325307ed5, type: 3}
 --- !u!1 &703675890
 GameObject:
   m_ObjectHideFlags: 0
@@ -4013,6 +3974,75 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3514429690322398365, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
   m_PrefabInstance: {fileID: 3514429690515168742}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &889106819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889106806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a3415d570d6ed141b262bbdeaf48267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &889106820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889106806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9fb31723cd3b9b45859cae6e009a099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitBox: {fileID: 1410340655}
+  canChange: 0
+  isAbsorb: 0
+  isDoubleAttack: 0
+--- !u!114 &889106821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889106806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 606932667480251499a97f88d3c5dd92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &889106822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889106806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14661e28f617a9f40b18647ba89bacb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &889106823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889106806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dde9e9fbced5d34c9f3ecc786146b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyCloneParent: {fileID: 562037683}
+  activeTraitList: []
+  traitPrefab:
+  - {fileID: 5155332618958625825, guid: 0786a2b26bace7141855c2d65cb63181, type: 3}
+  - {fileID: 249910879997566390, guid: b846d2e64fb978f4eb94f78325307ed5, type: 3}
 --- !u!1 &918534981
 GameObject:
   m_ObjectHideFlags: 0
@@ -6727,7 +6757,6 @@ Transform:
   m_Children:
   - {fileID: 1563751324}
   - {fileID: 1924763513}
-  - {fileID: 701504055}
   - {fileID: 403044716}
   - {fileID: 1657796861}
   m_Father: {fileID: 0}
@@ -7123,9 +7152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28faaee7d63f8b48b2ed96d53c162b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemManager: {fileID: 403044717}
-  timerManager: {fileID: 1924763514}
-  nightSFXManager: {fileID: 1657796862}
   backGround: {fileID: 2135326779}
   endPopup: {fileID: 973832368}
   itemChangePopup: {fileID: 1778064153}
@@ -8839,9 +8865,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dced74d3cd4a84344937205ce157a0d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nightManager: {fileID: 1563751325}
   timerText: {fileID: 2043238922}
-  startTime: 30
+  startTime: 60
 --- !u!1 &2001496777
 GameObject:
   m_ObjectHideFlags: 0
@@ -10159,7 +10184,22 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3514429690322398352, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 889106819}
+    - targetCorrespondingSourceObject: {fileID: 3514429690322398352, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      insertIndex: 6
+      addedObject: {fileID: 889106820}
+    - targetCorrespondingSourceObject: {fileID: 3514429690322398352, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      insertIndex: 7
+      addedObject: {fileID: 889106821}
+    - targetCorrespondingSourceObject: {fileID: 3514429690322398352, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      insertIndex: 8
+      addedObject: {fileID: 889106822}
+    - targetCorrespondingSourceObject: {fileID: 3514429690322398352, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
+      insertIndex: 9
+      addedObject: {fileID: 889106823}
   m_SourcePrefab: {fileID: 100100000, guid: 090bbac8e3bc640e68f62f99fa9fd641, type: 3}
 --- !u!1001 &7279721334905702560
 PrefabInstance:
@@ -10177,6 +10217,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1563751325}
+    - target: {fileID: 881917250, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickExitBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 881917250, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: NightManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 4976701938081278846, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
