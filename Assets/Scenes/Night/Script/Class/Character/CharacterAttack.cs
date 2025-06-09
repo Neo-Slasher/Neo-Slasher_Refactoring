@@ -140,6 +140,10 @@ public class CharacterAttack : MonoBehaviour
         if (hitBox == null) return;
 
         hitBox.SetActive(true);
+
+        // attack range 적용 코드
+        hitBox.transform.localScale = new Vector3(character.player.attackRange / 10, 1.5f, 1);
+        
         CancelInvoke(nameof(DeactivateHitBox));
         Invoke(nameof(DeactivateHitBox), activeTime);
 

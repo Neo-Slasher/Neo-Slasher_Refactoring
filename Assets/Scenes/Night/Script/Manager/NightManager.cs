@@ -41,6 +41,10 @@ public class NightManager : MonoBehaviour
     public int killCount = 0;
     public int killNormal = 0;
     public int killElite = 0;
+
+    // 밤에서 몬스터가 죽을 시 발생하는 이벤트
+    public event System.Action OnMonsterDie;
+
     private void Awake()
     {
         if (Instance == null)
@@ -455,8 +459,9 @@ public class NightManager : MonoBehaviour
 
     public void UpdateKillCount()
     {
+        OnMonsterDie?.Invoke();
         killCount++;
-        ItemManager.Instance.ChargingReaperGauge();  //차징 리퍼 쓰면 동작
+        //ItemManager.Instance.ChargingReaperGauge();  //차징 리퍼 쓰면 동작
     }
 
 
@@ -495,5 +500,13 @@ public class NightManager : MonoBehaviour
 
         SetEndPopUp();
         endPopup.SetActive(true);
+    }
+
+
+
+    // 테스트용 함수
+    public void OnClickTestButton()
+    {
+        GameManager.Instance.player.item[0] = DataManager.Instance.consumableList.item[0];
     }
 }

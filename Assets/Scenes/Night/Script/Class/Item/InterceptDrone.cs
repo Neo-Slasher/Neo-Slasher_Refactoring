@@ -154,7 +154,7 @@ public class InterceptDrone : MonoBehaviour
     void InterceptProj(Collider2D getCol)
     {
         getProjScript = getCol.GetComponent<Projectile>();
-        getProjScript.SetProjPos();
+        getProjScript.SetPosition();
     }
 
     public IEnumerator SetCoolTime()

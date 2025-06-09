@@ -148,7 +148,7 @@ public class Enemy : MonoBehaviour
         {
             if (collision.name == "ChargingReaperImage")
             {
-                damage = collision.transform.parent.GetComponent<ChargingReaper>().reaperAttackDamaege;
+                damage = collision.transform.parent.GetComponent<ChargingReaper>().reaperAttackDamege;
             }
         }
         else
@@ -245,6 +245,8 @@ public class Enemy : MonoBehaviour
     {
         NightManager nightManager = NightManager.Instance;
         if (nightManager == null) return;
+
+
 
         nightManager.UpdateKillCount();
 

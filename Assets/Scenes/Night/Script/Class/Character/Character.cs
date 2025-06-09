@@ -73,8 +73,10 @@ public class Character : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //캐릭터 데미지 받을 때
-        CharacterDamaged(collision);
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            CharacterDamaged(collision);
+        }
     }
 
     public void CharacterDamaged(Collider2D enemyCollision)

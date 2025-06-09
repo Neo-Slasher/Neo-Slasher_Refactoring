@@ -1,227 +1,208 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using static UnityEngine.GraphicsBuffer;
 
 public class CentryBall : MonoBehaviour
 {
-    [SerializeField]
-    NightManager nightManager;
-    [SerializeField]
-    NightSFXManager nightSFXManager;
-    [SerializeField]
-    Character character;
-    [SerializeField]
-    GameObject projectileObject;
-    [SerializeField]
-    GameObject[] projectilesPulling;
-    [SerializeField]
-    GameObject sparkImage;      //�߻� �̹���
-    [SerializeField]
-    GameObject centryBallImage;
-    int pullingScale = 100;
-    int nowPullingIndex = 0;
+    [SerializeField] private Character character;
+    [SerializeField] private GameObject projectileObject;
 
-    int itemRank;
-    float attackRangeRate;
-    float attackSpeedRate;
-    float attackPowerRate;
+    [SerializeField] private GameObject sparkImage;
+    private Vector3 sparkOffset; // 초기 오프셋
 
-    Vector3 watchDir = Vector3.zero;
-    bool isShoot = false;
-    bool isStop = false;
+    // Object Pooling
+    [SerializeField] private GameObject[] projectilePool;
+    const int POOL_SCALE = 100;
+    private int currentPoolIndex = 0;
 
-    LayerMask enemyLayer;
-    [SerializeField]
-    float detectRadius;
-    [SerializeField]
-    float shootTime;
-    [SerializeField]
-    float projPower;
+    private float attackRangeRate;
+    private float attackSpeedRate;
+    private float attackPowerRate;
 
-    private void Awake()
+    private Vector3 watchDirection = Vector3.zero;
+
+    private bool isStop = false;
+
+    [SerializeField] private float detectRadius;
+    [SerializeField] private float shootTime;
+    [SerializeField] private float projPower;
+
+    void Awake()
     {
-        nightManager = GameObject.Find("NightManager").GetComponent<NightManager>();
-        nightSFXManager = GameObject.Find("NightSFXManager").GetComponent<NightSFXManager>();
         character = GameObject.Find("CharacterImage").GetComponent<Character>();
     }
 
-    private void Start()
+
+    void Start()
     {
-        SetCentryBallData();
+
+        // sparkImage의 초기 위치 (CentryBall 중심 기준)
+        sparkOffset = sparkImage.transform.localPosition;
+
+        currentPoolIndex = 0;
+    }
+
+    public void InitializeCentryBall(Consumable item)
+    {
+        SetCentryBallData(item);
+        SetTransform();
+        transform.SetParent(character.transform);
         SetProjectile();
     }
 
-    public void SetItemRank(int getRank)
+    // 이거 이벤트로 업데이트 해야되지 않을까?
+    // 또는 투사체 발사 시 마다 공격력 업데이트
+    private void SetCentryBallData(Consumable item)
     {
-        itemRank = getRank;
+        attackPowerRate = item.attackPowerValue;
+        attackSpeedRate = item.attackSpeedValue;
+        attackRangeRate = item.attackRangeValue;
     }
 
-    void SetCentryBallData()
+    private void SetTransform()
     {
-        switch(itemRank)
+        detectRadius = (character.player.attackRange * attackRangeRate) * 0.5f;
+
+        Vector3 centryBallPos = character.transform.position + new Vector3(0, detectRadius, 0);
+        transform.localPosition = centryBallPos;
+    }
+
+    private void SetProjectile()
+    {
+        projectilePool = new GameObject[POOL_SCALE];
+
+        for (int i = 0; i < POOL_SCALE; i++)
         {
-            case 0:
-                attackRangeRate = (float)DataManager.Instance.consumableList.item[0].attackRangeValue;
-                attackSpeedRate = (float)DataManager.Instance.consumableList.item[0].attackSpeedValue;
-                attackPowerRate = (float)DataManager.Instance.consumableList.item[0].attackPowerValue;
-                break;
-            case 1:
-                attackRangeRate = (float)DataManager.Instance.consumableList.item[15].attackRangeValue;
-                attackSpeedRate = (float)DataManager.Instance.consumableList.item[15].attackSpeedValue;
-                attackPowerRate = (float)DataManager.Instance.consumableList.item[15].attackPowerValue;
-                break;
-            case 2:
-                attackRangeRate = (float)DataManager.Instance.consumableList.item[30].attackRangeValue;
-                attackSpeedRate = (float)DataManager.Instance.consumableList.item[30].attackSpeedValue;
-                attackPowerRate = (float)DataManager.Instance.consumableList.item[30].attackPowerValue;
-                break;
-            case 3:
-                attackRangeRate = (float)DataManager.Instance.consumableList.item[45].attackRangeValue;
-                attackSpeedRate = (float)DataManager.Instance.consumableList.item[45].attackSpeedValue;
-                attackPowerRate = (float)DataManager.Instance.consumableList.item[45].attackPowerValue;
-                break;
-        }
-        projPower = (float)character.player.attackPower * attackPowerRate;
-    }
+            GameObject projectile = Instantiate(projectileObject, transform);
+            projectile.GetComponent<Projectile>().isEnemy = false;
+            projectile.transform.SetParent(transform);
 
-    //���� �Լ� �� ���� + ������ overlap
-    void SetProjectile()
-    {
-        projectilesPulling = new GameObject[pullingScale];
-
-        //����ü �غ�
-        for (int i = 0; i < pullingScale; i++)
-        {
-            GameObject nowProj = Instantiate(projectileObject, this.transform);
-            nowProj.GetComponent<Projectile>().isEnemy = false;
-            nowProj.GetComponent<Projectile>().projPower = projPower;
-            nowProj.transform.SetParent(this.transform.GetChild(1));
-            nowProj.transform.position = centryBallImage.transform.position;
-            nowProj.SetActive(false);
-            projectilesPulling[i] = nowProj;
-        }
-        DetectEnemy();
-    }
-
-    void ShootProjectile(Collider2D getCol)
-    {
-        StartCoroutine(ShootProjectileCoroutine(getCol));
-    }
-
-    IEnumerator ShootProjectileCoroutine(Collider2D getCol)
-    {
-        if (!isShoot)
-        {
-            nightSFXManager.PlayAudioClip(AudioClipName.centryBall);
-            StartCoroutine(CentryBallShootAnimation(getCol));
-            StartCoroutine(StopCentryBallCoroutine());
-
-            isShoot = true;
-            projectilesPulling[nowPullingIndex].transform.position = this.transform.GetChild(0).position;
-            projectilesPulling[nowPullingIndex].SetActive(true);
-            float angle = Mathf.Atan2(watchDir.y, watchDir.x) * Mathf.Rad2Deg;
-            projectilesPulling[nowPullingIndex].transform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
-
-            Vector3 moveDir = getCol.transform.position - centryBallImage.transform.position;
-            
-            projectilesPulling[nowPullingIndex].GetComponent<Rigidbody2D>().linearVelocity
-                = moveDir.normalized * 10;
-
-            yield return new WaitForSeconds(shootTime);
-
-            if (nowPullingIndex < 30)
-                nowPullingIndex++;
-            else
-                nowPullingIndex = 0;
-
-            isShoot = false;
+            projectile.SetActive(false);
+            projectilePool[i] = projectile;
         }
     }
 
-    void DetectEnemy()
+    public void ActiveCentryBall()
     {
-        enemyLayer = LayerMask.NameToLayer("Enemy");
-        StartCoroutine(DetectEnemyCoroutine());
+        StartCoroutine(DetectEnemyAndShoot());
+        StartCoroutine(Rotate());
     }
 
-    IEnumerator DetectEnemyCoroutine()
+    private IEnumerator DetectEnemyAndShoot()
     {
-        int layerMask = (1 << enemyLayer);
-        Collider2D shortestCol = null;
-        detectRadius = (float)character.player.attackRange * 15 * 0.01f * attackRangeRate;
-        detectRadius += 1.95f;
-        shootTime = 10 / ((float)character.player.attackSpeed * attackSpeedRate);
+        while (!NightManager.Instance.isStageEnd)
+        {
+            // TODO: 가능하다면 attackRange, attackSpeed가 변경될 때만 재계산
+            projPower = character.player.attackPower * attackPowerRate;
+            detectRadius = (character.player.attackRange * attackRangeRate) * 0.5f;
+            shootTime = 10 / (character.player.attackSpeed * attackSpeedRate);
 
-        while (!nightManager.isStageEnd)
-        { 
-            Collider2D[] colArr = Physics2D.OverlapCircleAll(character.transform.position, detectRadius, layerMask);
-            
-            if (colArr.Length > 0)
-            {
-                //����ü �߻�
-                shortestCol = SetShortestDistanceCol(colArr);
-                ShootProjectile(shortestCol);
-            }
+            Collider2D shortestCol = SetShortestDistanceCol();
+            if (shortestCol != null)
+                StartCoroutine(ShootProjectileCoroutine(shortestCol));
 
             yield return new WaitForSeconds(shootTime);
         }
     }
 
-    Collider2D SetShortestDistanceCol(Collider2D[] getColArr)
+    private Collider2D SetShortestDistanceCol()
     {
-        Collider2D shortestDistanceCol = getColArr[0]; 
-        float shortestDistance = (getColArr[0].transform.position - character.transform.position).magnitude;
-        float nowDistance;
+        LayerMask enemyLayer = LayerMask.NameToLayer("Enemy");
+        Collider2D[] colArr = Physics2D.OverlapCircleAll(character.transform.position, detectRadius, (1 << enemyLayer));
+        if (colArr == null || colArr.Length == 0)
+            return null;
 
-        for(int i =1; i< getColArr.Length; i++)
+        Collider2D shortestDistanceCol = colArr[0];
+
+        float shortestDistance = (colArr[0].transform.position - character.transform.position).sqrMagnitude;
+
+        for (int i = 1; i < colArr.Length; i++)
         {
-            nowDistance = (getColArr[i].transform.position - character.transform.position).magnitude;
-            if ( nowDistance < shortestDistance)
+            float currentDistance = (colArr[i].transform.position - character.transform.position).sqrMagnitude;
+            if (currentDistance < shortestDistance)
             {
-                shortestDistanceCol = getColArr[i];
-                shortestDistance = nowDistance;
+                shortestDistanceCol = colArr[i];
+                shortestDistance = currentDistance;
             }
         }
-        
+
         return shortestDistanceCol;
-
     }
 
-    IEnumerator CentryBallShootAnimation(Collider2D getCol)
+    private IEnumerator ShootProjectileCoroutine(Collider2D target)
     {
-        SetCentryBallWatchEnemy(getCol);
+        NightSFXManager.Instance.PlayAudioClip(AudioClipName.centryBall);
+        StartCoroutine(CentryBallShootAnimation(target));
+
+        // 필요한가? 발사 주기가 0.2f 보다 짧으면?
+        yield return new WaitForSeconds(0.2f);
+
+        Logger.Log($"current pool index: {currentPoolIndex}");
+        GameObject projectile = projectilePool[currentPoolIndex];
+        projectile.transform.SetParent(null); // 부모 분리 TODO: 발사체 사라질 때 부모 세팅
+        projectile.transform.position = transform.position;
+        projectile.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+
+        projectile.SetActive(true);
+        projectile.GetComponent<CentryBallProjectile>().projPower = projPower;
+        projectile.transform.GetComponent<CentryBallProjectile>().Shoot(target.transform);
+
+        currentPoolIndex = (currentPoolIndex + 1) % POOL_SCALE;
+    }
+
+    private IEnumerator CentryBallShootAnimation(Collider2D enemy)
+    {
+        SetCentryBallWatchEnemy(enemy);
         sparkImage.SetActive(true);
 
         yield return new WaitForSeconds(0.3f);
         sparkImage.SetActive(false);
     }
 
-    //�� �� �ٶ󺸴� �Լ�
-    void SetCentryBallWatchEnemy(Collider2D getCol)
+    private void SetCentryBallWatchEnemy(Collider2D enemy)
     {
-        Transform enemyTransform = getCol.transform;
-        float angle;
+        if (enemy == null) return;
 
-        watchDir = enemyTransform.position - centryBallImage.transform.position;
+        watchDirection = enemy.transform.position - transform.position;
+        float angle = Mathf.Atan2(watchDirection.y, watchDirection.x) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
 
-        angle = Mathf.Atan2(watchDir.y, watchDir.x) * Mathf.Rad2Deg;
-        centryBallImage.transform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
+        // CentryBallSprite 회전
+        Transform centryBallSprite = transform.Find("CentryBallSprite");
+        if (centryBallSprite != null)
+            centryBallSprite.rotation = targetRotation;
+
+        // sparkImage 위치 및 회전 업데이트
+        if (sparkImage != null)
+        {
+            // 오프셋을 회전시킨 새 위치 계산
+            Vector3 rotatedOffset = targetRotation * sparkOffset;
+            sparkImage.transform.position = transform.position + rotatedOffset;
+            sparkImage.transform.rotation = targetRotation;
+        }
     }
 
-    public bool StopCentryBall()
+    private IEnumerator Rotate()
     {
-        if (isStop)
-            return true;
-        else
-            return false;
+        float centryBallRotateSpeed = 0.2f;
+        while (!NightManager.Instance.isStageEnd)
+        {
+            if (Time.timeScale != 0)
+            {
+                if (!isStop)
+                {
+                    transform.RotateAround(character.transform.position, Vector3.back, centryBallRotateSpeed);
+
+                    transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+                }
+            }
+            yield return null;
+        }
     }
 
-    IEnumerator StopCentryBallCoroutine()
+    private void OnDrawGizmos()
     {
-        isStop = true;
-        yield return new WaitForSeconds(0.2f);
-        isStop = false;
+        // 적 탐지 반경
+        Gizmos.color = Color.azure;
+        Gizmos.DrawWireSphere(character.transform.position, detectRadius);
     }
 }
