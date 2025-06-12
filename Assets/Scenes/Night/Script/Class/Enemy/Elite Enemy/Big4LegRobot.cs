@@ -13,6 +13,9 @@ public class Big4LegRobot : EliteEnemy
             return;
         }
         SetEnemyStatus();
+
+
+        SetProjectile();
     }
 }
 

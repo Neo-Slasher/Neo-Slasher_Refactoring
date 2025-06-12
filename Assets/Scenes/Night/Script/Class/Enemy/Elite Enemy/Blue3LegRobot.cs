@@ -13,5 +13,8 @@ public class Blue3LegRobot : EliteEnemy
             return;
         }
         SetEnemyStatus();
+
+
+        SetProjectile();
     }
 }

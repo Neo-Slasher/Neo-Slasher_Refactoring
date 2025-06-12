@@ -5,7 +5,7 @@ public class Enemy : MonoBehaviour
 {
     public Monster stats;
 
-    [SerializeField] protected GameObject character; // 플레이어 오브젝트
+    [SerializeField] protected GameObject characterObj; // 플레이어 오브젝트
 
 
     protected Rigidbody2D enemyRigid;
@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Start()
     {
-        character = GameObject.FindWithTag("Player").transform.Find("CharacterImage").gameObject;
+        characterObj = GameObject.FindWithTag("Player").transform.Find("CharacterImage").gameObject;
         EnemyMove();
     }
 
@@ -67,15 +67,15 @@ public class Enemy : MonoBehaviour
                 yield return new WaitWhile(() => (isStop || isBeingDragged || isKnockBack));
             }
 
-            Vector3 playerPosition = character.transform.position;
+            Vector3 playerPosition = characterObj.transform.position;
             moveDir = playerPosition - transform.position;
 
             float direction = moveDir.x > 0 ? -1f : 1f;
             if (transform.localScale.x != direction)
                 transform.localScale = new Vector3(direction, 1, 1);
 
-            float moveSpeed = SetMoveSpeed(stats.moveSpeed);
-            enemyRigid.linearVelocity = moveDir.normalized * moveSpeed;
+            
+            enemyRigid.linearVelocity = moveDir.normalized * SetMoveSpeed();
 
             yield return null;
         }
@@ -85,9 +85,9 @@ public class Enemy : MonoBehaviour
     }
 
     // XXX: 저런 식이 왜 나온걸까?
-    protected float SetMoveSpeed(double getMoveSpeed)
+    protected float SetMoveSpeed()
     {
-        return ((float)getMoveSpeed * 25) / 100;
+        return stats.moveSpeed / 4;
     }
 
 
@@ -158,7 +158,7 @@ public class Enemy : MonoBehaviour
             return;
 
         //피흡 있으면 회복 (이것도 캐릭터로 이전할 것)
-        character.GetComponent<CharacterHealth>().HealByHit();
+        characterObj.GetComponent<CharacterHealth>().HealByHit();
 
         Damaged(damage);
     }
@@ -186,7 +186,7 @@ public class Enemy : MonoBehaviour
     
     private void EnemyKnockback()
     {
-        if (character.GetComponent<CharacterAttack>().isMoveBackOn && !stats.isResist)
+        if (characterObj.GetComponent<CharacterAttack>().isMoveBackOn && !stats.isResist)
         {
             if (knockbackCoroutine != null)
                 StopCoroutine(knockbackCoroutine);
@@ -201,7 +201,7 @@ public class Enemy : MonoBehaviour
         const float KNOCKBACK_SPEED = 5f;      // 넉백 속도
 
         Vector3 nowVelocity = enemyRigid.linearVelocity;
-        moveDir = (transform.position - character.transform.position).normalized;
+        moveDir = (transform.position - characterObj.transform.position).normalized;
 
         // 투명도 임시 효과
         Color nowColor = enemyRenderer.color;
@@ -351,9 +351,9 @@ public class Enemy : MonoBehaviour
 
         Vector2 nowVelocity = enemyRigid.linearVelocity;
 
-        while ((character.transform.position - transform.position).magnitude >= minDistance)
+        while ((characterObj.transform.position - transform.position).magnitude >= minDistance)
         {
-            Vector2 moveDir = (character.transform.position - transform.position).normalized;
+            Vector2 moveDir = (characterObj.transform.position - transform.position).normalized;
             enemyRigid.AddForce(moveDir * forceMagnitude, ForceMode2D.Force);
             yield return null;
         }
@@ -378,9 +378,9 @@ public class Enemy : MonoBehaviour
 
         Vector3 nowVelocity = enemyRigid.linearVelocity;
 
-        while ((character.transform.position - transform.position).magnitude <= maxDistance)
+        while ((characterObj.transform.position - transform.position).magnitude <= maxDistance)
         {
-            Vector2 moveDir = (transform.position - character.transform.position).normalized;
+            Vector2 moveDir = (transform.position - characterObj.transform.position).normalized;
             enemyRigid.AddForce(moveDir * forceMagnitude, ForceMode2D.Force);
             yield return null;
         }

@@ -367,12 +367,13 @@ MonoBehaviour:
     soundIndex: 0
     type: 0
   character: {fileID: 0}
-  isSlow: 0
   isStop: 0
   isAttacked: 0
   isBeingDragged: 0
+  isKnockBack: 0
   damageCooldown: 0.2
   projectileObject: {fileID: 0}
   projectilesPulling: []
   nowPullingIndex: 0
-  detectRadius: 0
+  shootRange: 20
+  dashRange: 10

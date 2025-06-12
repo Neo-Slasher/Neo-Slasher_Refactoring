@@ -21,17 +21,12 @@ public class TouchScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     void Start()
     {
-        float startJoyStickSize = GameManager.Instance.setting.joystickSize / 100;
-        joyStickSizeVector = new Vector3(startJoyStickSize, startJoyStickSize, startJoyStickSize);
+        float startJoyStickSize = GameManager.Instance.setting.joystickSize;
+        joyStickSizeVector = Vector3.one * startJoyStickSize * 2;
         joyStickTransform.localScale = joyStickSizeVector;
 
         joyStickRectTransform = handle.GetComponent<RectTransform>();
         moveVector = Vector3.zero;
-    }
-
-    private void InitializeJoystickSize()
-    {
-
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -82,7 +77,7 @@ public class TouchScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void SetJoyStickSize()
     {
-        joyStickSizeVector = new Vector3(joyStickSlider.value, joyStickSlider.value, joyStickSlider.value);
+        joyStickSizeVector = Vector3.one * joyStickSlider.value * 2;
         joyStickTransform.localScale = joyStickSizeVector;
 
         int joyStickSize = (int)(joyStickSlider.value * 100);

@@ -1607,21 +1607,21 @@ MonoBehaviour:
   - {fileID: 1411298106}
   itemIconArr:
   - {fileID: 0}
-  - {fileID: 21300000, guid: ee654467a16a06e4caba57a50b66c0d7, type: 3}
-  - {fileID: 21300000, guid: eae37026def6902428bfce96959094f2, type: 3}
-  - {fileID: 21300000, guid: b107fc8a1188d5542b5b9a700a7b732c, type: 3}
-  - {fileID: 21300000, guid: 8ff0a635e9399ab41940f7b2ed605b2f, type: 3}
-  - {fileID: 21300000, guid: 27bb45733233978409ff9420d63632cc, type: 3}
-  - {fileID: 21300000, guid: b040d88cd24c6484cb941c25b04469d9, type: 3}
-  - {fileID: 21300000, guid: f4dff42bfe3bc3942a5b21fec7df301e, type: 3}
-  - {fileID: 21300000, guid: 03e78ccaf19aff34a97f59502db733a5, type: 3}
-  - {fileID: 21300000, guid: c0c6f0f2ebd44024592eea881b59e7fb, type: 3}
-  - {fileID: 21300000, guid: 0ab8069f8475de94dbdf077b04ad83c6, type: 3}
-  - {fileID: 21300000, guid: 54ca583485711c942ac1aa7c9f3f4292, type: 3}
+  - {fileID: 21300000, guid: 041c0afc8cbd9904082012661e16de19, type: 3}
+  - {fileID: 21300000, guid: a1994b287c7c7e44c9ddb564475f292d, type: 3}
+  - {fileID: 21300000, guid: 23a3b004d85913646aac0ab04e3ce5de, type: 3}
+  - {fileID: 21300000, guid: 01b9dd3ad0e8a37429ce4c192fca8550, type: 3}
+  - {fileID: 21300000, guid: 2a09729967d2aa44f9e31b0711c67809, type: 3}
+  - {fileID: 21300000, guid: 729948c6554f084488350928f0feb472, type: 3}
+  - {fileID: 21300000, guid: 6bb49c6c85fe061449b3a960a808cc53, type: 3}
+  - {fileID: 21300000, guid: 7f4b866c1b2667d4c802dbec9ad3e913, type: 3}
+  - {fileID: 21300000, guid: f1d13525a41a07a429214ad49b13898f, type: 3}
+  - {fileID: 21300000, guid: 9c89e2ae53afe85468b740441c6befa6, type: 3}
+  - {fileID: 21300000, guid: c95c21d59f7eafa4fa4a2e05716e3a66, type: 3}
   - {fileID: 21300000, guid: e9b2428560e78a748a00dc9e4bebb709, type: 3}
-  - {fileID: 21300000, guid: a8ef6b221b9971b4fa8661dcbf6df57a, type: 3}
-  - {fileID: 21300000, guid: 12aa1459bb90809459962470ed993602, type: 3}
-  - {fileID: 21300000, guid: ae5cef08d23560746916ec6d0dd52e7a, type: 3}
+  - {fileID: 21300000, guid: 63e948ad99d589f4caf930b67e170bc8, type: 3}
+  - {fileID: 21300000, guid: f229e7d83d3b41549aa58262d1056717, type: 3}
+  - {fileID: 21300000, guid: 7a57c1370861fe34ea0a4f56f8c97b00, type: 3}
   coolTimeImageArr:
   - {fileID: 1485578849}
   - {fileID: 326300860}
@@ -10368,6 +10368,34 @@ PrefabInstance:
     - target: {fileID: 4976701939387501820, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976701939617286484, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976701939617286484, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976701939617286484, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 678614975}
+    - target: {fileID: 4976701939617286484, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976701939617286484, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetJoyStickSize
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976701939617286484, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TouchScreen, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976701939617286484, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 4976701939647600451, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
       propertyPath: m_AnchorMax.x

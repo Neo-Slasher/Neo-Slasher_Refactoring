@@ -354,29 +354,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d97734a0a3fc1bb4facca435d0250970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData:
-    monIdx: 0
-    monWidth: 0
-    monLength: 0
-    hitPointMax: 0
-    hitPoint: 0
+  stats:
+    index: 0
+    width: 0
+    length: 0
+    maxHp: 0
+    curHp: 0
     moveSpeed: 0
     attackPower: 0
     dashAble: 0
     dashFreq: 0
     dashSpeed: 0
     dashDuration: 0
-    monElite: 0
-    monEnforce: 0
-    monResist: 0
-    monKnockback: 0
-    monProj: 0
-  player: {fileID: 0}
-  isStageEnd: 0
+    isElite: 0
+    isEnforce: 0
+    isResist: 0
+    canKnockback: 0
+    canProj: 0
+    imageIndex: 0
+    soundIndex: 0
+    type: 0
+  character: {fileID: 0}
   isStop: 0
   isAttacked: 0
-  isSlow: 0
-  projectileObject: {fileID: 0}
+  isBeingDragged: 0
+  isKnockBack: 0
+  damageCooldown: 0.2
+  projectileObject: {fileID: 4958739518019589140, guid: 0c25b2f56781aa9449a1acf9f07c6693, type: 3}
   projectilesPulling: []
   nowPullingIndex: 0
-  detectRadius: 0
+  shootRange: 15
+  dashRange: 10
