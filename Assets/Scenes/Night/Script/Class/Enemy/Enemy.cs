@@ -17,13 +17,13 @@ public class Enemy : MonoBehaviour
 
     protected Vector3 moveDir;
 
-    public bool isSlow = false;
     protected bool isStageEnd = false; // true라면 이동을 멈춤
     public bool isStop = false;        // 오브젝트 움직임 제어용
     public bool isAttacked = false;    // 공격 시 2초간 true
 
 
     public bool isBeingDragged = false;
+    public bool isKnockBack = false;
 
     public float damageCooldown = 0.2f;    // 피격 효과 시간
 
@@ -61,10 +61,10 @@ public class Enemy : MonoBehaviour
     {
         while (!isStageEnd)
         {
-            while (isStop || isBeingDragged)
+            if (isStop || isBeingDragged || isKnockBack)
             {
                 enemyRigid.linearVelocity = Vector3.zero;
-                yield return null;
+                yield return new WaitWhile(() => (isStop || isBeingDragged || isKnockBack));
             }
 
             Vector3 playerPosition = character.transform.position;
@@ -100,10 +100,7 @@ public class Enemy : MonoBehaviour
 
 
 
-    // TODO: 몬스터가 닿은 오브젝트는
-    // 1. 몬스터가 피격당하거나 (현재는 피격만 구현되어 있음)
-    // 2. 몬스터가 공격하거나(피격 로직은 피격 오브젝트에서 담당)
-    // 3. 무시해도 되는 오브젝트이거나
+    // 몬스터가 피격
     private void OnTriggerEnter2D(Collider2D collision)
     {
         EnemyDamaged(collision);
@@ -117,7 +114,7 @@ public class Enemy : MonoBehaviour
         {
             // TODO: 나중에 리팩토링 할 일이 생기면 함수로 뺄 것
             Character character = collision.gameObject.GetComponent<HitBox>().character;
-            
+
             // 기본 데미지
             if (character.player.attackPower > 0)
                 damage += character.player.attackPower;
@@ -135,6 +132,7 @@ public class Enemy : MonoBehaviour
             {
                 damage += stats.curHp * dealOnHp;
             }
+
             collision.gameObject.GetComponent<HitBox>().isAttacked = true;
         }
         else if (collision.CompareTag("Projectile"))
@@ -161,17 +159,8 @@ public class Enemy : MonoBehaviour
 
         //피흡 있으면 회복 (이것도 캐릭터로 이전할 것)
         character.GetComponent<CharacterHealth>().HealByHit();
-        EnemyKnockback();
 
-        if (stats.curHp > damage)
-        {
-            StartCoroutine(EnemyDamagedEffectCoroutine());
-            stats.curHp -= damage;
-        }
-        else
-        {
-            Die();
-        }
+        Damaged(damage);
     }
 
     IEnumerator EnemyDamagedEffectCoroutine()
@@ -194,46 +183,52 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    
     private void EnemyKnockback()
     {
-        if (character.GetComponent<Character>().isMoveBackOn && !stats.isResist)
+        if (character.GetComponent<CharacterAttack>().isMoveBackOn && !stats.isResist)
         {
-            isStop = true;
-            Vector3 start = transform.position;
-
             if (knockbackCoroutine != null)
                 StopCoroutine(knockbackCoroutine);
 
-            StartCoroutine(EnemyKnockbackCoroutine(start));
+            StartCoroutine(EnemyKnockbackCoroutine(transform.position));
         }
     }
 
-    IEnumerator EnemyKnockbackCoroutine(Vector3 start)
+    IEnumerator EnemyKnockbackCoroutine(Vector3 startPosition)
     {
         const float KNOCKBACK_DISTANCE = 1.5f; // 150px
         const float KNOCKBACK_SPEED = 5f;      // 넉백 속도
 
         Vector3 nowVelocity = enemyRigid.linearVelocity;
         moveDir = (transform.position - character.transform.position).normalized;
-        enemyRigid.linearVelocity = moveDir * KNOCKBACK_SPEED;
 
         // 투명도 임시 효과
         Color nowColor = enemyRenderer.color;
         nowColor.a = 0.5f;
         enemyRenderer.color = nowColor;
+        isKnockBack = true;
 
         //적 초기 위치 기준 150px 튕김
-        while ((start - this.transform.position).magnitude <= KNOCKBACK_DISTANCE)
+        try
         {
-            enemyRigid.linearVelocity = moveDir * KNOCKBACK_SPEED;
-            yield return null;
-        }
+            while ((startPosition - transform.position).magnitude <= KNOCKBACK_DISTANCE)
+            {
+                Logger.Log($"while {moveDir} {KNOCKBACK_SPEED} {enemyRigid.linearVelocity}");
+                enemyRigid.linearVelocity = moveDir * KNOCKBACK_SPEED;
+                yield return null;
+            }
 
-        // 상태 복구
-        nowColor.a = 1f;
-        enemyRenderer.color = nowColor;
-        enemyRigid.linearVelocity = nowVelocity;
-        isStop = false;
+        }
+        finally
+        {
+            // 상태 복구
+            nowColor.a = 1f;
+            enemyRenderer.color = nowColor;
+            enemyRigid.linearVelocity = nowVelocity;
+            isKnockBack = false;
+
+        }
     }
 
     private void Die()
@@ -246,10 +241,9 @@ public class Enemy : MonoBehaviour
         NightManager nightManager = NightManager.Instance;
         if (nightManager == null) return;
 
-
-
         nightManager.UpdateKillCount();
 
+        // TODO: NightManager의 update kill count에 통합
         if (gameObject.CompareTag("Normal"))
             nightManager.killNormal++;
         else if (gameObject.CompareTag("Elite"))
@@ -266,24 +260,21 @@ public class Enemy : MonoBehaviour
         stats.attackPower *= DataManager.Instance.difficultyList.difficulty[difficulty].enemyStatus;
     }
 
-    // Tolelom: 동일한 함수명이 존재함
-    // 다양한 형태의 공격에 맞았을 때 공격한 오브젝트 측에서 사용하는 함수로 추측됨
-    // 추측대로라면 위에 피격 로직에 합치는게 합리적일 수도
-    public void EnemyDamaged(float getDamage)
-    {
-        if (getDamage > 0)
-        {
 
-            if (stats.curHp > getDamage)
-            {
-                StartCoroutine(EnemyDamagedEffectCoroutine());
-                stats.curHp -= getDamage;
-            }
-            else
-            {
-                NightManager.Instance.UpdateKillCount();
-                Destroy(gameObject);
-            }
+
+    public void Damaged(float damage)
+    {
+        if (damage <= 0) return;
+
+        EnemyKnockback();
+        if (stats.curHp > damage)
+        {
+            StartCoroutine(EnemyDamagedEffectCoroutine());
+            stats.curHp -= damage;
+        }
+        else
+        {
+            Die();
         }
     }
 

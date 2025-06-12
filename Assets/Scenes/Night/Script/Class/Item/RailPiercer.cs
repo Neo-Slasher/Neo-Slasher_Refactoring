@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,62 +10,90 @@ public class RailPiercer : MonoBehaviour
     [SerializeField]
     GameObject railPiercerHitBox;
 
-    public NightManager nightManager;
-    public NightSFXManager nightSFXManager;
     public Character character;
-    [SerializeField]
-    SpriteRenderer hitBoxRenderer;
-    [SerializeField]
-    SpriteRenderer railPiercerImageRenderer;
+
+    [SerializeField] SpriteRenderer railPiercerImageRenderer;
     Rigidbody2D railPiercerRigid;
-    [SerializeField] float attackPower = 500;
-    [SerializeField] float attackTime;
-    bool isWatchRight = true;
+
+    float attackPowerRate;
+    float attackSpeedRate;
+
     bool isShoot = false;
 
-    int itemRank;
-
-    //��Ÿ��
     public Image coolTimeImage;
+
+    Coroutine RailPiercerPosCoroutine;
+
+    private void Awake()
+    {
+        character = GameObject.Find("CharacterImage").GetComponent<Character>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Normal" || collision.tag == "Elite")
         {
-            collision.GetComponent<Enemy>().EnemyDamaged(attackPower);
+            float damage = character.player.attackPower * attackPowerRate;
+            collision.GetComponent<Enemy>().Damaged(damage);
         }
     }
 
-    public void SetItemRank(int getRank)
+    public void InitializeRailPiercer(Consumable item, Image coolTimeImage)
     {
-        itemRank = getRank;
-        SetRailPiercerData();
+        transform.SetParent(character.transform);
+        this.coolTimeImage = coolTimeImage;
+        attackPowerRate = item.attackPowerValue;
+        attackSpeedRate = item.attackSpeedValue;
+        railPiercerImageRenderer = railPiercerImage.GetComponent<SpriteRenderer>();
+        StartRailPiercerPositionCoroutine();
     }
 
-    void SetRailPiercerData()
+    public void StartRailPiercerPositionCoroutine()
     {
-        float characterAttackSpeed = (float)character.player.attackSpeed;
-        float characterAttackPower = (float)character.player.attackPower;
+        if (RailPiercerPosCoroutine == null)
+            RailPiercerPosCoroutine = StartCoroutine(SetRailPiercerPosCoroutine());
+    }
 
-        switch (itemRank)
+    private void StopRailPiercerPositionCoroutine()
+    {
+        if (RailPiercerPosCoroutine != null)
         {
-            case 0:
-                attackPower = characterAttackPower * DataManager.Instance.consumableList.item[4].attackPowerValue;
-                attackTime = 10 / (characterAttackSpeed * DataManager.Instance.consumableList.item[4].attackSpeedValue);
-                break;
-            case 1:
-                attackPower = characterAttackPower * DataManager.Instance.consumableList.item[19].attackPowerValue;
-                attackTime = 10 / (characterAttackSpeed * DataManager.Instance.consumableList.item[19].attackSpeedValue);
-                break;
-            case 2:
-                attackPower = characterAttackPower * DataManager.Instance.consumableList.item[34].attackPowerValue;
-                attackTime = 10 / (characterAttackSpeed * DataManager.Instance.consumableList.item[34].attackSpeedValue);
-                break;
-            case 3:
-                attackPower = characterAttackPower * DataManager.Instance.consumableList.item[49].attackPowerValue;
-                attackTime = 10 / (characterAttackSpeed * DataManager.Instance.consumableList.item[49].attackSpeedValue);
-                break;
+            StopCoroutine(RailPiercerPosCoroutine);
+            RailPiercerPosCoroutine = null;
         }
+    }
+
+    IEnumerator SetRailPiercerPosCoroutine()
+    {
+        railPiercerRigid = GetComponent<Rigidbody2D>();
+        Transform characterTransform = character.transform;
+
+        Vector3 offset;
+        while (!NightManager.Instance.isStageEnd)
+        {
+            offset = CalculateOffset();
+
+            if (!isShoot)
+            {
+                railPiercerImageRenderer.flipX = (character.Movement.MoveDirection.x >= 0);
+            }
+
+            transform.position = characterTransform.position + offset;
+            railPiercerRigid.linearVelocity = character.GetVelocity();
+            yield return null;
+        }
+    }
+
+    Vector3 CalculateOffset()
+    {
+        float xOffset = 2f;
+        bool shouldFlip = (character.Movement.MoveDirection.x >= 0) ^ isShoot;
+        return new Vector3(shouldFlip ? -xOffset : xOffset, 2f, 0);
+    }
+
+    public void StartRailPiercer()
+    {
+        ShootRailPiercer();
     }
 
     public void ShootRailPiercer()
@@ -77,104 +106,44 @@ public class RailPiercer : MonoBehaviour
     {
         Vector3 railPiercerImageScale = Vector3.zero;
 
-        while (!nightManager.isStageEnd)
+        float attackTime;
+        float timer;
+        while (!NightManager.Instance.isStageEnd)
         {
+            attackTime = 10 / (character.player.attackSpeed * attackSpeedRate);
+            coolTimeImage.fillAmount = 1;
+            timer = 0;
+
+            while (timer < attackTime)
+            {
+                timer += Time.deltaTime;
+                coolTimeImage.fillAmount = 1 - timer / attackTime; 
+                yield return null;
+            }
+
+
             isShoot = true;
 
-            //��Ʈ�ڽ��� ���� ���⿡ ��� x ��ǥ�� ������
-            Vector3 hitBoxPos = Vector3.zero;
-            if (character.Movement.MoveDirection.x >= 0)
-            {
-                isWatchRight = true;
-            }
-            else
-            {
-                isWatchRight = false;
-            }
+            bool isWatchRight = (character.Movement.MoveDirection.x >= 0);
+
             SetRailPiercerViewPos();
 
-            //���� ��� �κ�
-            nightSFXManager.PlayAudioClip(AudioClipName.railPiercer);
+            NightSFXManager.Instance.PlayAudioClip(AudioClipName.railPiercer);
             railPiercerHitBox.SetActive(true);
 
             yield return new WaitForSeconds(0.5f);
 
             railPiercerHitBox.SetActive(false);
-            isShoot = false;
 
-            StartCoroutine(SetCooltimeCoroutine((float)attackTime));
-            yield return new WaitForSeconds((float)attackTime);
-            coolTimeImage.fillAmount = 1;
+            isShoot = false;
         }
     }
 
     void SetRailPiercerViewPos()
     {
-        Transform railPiercerTransform = this.transform;
-        float angle;
         Vector3 watchDir = character.Movement.MoveDirection;
 
-        angle = Mathf.Atan2(watchDir.y, watchDir.x) * Mathf.Rad2Deg;
-        railPiercerTransform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
-    }
-
-
-    public void SetRailPiercerPos()
-    {
-        hitBoxRenderer = railPiercerHitBox.GetComponent<SpriteRenderer>();
-        railPiercerImageRenderer = railPiercerImage.GetComponent<SpriteRenderer>();
-        StartCoroutine(SetRailPiercerPosCoroutine());
-    }
-
-    IEnumerator SetRailPiercerPosCoroutine()
-    {
-        railPiercerRigid = this.GetComponent<Rigidbody2D>();
-        Vector3 nowPos = character.transform.position;
-
-
-        while (!nightManager.isStageEnd)
-        {
-            nowPos = character.transform.position;
-
-            //������ �Ƚ�� ���� ��
-            if (!isShoot)
-            {
-                if (character.Movement.MoveDirection.x >= 0)
-                {
-                    railPiercerImageRenderer.flipX = true;
-                    nowPos.x -= 2;
-                }
-                else
-                {
-                    railPiercerImageRenderer.flipX = false;
-                    nowPos.x += 2;
-                }
-            }
-            //�� ��
-            else
-            {
-                if (isWatchRight)
-                    nowPos.x -= 2;
-                else
-                    nowPos.x += 2;
-            }
-            nowPos.y += 2;
-
-            this.transform.position = nowPos;
-            railPiercerRigid.linearVelocity = character.GetVelocity();
-            yield return null;
-        }
-    }
-
-    IEnumerator SetCooltimeCoroutine(float getCoolTime)
-    {
-        float nowTime = 0;
-        coolTimeImage.gameObject.SetActive(true);
-        while (coolTimeImage.fillAmount > 0)
-        {
-            nowTime += Time.deltaTime;
-            coolTimeImage.fillAmount = 1 - nowTime / getCoolTime;
-            yield return null;
-        }
+        float angle = Mathf.Atan2(watchDir.y, watchDir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
     }
 }

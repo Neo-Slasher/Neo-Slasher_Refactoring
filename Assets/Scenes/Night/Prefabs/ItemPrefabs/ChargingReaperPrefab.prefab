@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3891987630586116192}
   - component: {fileID: 4066416411125831855}
   - component: {fileID: 6966364484010235016}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ChargingReaperImage
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5111593645329650082}
   - component: {fileID: 5969064686574268947}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ReaperAfterImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

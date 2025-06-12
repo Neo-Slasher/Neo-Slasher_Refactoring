@@ -1,5 +1,7 @@
 using System.Collections;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class CharacterAttack : MonoBehaviour
 {
@@ -7,8 +9,8 @@ public class CharacterAttack : MonoBehaviour
     private Animator animator;
 
 
-    [SerializeField] private GameObject hitBox;
-    private HitBox hitBoxScript;
+    public GameObject hitBox;
+    public HitBox hitBoxScript;
     private Rigidbody2D hitBoxRigid;
 
 
@@ -20,7 +22,8 @@ public class CharacterAttack : MonoBehaviour
     public bool canChange = false;
     public bool isAbsorb = false;
     public bool isDoubleAttack = false;
-    //    public bool isMoveBackOn = false;
+
+    public bool isMoveBackOn = false;
     //    public bool isHologramTrickOn = false;
     //    public bool isHologramAnimate = false;
     //    public bool isAntiPhenetOn = false;
@@ -50,7 +53,7 @@ public class CharacterAttack : MonoBehaviour
 
     private void SetHitBoxScale()
     {
-        float goalY = (float)GameManager.Instance.player.attackRange * 0.15f;
+        float goalY = GameManager.Instance.player.attackRange * 0.15f;
         Vector3 goalScale = new Vector3(1, goalY, 1);
 
         hitBox.transform.localScale = goalScale;
@@ -104,36 +107,45 @@ public class CharacterAttack : MonoBehaviour
     private IEnumerator ExecuteSingleAttack(float attackInterval)
     {
         float attackAnimationTime = 0.2f;
-        float minAttackDelay = 0.1f;
 
         TriggerAttackAnimations();
 
         ActivateHitBox(attackAnimationTime);
 
-        //isMoveBackOn = false;
+        yield return new WaitForSeconds(attackAnimationTime);
 
-        float remainingDelay = Mathf.Max(minAttackDelay, attackInterval - attackAnimationTime);
+        isMoveBackOn = false;
+
+        float remainingDelay = Mathf.Max(0.1f, attackInterval - attackAnimationTime);
         yield return new WaitForSeconds(remainingDelay);
 
     }
 
+
+    // 더블 어택은 아이템 "멀티 슬래시"에 의해서만 호출되므로 멀티 슬래시의 구현도 포함함
     private IEnumerator ExecuteDoubleAttack(float attackInterval)
     {
-        ItemManager.Instance.SetMultiSlasherSprite(true);
         float attackAnimationTime = 0.4f;
 
-        ActivateHitBox(0.1f);
 
+        NightSFXManager.Instance.PlayAudioClip(AudioClipName.multiSlash);
+        // 사운드와 싱크를 맞추기 위함
+        yield return new WaitForSeconds(0.1f);
+
+        isDoubleAttack = false;
+        ActivateHitBox(0.1f);
         yield return new WaitForSeconds(0.1f);
 
         ActivateHitBox(0.2f);
+        yield return new WaitForSeconds(0.2f);
 
-        //isMoveBackOn = false;
-        isDoubleAttack = false;
+        isMoveBackOn = false;
 
         float remainingDelay = Mathf.Max(0.1f, attackInterval - attackAnimationTime);
         yield return new WaitForSeconds(remainingDelay);
     }
+
+
 
     private void ActivateHitBox(float activeTime)
     {
@@ -143,7 +155,7 @@ public class CharacterAttack : MonoBehaviour
 
         // attack range 적용 코드
         hitBox.transform.localScale = new Vector3(character.player.attackRange / 10, 1.5f, 1);
-        
+
         CancelInvoke(nameof(DeactivateHitBox));
         Invoke(nameof(DeactivateHitBox), activeTime);
 

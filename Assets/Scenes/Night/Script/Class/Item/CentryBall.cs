@@ -34,7 +34,6 @@ public class CentryBall : MonoBehaviour
 
     void Start()
     {
-
         // sparkImage의 초기 위치 (CentryBall 중심 기준)
         sparkOffset = sparkImage.transform.localPosition;
 
@@ -47,6 +46,8 @@ public class CentryBall : MonoBehaviour
         SetTransform();
         transform.SetParent(character.transform);
         SetProjectile();
+
+        isStop = false;
     }
 
     // 이거 이벤트로 업데이트 해야되지 않을까?

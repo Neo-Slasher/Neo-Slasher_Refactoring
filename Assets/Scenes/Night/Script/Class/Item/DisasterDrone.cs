@@ -1,94 +1,111 @@
+using JetBrains.Annotations;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class DisasterDrone : MonoBehaviour
 {
-    public NightManager nightManager;
-    public Character character;
-    LayerMask enemyLayer;
-    [SerializeField]
-    float detectRadius;
-    [SerializeField]
-    float damage;
+    [SerializeField] private Character character;
 
-    int itemRank;
-    float getAttackRangeValue;
-    float enemyDamageRate;
+    [SerializeField] private float attackRangeRate;
+    [SerializeField] private float damageRate;
+    [SerializeField] private float detectRadius;
 
-    Enemy getEnemyScript;
+    public bool isStop;
 
-    private void Start()
+    void Awake()
     {
-        DetectEnemy();
+        character = GameObject.Find("CharacterImage").GetComponent<Character>();
     }
 
-    public void SetItemRank(int getRank)
+    void Start()
     {
-        itemRank = getRank;
-        SetDisasterDroneData();
     }
 
-    void SetDisasterDroneData()
+    public void InitializeDisasterDrone(Consumable item)
     {
-        getAttackRangeValue = (float)DataManager.Instance.consumableList.item[2].attackRangeValue;
+        SetDisasterDroneData(item);
+        transform.SetParent(character.transform);
+        transform.localPosition = character.transform.position;
 
-        switch (itemRank)
+        isStop = false;
+    }
+
+    public void StartDisasterDrone()
+    {
+        StartCoroutine(DetectEnemyCoroutine());
+    }
+
+    void SetDisasterDroneData(Consumable item)
+    {
+        switch (item.rank)
         {
             case 0:
-                detectRadius = (float)character.player.attackRange * 0.15f * getAttackRangeValue;
-                enemyDamageRate = 0.07f;
+                attackRangeRate = DataManager.Instance.consumableList.item[2].attackRangeValue;
+                detectRadius = character.player.attackRange * attackRangeRate;
+                damageRate = 0.07f;
                 break;
             case 1:
-                detectRadius = (float)character.player.attackRange * 0.15f * getAttackRangeValue;
-                enemyDamageRate = 0.10f;
+                attackRangeRate = DataManager.Instance.consumableList.item[17].attackRangeValue;
+                detectRadius = character.player.attackRange * attackRangeRate;
+                damageRate = 0.10f;
                 break;
             case 2:
-                detectRadius = (float)character.player.attackRange * 0.15f * getAttackRangeValue;
-                enemyDamageRate = 0.13f;
+                attackRangeRate = DataManager.Instance.consumableList.item[32].attackRangeValue;
+                detectRadius = character.player.attackRange * attackRangeRate;
+                damageRate = 0.13f;
                 break;
             case 3:
-                detectRadius = (float)character.player.attackRange * 0.15f * getAttackRangeValue;
-                enemyDamageRate = 0.16f;
+                attackRangeRate = DataManager.Instance.consumableList.item[47].attackRangeValue;
+                detectRadius = character.player.attackRange * attackRangeRate;
+                damageRate = 0.16f;
                 break;
         }
-        detectRadius += 1.95f;
+        detectRadius = detectRadius * 0.5f;
 
-        this.transform.localScale = new Vector3(detectRadius / 3, detectRadius / 3, detectRadius / 3);
-    }
-
-    void DetectEnemy()
-    {
-        enemyLayer = LayerMask.NameToLayer("Enemy");
-        StartCoroutine(DetectEnemyCoroutine());
+        transform.localScale = new Vector3(detectRadius / 3, detectRadius / 3, detectRadius / 3);
     }
 
     IEnumerator DetectEnemyCoroutine()
     {
+        LayerMask enemyLayer = LayerMask.NameToLayer("Enemy");
         int layerMask = (1 << enemyLayer);
-        while (!nightManager.isStageEnd)
+
+        // 1초로 공격 주기 고정
+        WaitForSeconds waitInterval = new WaitForSeconds(1f);
+
+        while (!NightManager.Instance.isStageEnd)
         {
+            if (isStop)
+                yield return new WaitWhile(() => isStop);
+
             Collider2D[] colArr = Physics2D.OverlapCircleAll(character.transform.position, detectRadius, layerMask);
 
-            if (colArr.Length > 0)
+            if (colArr != null && colArr.Length > 0)
             {
-                for(int i =0; i< colArr.Length; i++)
+                for (int i = 0; i < colArr.Length; i++)
                 {
                     AttackEnemys(colArr[i]);
                 }
             }
-            yield return new WaitForSeconds(1f);
+
+            yield return waitInterval;
         }
     }
 
     void AttackEnemys(Collider2D getCol)
     {
-        getEnemyScript = getCol.GetComponent<Enemy>();
-        damage = getEnemyScript.stats.maxHp;
+        Enemy enemyScript = getCol.GetComponent<Enemy>();
+        float damage = enemyScript.stats.maxHp;
 
-        damage *= enemyDamageRate;
+        damage *= damageRate;
 
-        getEnemyScript.EnemyDamaged(damage);
+        enemyScript.Damaged(damage);
+    }
+
+    private void OnDrawGizmos()
+    {
+        // 적 탐지 반경
+        Gizmos.color = Color.azure;
+        Gizmos.DrawWireSphere(character.transform.position, detectRadius);
     }
 }

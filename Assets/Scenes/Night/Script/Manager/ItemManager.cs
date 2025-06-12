@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -121,43 +122,43 @@ public class ItemManager : MonoBehaviour
                     StartCoroutine(ChargingReaper(item, i));
                     break;
                 case ItemTypes.DisasterDrone:
-                    DisasterDrone(item);
+                    StartCoroutine(DisasterDrone(item));
                     break;
                 case ItemTypes.MultiSlash:
-                    StartCoroutine(MultiSlashCoroutine(item));
+                    StartCoroutine(MultiSlashCoroutine(item, i));
                     break;
                 case ItemTypes.RailPiercer:
-                    RailPiercer(item);
+                    StartCoroutine(RailPiercer(item, i));
                     break;
                 case ItemTypes.FirstAde:
-                    StartCoroutine(FirstAdeCoroutine(item));
+                    StartCoroutine(FirstAdeCoroutine(item, i));
                     break;
                 case ItemTypes.Barrior:
-                    StartCoroutine(BarriorCoroutine(item));
+                    StartCoroutine(BarriorCoroutine(item, i));
                     break;
                 case ItemTypes.HologramTrick:
-                    StartCoroutine(HologramTrickCoroutine(item));
+                    StartCoroutine(HologramTrickCoroutine(item, i));
                     break;
                 case ItemTypes.AntiPhenet:
-                    AntiPhenet(item);
+                    StartCoroutine(AntiPhenet(item));
                     break;
                 case ItemTypes.RegenerationArmor:
-                    RegenerationArmor(item);
+                    StartCoroutine(RegenerationArmor(item));
                     break;
                 case ItemTypes.GravityBind:
-                    GravityBind(item);
+                    StartCoroutine(GravityBind(item));
                     break;
                 case ItemTypes.MoveBack:
-                    StartCoroutine(MoveBack(item));
+                    StartCoroutine(MoveBack(item, i));
                     break;
                 case ItemTypes.Booster:
-                    StartCoroutine(BoosterCoroutine(item));
+                    StartCoroutine(BoosterCoroutine(item, i));
                     break;
                 case ItemTypes.BioSnach:
-                    BioSnach(item);
+                    StartCoroutine(BioSnach(item));
                     break;
                 case ItemTypes.InterceptDrone:
-                    InterceptDroneCoroutine(item);
+                    StartCoroutine(InterceptDroneCoroutine(item, i));
                     break;
             }
         }
@@ -183,9 +184,6 @@ public class ItemManager : MonoBehaviour
         Destroy(centryBall);
     }
 
-
-
-
     // 차징 리퍼: 적을 처치할 때마다 차징 게이지가 5만큼 상승. 차징 게이지가 100이 되면, 차징 게이지를 전부 소모하고 범위 7 내의 모든 적에게 13만큼의 피해를 입히는 전자동 낫
     IEnumerator ChargingReaper(Consumable item, int itemSlotNumber)
     {
@@ -202,521 +200,203 @@ public class ItemManager : MonoBehaviour
         Destroy(chargingReaper);
     }
 
-
-
-
-
-
-
-
-
-    void DisasterDrone(Consumable item)
+    // 재앙 드론: 범위(공격 범위 비례) 내의 모든 적에게 매초마다 적 최대체력의 %만큼 피해를 입히는 초소형 드론.
+    IEnumerator DisasterDrone(Consumable item)
     {
-        GameObject disasterDroneParent = Instantiate(itemPrefabArr[3]);
-        disasterDroneParent.transform.SetParent(character.transform);
-        disasterDroneParent.transform.localPosition = character.transform.position;
-        disasterDroneParent.GetComponent<DisasterDrone>().character = character;
-        disasterDroneParent.GetComponent<DisasterDrone>().nightManager = NightManager.Instance;
-        disasterDroneParent.GetComponent<DisasterDrone>().SetItemRank(item.rank);
+        GameObject disasterDrone = Instantiate(itemPrefabArr[3]);
+
+        DisasterDrone droneScript = disasterDrone.GetComponent<DisasterDrone>();
+        droneScript.InitializeDisasterDrone(item);
+        droneScript.StartDisasterDrone();
+
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        Destroy(disasterDrone);
+    }
+
+
+
+    // 멀티 슬래시: 매 6초마다의 자동 공격이 적을 2번 베고, 바라보는 방향으로 검기를 1개 발사. 검기는 #ar# (공격범위 100%)만큼 날아가고, 검기에 적중하는 모든 적에게 #at# (공격력 40%) 만큼 피해를 입힘.
+    IEnumerator MultiSlashCoroutine(Consumable item, int itemSlotNumber)
+    {
+        Image coolTimeImage = coolTimeImageArr[itemSlotNumber];
+        coolTimeImage.gameObject.SetActive(true);
+
+        GameObject multiSlash = Instantiate(itemPrefabArr[4]);
+
+        MultiSlash multiSlashScript = multiSlash.GetComponent<MultiSlash>();
+        multiSlashScript.InitializeMultiSlash(item, coolTimeImage);
+        multiSlashScript.StartMultiSlash();
+
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        Destroy(multiSlash);
+    }
+
+    // 레일 피어서: 구역 전체를 관통하는 광선을 #as# (공격속도 10%)의 공격속도로 발사하는 자동 중화기. 광선에 닿은 모든 적에게 #at# (공격력 50%) 만큼 피해를 입힘.
+    IEnumerator RailPiercer(Consumable item, int itemSlotNumber)
+    {
+        Image coolTimeImage = coolTimeImageArr[itemSlotNumber];
+        coolTimeImage.gameObject.SetActive(true);
+
+        GameObject railPiercer = Instantiate(itemPrefabArr[5]);
+
+        RailPiercer railPiercerScript = railPiercer.GetComponent<RailPiercer>();
+        railPiercerScript.InitializeRailPiercer(item, coolTimeImage);
+        railPiercerScript.StartRailPiercer();
+
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        Destroy(railPiercer);
     }
 
 
 
 
-    IEnumerator MultiSlashCoroutine(Consumable item)
+
+
+
+
+
+    // 퍼스트 에이드: 현재 체력이 최대 체력의 40% 이하가 되면 3초에 걸쳐 #at# (공격력 40%) 만큼 체력을 회복. 한번 발동된 뒤에는 30초의 재사용 대기시간이 있음
+    IEnumerator FirstAdeCoroutine(Consumable item, int itemSlotNumber)
     {
+        Image coolTimeImage = coolTimeImageArr[itemSlotNumber];
+        coolTimeImage.gameObject.SetActive(true);
 
-        //랭크에 따라 다른 작업 추가
-        float slashTime = 6;
-        float attackPowerRate = (float)DataManager.Instance.consumableList.item[3].attackPowerValue;
-        float slashAttackPower = (float)character.player.attackPower * attackPowerRate;
-        float attackRange = (float)character.player.attackRange;
+        GameObject firstAde = Instantiate(itemPrefabArr[6]);
 
-        switch (item.rank)
-        {
-            case 0:
-                slashTime = 6;
-                break;
-            case 1:
-                slashTime = 5;
-                break;
-            case 2:
-                slashTime = 4;
-                break;
-            case 3:
-                slashTime = 3;
-                break;
-        }
+        FirstAde firstAdeScript = firstAde.GetComponent<FirstAde>();
+        firstAdeScript.InitializeFirstAde(item, coolTimeImage);
+        firstAdeScript.StartFirstAde();
 
-        //2회 연속공격 + 에너지파
-        while (!NightManager.Instance.isStageEnd)
-        {
-            character.Attack.isDoubleAttack = true;
-
-            while (character.Attack.isDoubleAttack)
-            {
-                yield return null;
-            }
-            Debug.Log("end");
-
-            NightSFXManager.Instance.PlayAudioClip(AudioClipName.multiSlash);
-            ShootSwordAura(slashAttackPower, attackRange, item.rank);
-
-            if (coolTimeImageArr[item.imgIdx].fillAmount == 0)
-                coolTimeImageArr[item.imgIdx].fillAmount = 1;
-            StartCoroutine(SetCooltimeCoroutine(item.imgIdx, slashTime));
-
-            yield return new WaitForSeconds(slashTime);
-        }
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        Destroy(firstAde);
     }
 
-    public void SetMultiSlasherSprite(bool isMultiActive)
+    // 배리어: #at# (공격력 50%)만큼 보호막을 생성하는 장치. 보호막이 파괴되면 재생성되기 까지 #as# (90 ÷ 공격속도 15%) 초가 소요됨.
+    IEnumerator BarriorCoroutine(Consumable item, int itemSlotNumber)
     {
-        SpriteRenderer hitBoxSpriteRenderer = hitBox.GetComponent<SpriteRenderer>();
+        Image coolTimeImage = coolTimeImageArr[itemSlotNumber];
+        coolTimeImage.gameObject.SetActive(true);
 
-        if (isMultiActive)
-            hitBoxSpriteRenderer.sprite = multiSlasherSprite[0];   //멀티 슬레쉬 스프라이트
-        else
-            hitBoxSpriteRenderer.sprite = multiSlasherSprite[1];   //멀티 슬레쉬 스프라이트
+        GameObject barrior = Instantiate(itemPrefabArr[7]);
+        Barrior barriorScript = barrior.GetComponent<Barrior>();
+        barriorScript.InitializeBarrior(item, coolTimeImage);
+        barriorScript.StartBarrior();
+
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        Destroy(barrior);
     }
 
-    void ShootSwordAura(float getSlashAttackPower, float getSlashAttackRange, int getItemRank)
+    // 홀로그램 트릭: #as# (120 ÷ 공격속도 30%) 초마다 #ar# (공격범위 20%) 초간 피해 면역 상태로 만들어주는 교란 장치. 피격 판정, 투사체 적중은 일어나나 피해를 받지 않음.
+    IEnumerator HologramTrickCoroutine(Consumable item, int itemSlotNumber)
     {
-        GameObject swordAura = Instantiate(itemPrefabArr[4]);
-        swordAura.transform.SetParent(characterParent.transform);
-        swordAura.transform.position = hitBox.transform.position;
-        swordAura.GetComponent<SwordAura>().attackDamage = getSlashAttackPower;
-        swordAura.GetComponent<SwordAura>().attackRange = getSlashAttackRange;
-        swordAura.GetComponent<SwordAura>().itemRank = getItemRank;
+        Image coolTimeImage = coolTimeImageArr[itemSlotNumber];
+        coolTimeImage.gameObject.SetActive(true);
 
-        //Color swordAuraColor = Color.blue;
-        //swordAuraColor.a = 0.5f;
+        GameObject hologram = Instantiate(itemPrefabArr[8]);
+        HologramTrick hologramScript = hologram.GetComponent<HologramTrick>();
+        hologramScript.InitializeHologramTrick(item, coolTimeImage);
+        hologramScript.StartHologramTrick();
 
-        //swordAura.GetComponent<SpriteRenderer>().color = swordAuraColor;
-        SetSwordAuraAngle(swordAura);
-
-        if (character.Movement.LastMoveDirection != Vector2.zero)
-            swordAura.GetComponent<Rigidbody2D>().linearVelocity = character.Movement.LastMoveDirection.normalized * 10;
-        else
-            swordAura.GetComponent<Rigidbody2D>().linearVelocity = Vector3.right * 10;
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        Destroy(hologram);
     }
 
-    void SetSwordAuraAngle(GameObject getSwordAura)
+    // 안티 페넷: 데미지 경감율이 #at# (공격력 30%) %만큼 상승하는 인공 피부 조직.
+    IEnumerator AntiPhenet(Consumable item)
     {
-        if (character.Movement.LastMoveDirection != Vector2.zero)
-        {
-            float dot = Vector3.Dot(character.Movement.LastMoveDirection, new Vector3(1, 0, 0));
-            float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
+        GameObject antiPhenet = Instantiate(itemPrefabArr[9]);
+        AntiPhenet antiPhenetScript = antiPhenet.GetComponent<AntiPhenet>();
+        antiPhenetScript.InitializeAntiPhenet(item);
+        antiPhenetScript.StartAntiPhenet();
 
-            if (character.Movement.LastMoveDirection.y >= 0)
-                getSwordAura.transform.rotation = Quaternion.Euler(0, 0, angle);
-            else
-                getSwordAura.transform.rotation = Quaternion.Euler(0, 0, 360 - angle);
-        }
-        else
-        {
-            getSwordAura.transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        antiPhenetScript.EndAntiPhenet();
+        Destroy(antiPhenet);
     }
 
-    void RailPiercer(Consumable item)
+    // 재생성 갑옷: 최대 체력이 #at# (공격력 10%) 만큼 상승하고 매초 체력을 #ar# (공격범위 10%)만큼 회복시켜주는 생체공학 갑옷.
+    IEnumerator RegenerationArmor(Consumable item)
     {
-        GameObject railPiercerParent = Instantiate(itemPrefabArr[5]);
-        railPiercerParent.transform.SetParent(characterParent.transform);
-        RailPiercer railPiercerScript = railPiercerParent.GetComponent<RailPiercer>();
+        GameObject regenerationArmor = Instantiate(itemPrefabArr[10]);
+        RegenerationArmor armorScript = regenerationArmor.GetComponent<RegenerationArmor>();
+        armorScript.InitializeRegenerationArmor(item);
+        armorScript.StartRegenerationArmor();
 
-        railPiercerScript.character = character;
-        railPiercerScript.nightManager = NightManager.Instance;
-        railPiercerScript.nightSFXManager = NightSFXManager.Instance;
-
-        railPiercerScript.coolTimeImage = coolTimeImageArr[item.imgIdx];
-        railPiercerScript.SetItemRank(item.rank);
-
-        railPiercerScript.SetRailPiercerPos();
-        railPiercerScript.ShootRailPiercer();
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        armorScript.EndRegenerationArmor();
+        Destroy(regenerationArmor);
     }
 
-    IEnumerator FirstAdeCoroutine(Consumable item)
+    // 그래비티 바인드: 범위 #ar# (공격범위 100%) 내 모든 적의 이동속도를 #as# (공격속도 50)%만큼 감소시키는 중력장.
+    IEnumerator GravityBind(Consumable item)
     {
+        GameObject gravityBind = Instantiate(itemPrefabArr[11]);
+        GravityBind gravityBindScript = gravityBind.GetComponent<GravityBind>();
+        gravityBindScript.InitializeGravityBind(item);
+        gravityBindScript.StartGravityBind();
 
-        GameObject firstAdeParent = Instantiate(itemPrefabArr[6]);
-        firstAdeParent.transform.SetParent(character.transform);
-        firstAdeParent.transform.localPosition = character.transform.position;
-        firstAdeParent.SetActive(false);
-
-        double nowHp = GameManager.Instance.player.curHp;
-        double firstAdeHp = character.player.maxHp * 0.4f;
-        float healHp = (float)character.player.attackPower;
-        int coolTime = 30;
-
-        switch (item.rank)
-        {
-            case 0:
-                healHp *= (float)DataManager.Instance.consumableList.item[5].attackPowerValue;
-                coolTime = 30;
-                break;
-            case 1:
-                healHp *= (float)DataManager.Instance.consumableList.item[20].attackPowerValue;
-                coolTime = 25;
-                break;
-            case 2:
-                healHp *= (float)DataManager.Instance.consumableList.item[35].attackPowerValue;
-                coolTime = 20;
-                break;
-            case 3:
-                healHp *= (float)DataManager.Instance.consumableList.item[50].attackPowerValue;
-                coolTime = 15;
-                break;
-        }
-
-        while (!NightManager.Instance.isStageEnd)
-        {
-            //왜인지는 모르겠는데 현재 체력이 0으로 받아오는 버그가 있음 근데 이유를 모르겠음;;
-            while (nowHp == 0)
-            {
-                nowHp = GameManager.Instance.player.curHp;
-                yield return null;
-            }
-
-            while (nowHp >= firstAdeHp)
-            {
-                nowHp = GameManager.Instance.player.curHp;
-                yield return null;
-            }
-            Debug.Log("helldfaiodhsfoiasdbfodsabfioads");
-            coolTimeImageArr[item.imgIdx].fillAmount = 1;
-            character.HealHp(healHp, firstAdeParent);
-
-            NightSFXManager.Instance.PlayAudioClip(AudioClipName.firstAde);
-            StartCoroutine(SetCooltimeCoroutine(item.imgIdx, coolTime));
-            yield return new WaitForSeconds(coolTime);
-        }
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        Destroy(gravityBind);
     }
 
-    IEnumerator BarriorCoroutine(Consumable item)
+    // 무브 백: 매 #as# (20 ÷ 공격속도 10%) 초마다의 자동 공격이 적을 #ar# (공격범위 50%)만큼 밀어냄.
+    IEnumerator MoveBack(Consumable item, int itemSlotNumber)
     {
+        Image coolTimeImage = coolTimeImageArr[itemSlotNumber];
+        coolTimeImage.gameObject.SetActive(true);
 
-        GameObject barriorParent = Instantiate(itemPrefabArr[7]);
-        barriorParent.transform.SetParent(character.transform);
-        barriorParent.transform.position = character.transform.position;
-        Barrior barriorScript = barriorParent.GetComponent<Barrior>();
+        GameObject moveBack = Instantiate(itemPrefabArr[12]);
+        MoveBack moveBackScript = moveBack.GetComponent<MoveBack>();
+        moveBackScript.InitializeMoveBack(item, coolTimeImage);
+        moveBackScript.StartMoveBack();
 
-        float characterAttackSpeed = (float)character.player.attackSpeed;
-        float characterAttackPower = (float)character.player.attackPower;
-        float shieldPoint = characterAttackPower;
-
-        double timeCount = 50 / characterAttackSpeed;
-
-        switch (item.rank)
-        {
-            case 0:
-                shieldPoint *= (float)DataManager.Instance.consumableList.item[6].attackPowerValue;
-                timeCount = 90 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[6].attackSpeedValue);
-                break;
-            case 1:
-                shieldPoint *= (float)DataManager.Instance.consumableList.item[6].attackPowerValue;
-                timeCount = 90 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[21].attackSpeedValue);
-                break;
-            case 2:
-                shieldPoint *= (float)DataManager.Instance.consumableList.item[6].attackPowerValue;
-                timeCount = 90 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[36].attackSpeedValue);
-                break;
-            case 3:
-                shieldPoint *= (float)DataManager.Instance.consumableList.item[6].attackPowerValue;
-                timeCount = 90 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[51].attackSpeedValue);
-                break;
-        }
-
-        while (!NightManager.Instance.isStageEnd)
-        {
-            character.SetShieldPointData(shieldPoint);
-            NightSFXManager.Instance.PlayAudioClip(AudioClipName.barrior);
-            barriorScript.CreateBarrior();
-
-            yield return new WaitUntil(() => character.player.shieldPoint == 0);
-            barriorScript.SetBarriorActive(false);
-            Debug.Log(timeCount);
-            if (coolTimeImageArr[item.imgIdx].fillAmount == 0)
-                coolTimeImageArr[item.imgIdx].fillAmount = 1;
-            StartCoroutine(SetCooltimeCoroutine(item.imgIdx, (float)timeCount));
-            yield return new WaitForSeconds((float)timeCount);
-        }
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        Destroy(moveBack);
     }
 
-    IEnumerator HologramTrickCoroutine(Consumable item)
+
+    // 부스터: 매 #as# (30 ÷ 공격속도 20%) 초마다 #ar# (공격범위 10%) 초 동안 #at# (공격력 40%)만큼 이동속도 향상되는 신발
+    IEnumerator BoosterCoroutine(Consumable item, int itemSlotNumber)
     {
+        Image coolTimeImage = coolTimeImageArr[itemSlotNumber];
+        coolTimeImage.gameObject.SetActive(true);
 
-        GameObject[] hologramParentArr = new GameObject[2];
-        Vector3 hologramVector;
-        character.isHologramAnimate = true;
+        GameObject booster = Instantiate(itemPrefabArr[13]);
+        Booster boosterScript = booster.GetComponent<Booster>();
+        boosterScript.InitializeBooster(item, coolTimeImage);
+        boosterScript.StartBooster();
 
-        for (int i = 0; i < 2; i++)
-        {
-            hologramVector = character.transform.position;
-            GameObject hologramParent = Instantiate(itemPrefabArr[8]);
-            hologramParent.transform.SetParent(character.transform);
-            hologramParent.transform.position = character.transform.position;
-            hologramParentArr[i] = hologramParent;
-
-            if (i == 0)
-            {
-                hologramVector.x -= 1;
-            }
-            else
-            {
-                hologramVector.x += 1;
-            }
-
-            hologramParentArr[i].transform.position = hologramVector;
-            character.hologramAnimatorArr[i] = hologramParent.GetComponent<Animator>();
-            character.hologramRendererArr[i] = hologramParent.GetComponent<SpriteRenderer>();
-        }
-
-        float characterAttackSpeed = (float)character.player.attackSpeed;
-        float characterAttackRange = (float)character.player.attackRange;
-
-        float duration = characterAttackRange;
-        float timeCount = 1200 / characterAttackSpeed;
-
-        switch (item.rank)
-        {
-            case 0:
-                timeCount = 120 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[7].attackSpeedValue);
-                duration = characterAttackRange * (float)DataManager.Instance.consumableList.item[7].attackRangeValue;
-                break;
-            case 1:
-                timeCount = 120 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[22].attackSpeedValue);
-                duration = characterAttackRange * (float)DataManager.Instance.consumableList.item[22].attackRangeValue;
-                break;
-            case 2:
-                timeCount = 120 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[37].attackSpeedValue);
-                duration = characterAttackRange * (float)DataManager.Instance.consumableList.item[37].attackRangeValue;
-                break;
-            case 3:
-                timeCount = 120 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[52].attackSpeedValue);
-                duration = characterAttackRange * (float)DataManager.Instance.consumableList.item[52].attackRangeValue;
-                break;
-        }
-
-        timeCount *= -1;
-
-        while (!NightManager.Instance.isStageEnd)
-        {
-            NightSFXManager.Instance.PlayAudioClip(AudioClipName.hologramTrick);
-            character.isHologramTrickOn = true;
-            yield return new WaitForSeconds(duration);
-            character.isHologramTrickOn = false;
-
-            if (coolTimeImageArr[item.imgIdx].fillAmount == 0)
-                coolTimeImageArr[item.imgIdx].fillAmount = 1;
-            StartCoroutine(SetCooltimeCoroutine(item.imgIdx, timeCount));
-            yield return new WaitForSeconds(timeCount);
-        }
-
-        character.isHologramAnimate = false;
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        Destroy(booster);
     }
 
-    void AntiPhenet(Consumable item)
+    // 바이오 스내치: 자동공격 성공시마다 체력이 1만큼 회복.
+    IEnumerator BioSnach(Consumable item)
     {
-        character.isAntiPhenetOn = true;
+        GameObject bioSnach = Instantiate(itemPrefabArr[14]);
+        BioSnach bioSnachScript = bioSnach.GetComponent<BioSnach>();
+        bioSnachScript.InitializeBioSnach(item);
+        bioSnachScript.StartBioSnach();
 
-        switch (item.rank)
-        {
-            case 0:
-                character.SetAntiPhenetData(DataManager.Instance.consumableList.item[8].attackPowerValue);
-                break;
-            case 1:
-                character.SetAntiPhenetData(DataManager.Instance.consumableList.item[23].attackPowerValue);
-                break;
-            case 2:
-                character.SetAntiPhenetData(DataManager.Instance.consumableList.item[38].attackPowerValue);
-                break;
-            case 3:
-                character.SetAntiPhenetData(DataManager.Instance.consumableList.item[53].attackPowerValue);
-                break;
-        }
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        bioSnachScript.EndBioSnach();
+        Destroy(bioSnach);
     }
 
-    void RegenerationArmor(Consumable item)
+    // 요격 드론: 매 #as# (40 ÷ 공격속도 10%) 초마다 범위 #ar# (공격범위 70%) 내 모든 적대적인 투사체를 삭제하는 비행 드론
+    IEnumerator InterceptDroneCoroutine(Consumable item, int itemSlotNumber)
     {
+        Logger.Log("요격 드론");
+        Image coolTimeImage = coolTimeImageArr[itemSlotNumber];
+        coolTimeImage.gameObject.SetActive(true);
 
-        float addHp = character.player.attackPower;
-        float addHpRegen = character.player.attackRange;
+        GameObject interceptDrone = Instantiate(itemPrefabArr[15]);
+        InterceptDrone interceptScript = interceptDrone.GetComponent<InterceptDrone>();
+        interceptScript.InitializeInterceptDrone(item, coolTimeImage);
+        interceptScript.StartInterceptDrone();
 
-        switch (item.rank)
-        {
-            case 0:
-                addHp *= DataManager.Instance.consumableList.item[9].attackPowerValue;
-                addHpRegen *= DataManager.Instance.consumableList.item[9].attackRangeValue;
-                Debug.Log(addHpRegen);
-                break;
-            case 1:
-                addHp *= DataManager.Instance.consumableList.item[24].attackPowerValue;
-                addHpRegen *= DataManager.Instance.consumableList.item[24].attackRangeValue;
-                break;
-            case 2:
-                addHp *= DataManager.Instance.consumableList.item[39].attackPowerValue;
-                addHpRegen *= DataManager.Instance.consumableList.item[39].attackRangeValue;
-                break;
-            case 3:
-                addHp *= DataManager.Instance.consumableList.item[54].attackPowerValue;
-                addHpRegen *= DataManager.Instance.consumableList.item[54].attackRangeValue;
-                break;
-        }
-
-        character.Health.HealToMaxHp();
-        character.player.hpRegen = addHpRegen;
-    }
-
-    void GravityBind(Consumable item)
-    {
-        GameObject gravityBindParent = Instantiate(itemPrefabArr[11]);
-        gravityBindParent.transform.SetParent(characterParent.transform);
-        gravityBindParent.transform.localPosition = character.transform.position;
-        gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().character = character;
-        gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().nightManager = NightManager.Instance;
-        gravityBindParent.transform.GetChild(0).GetComponent<GravityBind>().SetItemRank(item.rank);
-    }
-
-    IEnumerator MoveBack(Consumable item)
-    {
-
-        float getAttackSpeed = (float)character.player.attackSpeed;
-        float timeCount = 200 / getAttackSpeed;
-
-        switch (item.rank)
-        {
-            case 0:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[11].attackSpeedValue);
-                break;
-            case 1:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[26].attackSpeedValue);
-                break;
-            case 2:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[41].attackSpeedValue);
-                break;
-            case 3:
-                timeCount = 20 / (getAttackSpeed * (float)DataManager.Instance.consumableList.item[56].attackSpeedValue);
-                break;
-        }
-
-        timeCount *= -1;
-
-        while (!NightManager.Instance.isStageEnd)
-        {
-            NightSFXManager.Instance.PlayAudioClip(AudioClipName.moveBack);
-            character.isMoveBackOn = true;
-            GameObject moveBackImage = Instantiate(itemPrefabArr[12]);
-            moveBackImage.GetComponent<MoveBackImage>().character = character.transform;
-
-            if (coolTimeImageArr[item.imgIdx].fillAmount == 0)
-                coolTimeImageArr[item.imgIdx].fillAmount = 1;
-            StartCoroutine(SetCooltimeCoroutine(item.imgIdx, timeCount));
-            Logger.Log("MoveBack CoolTime: " + timeCount);
-            yield return new WaitForSeconds(timeCount);
-        }
-    }
-
-    IEnumerator BoosterCoroutine(Consumable item)
-    {
-        character.isBoosterOn = true;
-        character.SetCharacterBasicSpeedError();
-        GameObject boosterParent = Instantiate(itemPrefabArr[13]);
-        boosterParent.transform.SetParent(character.transform);
-        boosterParent.transform.localPosition = character.transform.position + new Vector3(2.13f, 0, 0);
-        boosterParent.GetComponent<Booster>().character = character.GetComponent<SpriteRenderer>();
-
-
-        float getBasicSpeed = character.player.moveSpeed;
-        float getAttackSpeed = character.player.attackSpeed;
-        float getAttackRange = character.player.attackRange;
-        float getAttackPower = character.player.attackPower;
-
-        float timeCount = 300 / getAttackSpeed;
-        float duration = getAttackRange;
-        float speed = getAttackPower;
-
-        switch (item.rank)
-        {
-            case 0:
-                timeCount = 30 / (getAttackSpeed * DataManager.Instance.consumableList.item[12].attackSpeedValue);
-                duration = getAttackRange * DataManager.Instance.consumableList.item[12].attackRangeValue;
-                speed = getBasicSpeed + getAttackPower * DataManager.Instance.consumableList.item[12].attackPowerValue;
-                break;
-            case 1:
-                timeCount = 20 / (getAttackSpeed * DataManager.Instance.consumableList.item[27].attackSpeedValue);
-                duration = getAttackRange * DataManager.Instance.consumableList.item[27].attackRangeValue;
-                speed = getBasicSpeed + getAttackPower * DataManager.Instance.consumableList.item[27].attackPowerValue;
-                break;
-            case 2:
-                timeCount = 20 / (getAttackSpeed * DataManager.Instance.consumableList.item[42].attackSpeedValue);
-                duration = getAttackRange * DataManager.Instance.consumableList.item[42].attackRangeValue;
-                speed = getBasicSpeed + getAttackPower * DataManager.Instance.consumableList.item[42].attackPowerValue;
-                break;
-            case 3:
-                timeCount = 20 / (getAttackSpeed * DataManager.Instance.consumableList.item[57].attackSpeedValue);
-                duration = getAttackRange * DataManager.Instance.consumableList.item[57].attackRangeValue;
-                speed = getBasicSpeed + getAttackPower * DataManager.Instance.consumableList.item[57].attackPowerValue;
-                break;
-        }
-
-        while (!NightManager.Instance.isStageEnd)
-        {
-            NightSFXManager.Instance.PlayAudioClip(AudioClipName.booster);
-            character.Movement.SetMoveSpeed(speed);
-            boosterParent.SetActive(true);
-            Debug.Log("AAAAAAAAAAAAAAAAAAAAAA");
-            yield return new WaitForSeconds(duration);
-            Debug.Log("BBBBBBBBBBBBBBBBBBBBBBBB");
-            character.Movement.SetMoveSpeed(getBasicSpeed);
-            boosterParent.SetActive(false);
-
-            if (coolTimeImageArr[item.imgIdx].fillAmount == 0)
-                coolTimeImageArr[item.imgIdx].fillAmount = 1;
-            StartCoroutine(SetCooltimeCoroutine(item.imgIdx, timeCount));
-            yield return new WaitForSeconds(timeCount);
-        }
-        Debug.Log("CCCCCCCCCCCCCCCCCC");
-    }
-
-    void BioSnach(Consumable item)
-    {
-        float getAbsorbAttackData = 1;
-
-        switch (item.rank)
-        {
-            case 0:
-                getAbsorbAttackData = 1;
-                break;
-            case 1:
-                getAbsorbAttackData = 2;
-                break;
-            case 2:
-                getAbsorbAttackData = 3;
-                break;
-            case 3:
-                getAbsorbAttackData = 5;
-                break;
-        }
-        character.player.healByHit = getAbsorbAttackData;
-    }
-
-    void InterceptDroneCoroutine(Consumable item)
-    {
-
-        GameObject interceptDroneParent = Instantiate(itemPrefabArr[15]);
-        interceptDroneParent.transform.SetParent(character.transform);
-        interceptDroneParent.transform.localPosition = character.transform.position;
-        interceptDroneParent.GetComponent<InterceptDrone>().character = character;
-        interceptDroneParent.GetComponent<InterceptDrone>().nightManager = NightManager.Instance;
-        interceptDroneParent.GetComponent<InterceptDrone>().nightSFXManager = NightSFXManager.Instance;
-        interceptDroneParent.GetComponent<InterceptDrone>().coolTimeImage = coolTimeImageArr[item.imgIdx];
-        interceptDroneParent.GetComponent<InterceptDrone>().SetItemRank(item.rank);
-
-        float getAttackSpeed = character.player.attackSpeed;
-        float getAttackRange = character.player.attackRange;
-
-        interceptDroneParent.GetComponent<InterceptDrone>().SetInterceptDrone(getAttackRange, getAttackSpeed);
+        yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
+        Destroy(interceptDrone);
     }
 
 

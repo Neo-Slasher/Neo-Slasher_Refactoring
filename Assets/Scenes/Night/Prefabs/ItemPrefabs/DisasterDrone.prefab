@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1396682532029970325}
   - component: {fileID: 1396682532029970322}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DisasterDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,6 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1396682532029970324}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.3515658, y: 1.0515913, z: 0.0055816756}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,7 +32,6 @@ Transform:
   m_Children:
   - {fileID: 1048871856738978874}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1396682532029970322
 MonoBehaviour:
@@ -45,10 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecded40eb1ad5844280e4e4f0f724051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nightManager: {fileID: 0}
   character: {fileID: 0}
+  attackRangeRate: 0
+  damageRate: 0
   detectRadius: 3
-  damage: 0
+  isStop: 0
 --- !u!1 &8588889783666370321
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +61,7 @@ GameObject:
   - component: {fileID: 1048871856738978874}
   - component: {fileID: 8859387911014542589}
   - component: {fileID: 7098212634047039167}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DisasterDroneImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,13 +75,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8588889783666370321}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.0055816756}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1396682532029970325}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8859387911014542589
 SpriteRenderer:
@@ -99,6 +100,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -136,7 +140,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &7098212634047039167
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -150,6 +154,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

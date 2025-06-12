@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Linq;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 
 public class Character : MonoBehaviour
@@ -8,7 +10,7 @@ public class Character : MonoBehaviour
     // 플레이어 데이터
     public Player player;
 
-    public CharacterMovement Movement {  get; private set; }
+    public CharacterMovement Movement { get; private set; }
     public CharacterAttack Attack { get; private set; }
     public CharacterHealth Health { get; private set; }
     public CharacterAnimation Animation { get; private set; }
@@ -21,10 +23,8 @@ public class Character : MonoBehaviour
     public bool isAbsorb = false;
 
     //아이템 관련
+    // 홀로그램 트릭 온오프(On이면 캐릭터가 무적)
     public bool isHologramTrickOn = false;
-    public bool isHologramAnimate = false;
-    public bool isAntiPhenetOn = false;
-    public bool isMoveBackOn = false;
 
     // 부스터 아이템 itemIdx: 13
     public bool isBoosterOn = false;
@@ -34,6 +34,7 @@ public class Character : MonoBehaviour
     public Animator[] hologramAnimatorArr;
     public SpriteRenderer[] hologramRendererArr;
 
+    Coroutine knockbackCoroutine;
 
 
     private void Awake()
@@ -85,15 +86,19 @@ public class Character : MonoBehaviour
         GameObject enemy = enemyCollision.gameObject;
         float nowAttackPower = 0;
 
+        bool isKnockback = false;
+
         switch (enemy.tag)
         {
             case "Normal":
                 nowAttackPower = enemy.GetComponent<NormalEnemy>().GetEnemyAttackPower();
                 enemy.GetComponent<NormalEnemy>().SetIsAttacked();
+                isKnockback = enemy.GetComponent<Enemy>().stats.canKnockback;
                 break;
             case "Elite":
                 nowAttackPower = enemy.GetComponent<EliteEnemy>().GetEnemyAttackPower();
                 enemy.GetComponent<EliteEnemy>().SetIsAttacked();
+                isKnockback = enemy.GetComponent<Enemy>().stats.canKnockback;
                 break;
             case "Projectile":
                 if (enemy.GetComponent<Projectile>().isEnemy)
@@ -110,6 +115,12 @@ public class Character : MonoBehaviour
 
         if (nowAttackPower != 0)
             Animation.PlayDamagedAnimation();
+
+        if (isKnockback)
+        {
+            Knockback(enemyCollision.transform);
+            // 넉백
+        }
 
         if (isHologramTrickOn)
             return;
@@ -150,7 +161,44 @@ public class Character : MonoBehaviour
     {
         Health.StopHpRegen();
         Attack.StopAttack();
+    }
 
+
+    private void Knockback(Transform enemyTransform)
+    {
+        if (knockbackCoroutine != null)
+            StopCoroutine(knockbackCoroutine);
+
+        StartCoroutine(KnockbackCoroutine(transform.position, enemyTransform));
+    }
+
+    IEnumerator KnockbackCoroutine(Vector3 startPosition, Transform enemyTransform)
+    {
+        const float KNOCKBACK_DISTANCE = 1.5f; // 150px
+        const float KNOCKBACK_SPEED = 5f;      // 넉백 속도
+
+        Vector3 nowVelocity = GetComponent<Rigidbody2D>().linearVelocity;
+        Vector3 moveDir = (transform.position - enemyTransform.position).normalized;
+
+
+        Movement.isKnockback = true;
+
+        Rigidbody2D rigid = GetComponent<Rigidbody2D>();
+
+        //적 초기 위치 기준 150px 튕김
+        try
+        {
+            while ((startPosition - transform.position).magnitude <= KNOCKBACK_DISTANCE)
+            {
+                rigid.linearVelocity = moveDir * KNOCKBACK_SPEED;
+                yield return null;
+            }
+
+        }
+        finally
+        {
+            Movement.isKnockback = false;
+        }
     }
 
 
@@ -158,73 +206,12 @@ public class Character : MonoBehaviour
 
     // 아래는 특성이나 아이템 관련 코드(나중에 리팩토링)
 
-
-    //해당 숫자만큼 쉴드 생성
-    public void SetShieldPointData(float getShieldPoint)
-    {
-        Health.AddShield(getShieldPoint);
-        player.shieldPoint = getShieldPoint;
-    }
-
-
-
-
     public Vector3 GetVelocity()
     {
         return Movement.MoveDirection.normalized * Movement.pixelMoveSpeed;
     }
 
-    //아이템 6번 퍼스트 에이드에서 체력 회복할 때 쓰려고 만듬
-    public void HealHp(float getHealHp, GameObject getImage)
-    {
-        StartCoroutine(HealHpCoroutine(getHealHp, getImage));
-    }
 
-    IEnumerator HealHpCoroutine(float getHealHp, GameObject getImage)
-    {
-        float time = 3;
-        float deltaTime = 0;
-        float value = 0;
-        float nowHeal = 0;
-
-        getImage.SetActive(true);
-
-        while (time > deltaTime)
-        {
-            deltaTime += Time.deltaTime;
-            value = getHealHp * Time.deltaTime;
-            nowHeal += value;
-
-            //힐량 초과시 종료
-            if (nowHeal >= getHealHp)
-                break;
-
-            Health.Heal(value);
-
-            //만약 피가 오버되면 종료
-            if (player.curHp == player.maxHp)
-                break;
-
-            yield return null;
-        }
-        getImage.SetActive(false);
-    }
-
-    //데미지 경감용
-    public void SetAntiPhenetData(float getReductionRate)
-    {
-        player.damageReductionRate = getReductionRate;
-    }
-
-    float AntiPhenetUse(float getAttackPowerData)
-    {
-        if (isAntiPhenetOn)
-        {
-            return getAttackPowerData * (1 - player.damageReductionRate);
-        }
-        else
-            return getAttackPowerData;
-    }
 
     //부스터관련 오류 고치기 위해 만든 함수
     //부스터가 켜진 상태로 게임이 종료되면 해당 스피드가 다음까지 이어져서 해결하기 위해 만듬

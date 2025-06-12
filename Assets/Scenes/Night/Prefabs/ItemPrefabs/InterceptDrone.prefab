@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 31195210038869193}
   - component: {fileID: 8345062678229659038}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: InterCeptDroneArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1808193311054635575}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1721109486155026872}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8345062678229659038
 SpriteRenderer:
@@ -49,6 +49,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -94,7 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2244004778974403641}
   - component: {fileID: 7826828644099524337}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DroneRazer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,13 +111,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2853256192338828496}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8990116975863048002}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7826828644099524337
 SpriteRenderer:
@@ -133,6 +136,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -178,7 +184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8990116975863048002}
   - component: {fileID: 9079005806810692874}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: InterceptDroneImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,6 +198,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3340012465032878071}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.26, y: 2.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -199,7 +206,6 @@ Transform:
   m_Children:
   - {fileID: 2244004778974403641}
   m_Father: {fileID: 1721109486155026872}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &9079005806810692874
 SpriteRenderer:
@@ -218,6 +224,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -263,7 +272,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1721109486155026872}
   - component: {fileID: 8120220759750210479}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: InterceptDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,6 +286,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4046387680933216036}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -286,7 +296,6 @@ Transform:
   - {fileID: 8990116975863048002}
   - {fileID: 8877288529991363018}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8120220759750210479
 MonoBehaviour:
@@ -302,6 +311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nightManager: {fileID: 0}
   character: {fileID: 0}
+  nightSFXManager: {fileID: 0}
   droneArea: {fileID: 1808193311054635575}
   droneAreaImage: {fileID: 6673172780091351981}
   interceptDroneImage: {fileID: 3340012465032878071}
@@ -309,6 +319,7 @@ MonoBehaviour:
   droneRenderer: {fileID: 0}
   droneAngle: 0.5
   detectRadius: 3.5
+  coolTimeImage: {fileID: 0}
 --- !u!1 &6673172780091351981
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,7 +330,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8877288529991363018}
   - component: {fileID: 6100994094631219006}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: InterCeptDroneAreaImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,6 +344,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6673172780091351981}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -340,7 +352,6 @@ Transform:
   m_Children:
   - {fileID: 1893545800329134728}
   m_Father: {fileID: 1721109486155026872}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6100994094631219006
 SpriteRenderer:
@@ -359,6 +370,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -404,7 +418,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1893545800329134728}
   - component: {fileID: 3576889863414751749}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: InterCeptDroneSearchingImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,13 +432,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6877721185463624057}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8877288529991363018}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!212 &3576889863414751749
 SpriteRenderer:
@@ -443,6 +457,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

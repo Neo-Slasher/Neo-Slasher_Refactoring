@@ -30,10 +30,14 @@ public class CharacterHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (damage <= 0) return; 
+
         float remainingDamage = damage;
 
-        ////안티 페넷 사용시 데미지 경감 계산
-        //getAttackData = AntiPhenetUse(getAttackData);
+        // 데미지 경감 계산
+        remainingDamage = remainingDamage * (1 - character.player.damageReductionRate / 100);
+        
+        if (remainingDamage <= 0) return;
 
         if (character.player.shieldPoint > 0)
         {

@@ -1586,25 +1586,21 @@ MonoBehaviour:
   - {fileID: 6435774007306126119, guid: 5e53ae801b6353d47b55e9e30bc26a36, type: 3}
   - {fileID: 6308150113491733678, guid: 43ecea8c7598db74aaa9da8c5ee3a62f, type: 3}
   - {fileID: 1396682532029970324, guid: 64dd70466c52ab04ba746413e13ebd9f, type: 3}
-  - {fileID: 4436849242586169945, guid: 4c25cff0e33600f4c9e40e1c5926a2f7, type: 3}
+  - {fileID: 130975289021864475, guid: de1a18cd86f1e1c429ef32269ec0051f, type: 3}
   - {fileID: 2972398346559837967, guid: 623ad49a52dffe04aad66c849bf35be1, type: 3}
   - {fileID: 8904445189275946767, guid: 5340d17691acb0a4283b4bdb7a1ca083, type: 3}
   - {fileID: 1935732905924140001, guid: d360cba2f00351c4e9b77195e7a6c289, type: 3}
-  - {fileID: 1930534812032361185, guid: 4be61e7466d32d7428382855ce52f371, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8828866329630924216, guid: a8ddd97350f34f64184ac9e086487aee, type: 3}
+  - {fileID: 5101745404073619719, guid: 58ebe336a0432dd41bc7aabc18acd2af, type: 3}
+  - {fileID: 5487622796161656521, guid: 062f7528ade7ee3419f7d6f99c8d1046, type: 3}
   - {fileID: 7827755809980893889, guid: 3f68c9d86c27439419ce96ab5a64ccd5, type: 3}
   - {fileID: 1069666732905218375, guid: 88528989412c82b4a9cacf19210afb4a, type: 3}
   - {fileID: 3329251177511539448, guid: 7f394a0546f89814caeb3a1ee2f4e237, type: 3}
-  - {fileID: 0}
+  - {fileID: 4588588344339538194, guid: fa767fdb45b66bf44b34e8cd7ce3f7f3, type: 3}
   - {fileID: 4046387680933216036, guid: 1564826ccad48f447a218afe1bbb970d, type: 3}
-  chargingReaperAngle: 1
-  reaperCircleR: 3
   multiSlasherSprite:
   - {fileID: 21300000, guid: 8ad25757d5d6f1746b0663f4e1c1f06a, type: 3}
   - {fileID: 21300000, guid: 47d296a347284854a8fd7c08cae896dc, type: 3}
-  reaperSpeed: 400
-  isChargingReaperUse: 0
   nowItemUIArr:
   - {fileID: 183829745}
   - {fileID: 1785470738}
@@ -3982,6 +3978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3415d570d6ed141b262bbdeaf48267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isKnockback: 0
 --- !u!114 &889106820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3995,9 +3992,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitBox: {fileID: 1410340655}
+  hitBoxScript: {fileID: 0}
   canChange: 0
   isAbsorb: 0
   isDoubleAttack: 0
+  isMoveBackOn: 0
 --- !u!114 &889106821
 MonoBehaviour:
   m_ObjectHideFlags: 0

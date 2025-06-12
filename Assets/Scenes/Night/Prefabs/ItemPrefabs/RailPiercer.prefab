@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4670774942094182944}
   - component: {fileID: 74070243527036899}
   - component: {fileID: 7585663033455182034}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RailPiercerHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 758098332421266848}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -29.02, y: -0.12, z: 0}
   m_LocalScale: {x: 3, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1848072156059918707}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &74070243527036899
 SpriteRenderer:
@@ -50,6 +50,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -93,11 +96,32 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 758098332421266848}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -108,7 +132,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 20, y: 1.9}
   m_EdgeRadius: 0
 --- !u!1 &1848072156059918709
@@ -121,7 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1848072156059918707}
   - component: {fileID: 1848072156059918706}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RailPiercerImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,6 +158,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1848072156059918709}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.20577079}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -142,7 +166,6 @@ Transform:
   m_Children:
   - {fileID: 4670774942094182944}
   m_Father: {fileID: 828620755128307886}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1848072156059918706
 SpriteRenderer:
@@ -161,6 +184,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -207,7 +233,7 @@ GameObject:
   - component: {fileID: 828620755128307886}
   - component: {fileID: 2558001028629578255}
   - component: {fileID: 188064274687838825}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RailPiercer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,6 +247,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2972398346559837967}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.27492374, y: 1.5582259, z: -0.20577079}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -228,7 +255,6 @@ Transform:
   m_Children:
   - {fileID: 1848072156059918707}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2558001028629578255
 MonoBehaviour:
@@ -244,13 +270,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   railPiercerImage: {fileID: 1848072156059918709}
   railPiercerHitBox: {fileID: 758098332421266848}
-  nightManager: {fileID: 0}
   character: {fileID: 0}
-  hitBoxRenderer: {fileID: 0}
   railPiercerImageRenderer: {fileID: 0}
+  coolTimeImage: {fileID: 0}
 --- !u!50 &188064274687838825
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -261,10 +286,16 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0

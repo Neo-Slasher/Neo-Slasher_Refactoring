@@ -18,6 +18,7 @@ public class ChargingReaper : MonoBehaviour
 
     [SerializeField] private Image coolTimeImage;
 
+    const int MAX_GAUGE = 100;
 
     private void Awake()
     {
@@ -32,12 +33,12 @@ public class ChargingReaper : MonoBehaviour
 
     private void ChargingGauge()
     {
-        chargingGauge = Mathf.Min(chargingGauge + 5, 100);
+        chargingGauge = Mathf.Min(chargingGauge + 5, MAX_GAUGE);
     }
 
     public void SetCoolTime()
     {
-        coolTimeImage.fillAmount = 1 - ((float)chargingGauge / 100);
+        coolTimeImage.fillAmount = 1 - ((float)chargingGauge / MAX_GAUGE);
     }
 
     public void InitializeChargingReaper(Consumable item, Image coolTimeImage)
@@ -51,19 +52,24 @@ public class ChargingReaper : MonoBehaviour
 
     private void SetChargingReaperData(Consumable item)
     {
+        // Tolelom: scale 크기는 Data Table을 보고 시각적으로 가장 비슷한 값을 임의로 사용
         switch (item.rank)
         {
             case 0:
                 reaperAttackDamege = 13;
+                reaperImage.transform.localScale = new Vector3(0.7f, 0.7f, 1);
                 break;
             case 1:
                 reaperAttackDamege = 18;
+                reaperImage.transform.localScale = new Vector3(0.9f, 0.9f, 1);
                 break;
             case 2:
                 reaperAttackDamege = 27;
+                reaperImage.transform.localScale = new Vector3(1.2f, 1.2f, 1);
                 break;
             case 3:
                 reaperAttackDamege = 42;
+                reaperImage.transform.localScale = new Vector3(1.6f, 1.6f, 1);
                 break;
         }
     }
@@ -79,7 +85,7 @@ public class ChargingReaper : MonoBehaviour
         Transform reaperImageTransform = transform.Find("ChargingReaperImage");
         if (reaperImageTransform == null) yield break;
 
-        float reaperCircleR = 3; //반지름
+        float reaperCircleR = reaperImage.transform.localScale.x * 3; //반지름
         float reaperDeg = 0; //각도
         float reaperSpeed = 600; //원운동 속도
 
@@ -126,7 +132,7 @@ public class ChargingReaper : MonoBehaviour
 
     public bool IsChargingGaugeFull()
     {
-        if (chargingGauge >= 100)
+        if (chargingGauge >= MAX_GAUGE)
             return true;
         return false;
     }
@@ -137,6 +143,4 @@ public class ChargingReaper : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         reaperAfterImage.SetActive(true);
     }
-
-
 }

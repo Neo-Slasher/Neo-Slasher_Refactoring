@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 public class InterceptDrone : MonoBehaviour
 {
-    public NightManager nightManager;
     public Character character;
-    public NightSFXManager nightSFXManager;
-    LayerMask projLayer;
+
 
     [SerializeField]
     GameObject droneArea;
@@ -27,58 +25,58 @@ public class InterceptDrone : MonoBehaviour
     float detectRadius;
     float timeCount;
 
-    int itemRank;
 
     float getCharacterAttackSpeed;
     float getCharacterAttackRange;
 
     Projectile getProjScript;
 
-    //ÄðÅ¸ÀÓ
-    public Image coolTimeImage;
+    private float attackSpeedRate;
+    private float attackRangeRate;
 
-    private void Start()
+    public Image coolTimeImage;
+    private void Awake()
     {
-        DetectProjectile();
+        character = GameObject.Find("CharacterImage").GetComponent<Character>();
+    }
+
+    public void InitializeInterceptDrone(Consumable item, Image coolTimeImage)
+    {
+        transform.SetParent(character.transform);
+        transform.position = character.transform.position;
+
+        SetInterceptDroneData(item);
+
+        this.coolTimeImage = coolTimeImage;
+
+    }
+    
+    public void StartInterceptDrone()
+    {
+        StartCoroutine(DetectProjectileCoroutine());
         StartCoroutine(DroneRotate());
     }
-    public void SetItemRank(int getRank)
-    {
-        itemRank = getRank;
-        SetInterceptDroneData();
-    }
 
-    void SetInterceptDroneData()
-    {
-        float characterAttackSpeed = (float)character.player.attackSpeed;
-        float characterAttackRange = (float)character.player.attackRange;
 
-        switch (itemRank)
-        {
-            case 0:
-                timeCount = 40 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[14].attackSpeedValue);
-                detectRadius = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[14].attackRangeValue;
-                break;
-            case 1:
-                timeCount = 40 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[29].attackSpeedValue);
-                detectRadius = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[29].attackRangeValue;
-                break;
-            case 2:
-                timeCount = 40 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[44].attackSpeedValue);
-                detectRadius = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[44].attackRangeValue;
-                break;
-            case 3:
-                timeCount = 40 / (characterAttackSpeed * (float)DataManager.Instance.consumableList.item[59].attackSpeedValue);
-                detectRadius = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[59].attackRangeValue;
-                break;
-        }
+
+    void SetInterceptDroneData(Consumable item)
+    {
+        attackRangeRate = item.attackRangeValue;
+        attackSpeedRate = item.attackSpeedValue;
+
+        float characterAttackSpeed = character.player.attackSpeed;
+        float characterAttackRange = character.player.attackRange;
+
+
+        timeCount = 40 / (characterAttackSpeed * item.attackSpeedValue);
+        detectRadius = characterAttackRange * 0.15f * item.attackRangeValue;
+
         detectRadius += 1.95f;
-        Debug.Log(timeCount + "/ " + detectRadius);
     }
 
     IEnumerator DroneRotate()
     {
-        while (!nightManager.isStageEnd)
+        while (!NightManager.Instance.isStageEnd)
         {
             interceptDroneImage.transform.RotateAround(character.transform.position, Vector3.back, droneAngle);
             interceptDroneImage.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
@@ -103,22 +101,19 @@ public class InterceptDrone : MonoBehaviour
         getCharacterAttackSpeed = getAttackSpeed;
     }
 
-    void DetectProjectile()
-    {
-        projLayer = LayerMask.NameToLayer("Projectile");
-        StartCoroutine(DetectProjectileCoroutine());
-    }
 
     IEnumerator DetectProjectileCoroutine()
     {
+        LayerMask projLayer = LayerMask.NameToLayer("Projectile");
         int layerMask = (1 << projLayer);
-        while (!nightManager.isStageEnd)
+
+        while (!NightManager.Instance.isStageEnd)
         {
             Collider2D[] colArr = Physics2D.OverlapCircleAll(character.transform.position, detectRadius, layerMask);
 
             if (colArr.Length > 0)
             {
-                nightSFXManager.PlayAudioClip(AudioClipName.interceptDrone);
+                NightSFXManager.Instance.PlayAudioClip(AudioClipName.interceptDrone);
                 for (int i = 0; i < colArr.Length; i++)
                 {
                     StartCoroutine(SearchIngProjEffectCoroutine());

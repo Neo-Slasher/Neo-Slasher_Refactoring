@@ -1,71 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class GravityBind : MonoBehaviour
 {
-    public NightManager nightManager;
-    public Character character;
-    LayerMask enemyLayer;
-    [SerializeField]
-    float detectScale;
-    [SerializeField]
-    float getEnemySpeed;
-    [SerializeField]
-    float spinSpeed;
+    private Character character;
 
-    [SerializeField]
-    float slowRate;
+    [SerializeField] float detectScale;
+    [SerializeField] float spinSpeed;
+
+    [SerializeField] float slowRate;
 
     Enemy getEnemyScript;
 
-    int itemRank;
+    private float attackRangeRate;
+    private float attackSpeedRate;
 
-    private void Start()
+    void Awake()
+    {
+        character = GameObject.Find("CharacterImage").GetComponent<Character>();
+    }
+
+
+    public void InitializeGravityBind(Consumable item)
+    {
+        transform.SetParent(character.transform);
+        transform.position = character.transform.position;
+
+        attackRangeRate = item.attackRangeValue;
+        attackSpeedRate = item.attackSpeedValue;
+        SetGravityBindData(item);
+    }
+
+    public void StartGravityBind()
     {
         StartCoroutine(SpinGravityBindCoroutine());
     }
 
-    private void Update()
+
+
+    void SetGravityBindData(Consumable item)
     {
-        this.transform.localPosition = character.transform.position;
+        slowRate = character.player.attackSpeed * attackSpeedRate;
+        
+        spinSpeed = 50f;
+        UpdateDetectScale();
     }
 
-    public void SetItemRank(int getRank)
+    private void UpdateDetectScale()
     {
-        itemRank = getRank;
-        SetGravityBindData();
-    }
-
-    void SetGravityBindData()
-    {
-        float characterAttackSpeed = (float)character.player.attackSpeed;
-        float characterAttackRange = (float)character.player.attackRange;
-
-        switch (itemRank)
-        {
-            case 0:
-                detectScale = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[10].attackRangeValue;
-                slowRate = characterAttackSpeed * (float)DataManager.Instance.consumableList.item[10].attackSpeedValue * 0.01f;
-                Debug.Log(slowRate);
-                break;
-            case 1:
-                detectScale = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[25].attackRangeValue;
-                slowRate = characterAttackSpeed * (float)DataManager.Instance.consumableList.item[25].attackSpeedValue * 0.01f;
-                break;
-            case 2:
-                detectScale = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[40].attackRangeValue;
-                slowRate = characterAttackSpeed * (float)DataManager.Instance.consumableList.item[40].attackSpeedValue * 0.01f;
-                break;
-            case 3:
-                detectScale = characterAttackRange * 0.15f * (float)DataManager.Instance.consumableList.item[55].attackRangeValue;
-                slowRate = characterAttackSpeed * (float)DataManager.Instance.consumableList.item[55].attackSpeedValue * 0.01f;
-                break;
-        }
-        detectScale += 1.95f;    //기본 값 180px 추가
-
+        detectScale = character.player.attackRange * 0.4f * attackRangeRate;
         detectScale /= 3;   //이미지 기본 픽셀이 600px라서 100px로 맞춰주고 스케일 조절하기 위해 넣었음.
-        this.transform.localScale = new Vector3(detectScale, detectScale, detectScale);
+        transform.localScale = Vector3.one * detectScale;
     }
 
     private void OnTriggerEnter2D(Collider2D getCol)
@@ -86,38 +74,30 @@ public class GravityBind : MonoBehaviour
 
     void SlowEnemy(Collider2D getCol)
     {
+        Logger.Log("Slow Enemy");
         getEnemyScript = getCol.GetComponent<Enemy>();
-        getEnemySpeed = getEnemyScript.stats.moveSpeed;
-
-        getEnemyScript.isSlow = true;
-        getEnemyScript.stats.moveSpeed = (getEnemySpeed * (1 - slowRate));
+        float getEnemySpeed = getEnemyScript.stats.moveSpeed;
+        getEnemyScript.stats.moveSpeed = (getEnemySpeed * (1 - slowRate / 100));
     }
 
     void ExitSlowEnemy(Collider2D getCol)
     {
+        Logger.Log("Exit Slow Enemy");
         getEnemyScript = getCol.GetComponent<Enemy>();
-
-        getEnemySpeed = getEnemyScript.stats.moveSpeed;
-
-        getEnemyScript.isSlow = false;
-        getEnemyScript.stats.moveSpeed = (getEnemySpeed / (1 - slowRate));
+        float getEnemySpeed = getEnemyScript.stats.moveSpeed;
+        getEnemyScript.stats.moveSpeed = (getEnemySpeed / (1 - slowRate / 100));
     }
 
     IEnumerator SpinGravityBindCoroutine()
     {
-        float nowAngle = 0;
-
-        while (!nightManager.isStageEnd)
+        float rotationSpeed = spinSpeed;
+        while (!NightManager.Instance.isStageEnd)
         {
-            nowAngle += Time.deltaTime * spinSpeed;
+            transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
 
-            if (nowAngle >= 360)
-            {
-                nowAngle -= 360;
-            }
-
-            this.transform.rotation = Quaternion.Euler(0, 0, nowAngle * -1);
-
+            // player의 attackSpeed, attackRange 변경됬을 때만 호출하는게 바람직함 (이벤트화)
+            slowRate = character.player.attackSpeed * attackSpeedRate;
+            UpdateDetectScale();
             yield return null;
         }
     }

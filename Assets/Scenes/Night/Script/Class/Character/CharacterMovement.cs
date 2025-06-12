@@ -21,6 +21,8 @@ public class CharacterMovement : MonoBehaviour
     public bool IsFlipped => isFlipped;
     private bool isFlipped;
 
+    public bool isKnockback; // 몬스터에게 피격 시 넉백 동안 true
+
     // CharacterAttack이 공격 방향에 참고하는 변수
     public Vector2 LastMoveDirection { get; private set; }
 
@@ -51,6 +53,8 @@ public class CharacterMovement : MonoBehaviour
 
     public void StartMove(Vector2 joystickDir)
     {
+        if (isKnockback) return;
+
         moveDirection = joystickDir.normalized;
         if (moveDirection != Vector2.zero)
             LastMoveDirection = moveDirection;

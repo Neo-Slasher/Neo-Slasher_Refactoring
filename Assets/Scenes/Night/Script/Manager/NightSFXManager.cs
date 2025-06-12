@@ -42,6 +42,9 @@ public class NightSFXManager : MonoBehaviour
 
     private void Start()
     {
+        bgmPlayer = SoundManager.Instance.bgmSource;
+        sfxPlayer = SoundManager.Instance.sfxSource;
+
         bgmPlayer.volume = GameManager.Instance.setting.bgmVolume;
         bgmSlider.value = GameManager.Instance.setting.bgmVolume;
 
