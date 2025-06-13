@@ -71,7 +71,6 @@ public class Booster : MonoBehaviour
             coolTime = 30 / (character.player.attackSpeed * attackSpeedRate);
             float timer = 0;
 
-            coolTime = 1;
             while (timer < coolTime)
             {
                 timer += Time.deltaTime;

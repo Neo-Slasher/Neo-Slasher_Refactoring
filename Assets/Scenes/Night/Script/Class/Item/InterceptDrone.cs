@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class InterceptDrone : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class InterceptDrone : MonoBehaviour
     private float attackRangeRate;
 
     public Image coolTimeImage;
+
     private void Awake()
     {
         character = GameObject.Find("CharacterImage").GetComponent<Character>();
@@ -50,57 +52,37 @@ public class InterceptDrone : MonoBehaviour
         this.coolTimeImage = coolTimeImage;
 
     }
-    
+    private void SetInterceptDroneData(Consumable item)
+    {
+        attackRangeRate = item.attackRangeValue;
+        attackSpeedRate = Mathf.Abs(item.attackSpeedValue);
+    }
+
     public void StartInterceptDrone()
     {
         StartCoroutine(DetectProjectileCoroutine());
         StartCoroutine(DroneRotate());
     }
 
-
-
-    void SetInterceptDroneData(Consumable item)
+    private IEnumerator DroneRotate()
     {
-        attackRangeRate = item.attackRangeValue;
-        attackSpeedRate = item.attackSpeedValue;
-
-        float characterAttackSpeed = character.player.attackSpeed;
-        float characterAttackRange = character.player.attackRange;
-
-
-        timeCount = 40 / (characterAttackSpeed * item.attackSpeedValue);
-        detectRadius = characterAttackRange * 0.15f * item.attackRangeValue;
-
-        detectRadius += 1.95f;
-    }
-
-    IEnumerator DroneRotate()
-    {
+        float rotateSpeed = 5f;
+        float angle = 0f; // 현재 각도
         while (!NightManager.Instance.isStageEnd)
         {
-            interceptDroneImage.transform.RotateAround(character.transform.position, Vector3.back, droneAngle);
-            interceptDroneImage.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+            if (Time.timeScale != 0)
+            {
+                angle += rotateSpeed * Time.deltaTime;
+                // 중심점에서 detectRadius만큼 떨어진 위치 계산
+                Vector3 offset = new Vector3(Mathf.Sin(angle), Mathf.Cos(angle), 0) * detectRadius;
+                transform.position = character.transform.position + offset;
 
+                //interceptDroneImage.transform.RotateAround(character.transform.position, Vector3.back, droneAngle);
+                //interceptDroneImage.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+            }
             yield return null;
         }
     }
-    //void SetCentryBallWatchEnemy(Collider2D getCol)
-    //{
-    //    Transform enemyTransform = getCol.transform;
-    //    float angle;
-
-    //    watchDir = enemyTransform.position - centryBallImage.transform.position;
-
-    //    angle = Mathf.Atan2(watchDir.y, watchDir.x) * Mathf.Rad2Deg;
-    //    centryBallImage.transform.rotation = Quaternion.AngleAxis(angle - 180, Vector3.forward);
-    //}
-
-    public void SetInterceptDrone(float getAttackSpeed, float getAttackRange)
-    {
-        getCharacterAttackRange = getAttackRange;
-        getCharacterAttackSpeed = getAttackSpeed;
-    }
-
 
     IEnumerator DetectProjectileCoroutine()
     {
@@ -109,6 +91,7 @@ public class InterceptDrone : MonoBehaviour
 
         while (!NightManager.Instance.isStageEnd)
         {
+            detectRadius = character.player.attackRange * 0.4f * attackRangeRate;
             Collider2D[] colArr = Physics2D.OverlapCircleAll(character.transform.position, detectRadius, layerMask);
 
             if (colArr.Length > 0)
@@ -121,12 +104,18 @@ public class InterceptDrone : MonoBehaviour
                 }
             }
 
-            if (coolTimeImage.fillAmount == 0)
-                coolTimeImage.fillAmount = 1;
-            StartCoroutine(SetCoolTime());
-            Debug.Log("InterCept CoolTime: " + timeCount);
-            yield return new WaitForSeconds(timeCount/40);
+
+            float coolTime = 40 / (character.player.attackSpeed * attackSpeedRate);
+            float timer = 0;
+
+            while (timer < coolTime)
+            {
+                timer += Time.deltaTime;
+                coolTimeImage.fillAmount = 1 - timer / coolTime;
+                yield return null;
+            }
         }
+        yield return null;
     }
 
     IEnumerator SearchIngProjEffectCoroutine()
@@ -152,15 +141,10 @@ public class InterceptDrone : MonoBehaviour
         getProjScript.SetPosition();
     }
 
-    public IEnumerator SetCoolTime()
+    private void OnDrawGizmos()
     {
-        coolTimeImage.gameObject.SetActive(true);
-        float nowTime = 0;
-        while (coolTimeImage.fillAmount > 0)
-        {
-            nowTime += Time.deltaTime;
-            coolTimeImage.fillAmount = 1 - nowTime/timeCount;
-            yield return null;
-        }
+        // 적 탐지 반경
+        Gizmos.color = Color.black;
+        Gizmos.DrawWireSphere(character.transform.position, detectRadius);
     }
 }

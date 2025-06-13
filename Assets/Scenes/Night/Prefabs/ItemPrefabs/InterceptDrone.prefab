@@ -200,7 +200,7 @@ Transform:
   m_GameObject: {fileID: 3340012465032878071}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.26, y: 2.12, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -309,9 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e659738c561c5d42b9708afe2b95704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nightManager: {fileID: 0}
   character: {fileID: 0}
-  nightSFXManager: {fileID: 0}
   droneArea: {fileID: 1808193311054635575}
   droneAreaImage: {fileID: 6673172780091351981}
   interceptDroneImage: {fileID: 3340012465032878071}

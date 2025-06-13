@@ -188,21 +188,20 @@ public class CentryBall : MonoBehaviour
 
     private IEnumerator Rotate()
     {
-        float centryBallRotateSpeed = 0.2f;
+        float rotateSpeed = 0.2f;
+
         while (!NightManager.Instance.isStageEnd)
         {
-            if (Time.timeScale != 0)
+            if (Time.timeScale != 0 && !isStop)
             {
-                if (!isStop)
-                {
-                    transform.RotateAround(character.transform.position, Vector3.back, centryBallRotateSpeed);
+                transform.RotateAround(character.transform.position, Vector3.back, rotateSpeed);
 
-                    transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
-                }
+                transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
             }
             yield return null;
         }
     }
+
 
     private void OnDrawGizmos()
     {

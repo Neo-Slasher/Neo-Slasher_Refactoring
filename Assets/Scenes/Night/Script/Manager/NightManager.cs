@@ -190,18 +190,6 @@ public class NightManager : MonoBehaviour
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     //팝업창 데이터 설정
     void SetEndPopUp()
     {
@@ -314,13 +302,6 @@ public class NightManager : MonoBehaviour
 
         return resultMoney;
     }
-
-
-
-
-
-
-
 
     // 끝난 날짜 및 데이터 조정 및 저장
     public void OnTouchEndBtn()
@@ -453,29 +434,11 @@ public class NightManager : MonoBehaviour
         }
     }
 
-
-
-
-
     public void UpdateKillCount()
     {
         OnMonsterDie?.Invoke();
         killCount++;
-        //ItemManager.Instance.ChargingReaperGauge();  //차징 리퍼 쓰면 동작
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //환경설정 여는 함수
     public void OnClickSettingBtn()
@@ -486,27 +449,25 @@ public class NightManager : MonoBehaviour
 
     public void OnClickContinueBtn()
     {
+        Setting.Save(GameManager.Instance.setting);
         setting.SetActive(false);
         Time.timeScale = 1;
     }
 
     public void OnClickExitBtn()
     {
-        //씬 이동  
+        Setting.Save(GameManager.Instance.setting);
         setting.SetActive(false);
 
-        // Tolelom: 왜 시간을 다시 카운트 하는 지?
         Time.timeScale = 1;
 
         SetEndPopUp();
         endPopup.SetActive(true);
     }
 
-
-
     // 테스트용 함수
     public void OnClickTestButton()
     {
-        GameManager.Instance.player.item[0] = DataManager.Instance.consumableList.item[59];
+        GameManager.Instance.player.item[0] = DataManager.Instance.consumableList.item[0];
     }
 }

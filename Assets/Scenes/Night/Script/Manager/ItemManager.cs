@@ -398,17 +398,4 @@ public class ItemManager : MonoBehaviour
         yield return new WaitUntil(() => NightManager.Instance.isStageEnd);
         Destroy(interceptDrone);
     }
-
-
-    IEnumerator SetCooltimeCoroutine(int coolTimeImageIdx, float getCoolTime)
-    {
-        coolTimeImageArr[coolTimeImageIdx].gameObject.SetActive(true);
-        float nowTime = 0;
-        while (coolTimeImageArr[coolTimeImageIdx].fillAmount > 0)
-        {
-            nowTime += Time.deltaTime;
-            coolTimeImageArr[coolTimeImageIdx].fillAmount = 1 - nowTime / getCoolTime;
-            yield return null;
-        }
-    }
 }
