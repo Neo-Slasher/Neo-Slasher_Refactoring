@@ -3997,6 +3997,7 @@ MonoBehaviour:
   isAbsorb: 0
   isDoubleAttack: 0
   isMoveBackOn: 0
+  attackClip: {fileID: 8300000, guid: b88e98049a51a4806a09286e3a1fd091, type: 3}
 --- !u!114 &889106821
 MonoBehaviour:
   m_ObjectHideFlags: 0

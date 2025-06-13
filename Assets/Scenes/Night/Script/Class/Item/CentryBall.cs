@@ -26,6 +26,8 @@ public class CentryBall : MonoBehaviour
     [SerializeField] private float shootTime;
     [SerializeField] private float projPower;
 
+    public AudioClip shootClip;
+
     void Awake()
     {
         character = GameObject.Find("CharacterImage").GetComponent<Character>();
@@ -146,6 +148,8 @@ public class CentryBall : MonoBehaviour
         projectile.SetActive(true);
         projectile.GetComponent<CentryBallProjectile>().projPower = projPower;
         projectile.transform.GetComponent<CentryBallProjectile>().Shoot(target.transform);
+        SoundManager.Instance.PlaySFX(shootClip);
+
 
         currentPoolIndex = (currentPoolIndex + 1) % POOL_SCALE;
     }

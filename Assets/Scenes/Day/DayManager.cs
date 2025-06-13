@@ -9,9 +9,12 @@ public class DayManager : MonoBehaviour
     public GameObject setting;
     public TMP_Text day;
 
+    public AudioClip dayBGM;
+
     public void Start()
     {
         PrintDay();
+        SoundManager.Instance.PlayBGM(dayBGM);
     }
 
     public void OnClickSettingButton() {

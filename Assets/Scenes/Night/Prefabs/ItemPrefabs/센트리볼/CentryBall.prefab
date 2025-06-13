@@ -259,3 +259,4 @@ MonoBehaviour:
   detectRadius: 5
   shootTime: 0
   projPower: 0
+  ShootClip: {fileID: 8300000, guid: daea02cd680d74f2985725c5b2cace02, type: 3}

@@ -28,6 +28,8 @@ public class CharacterAttack : MonoBehaviour
     //    public bool isHologramAnimate = false;
     //    public bool isAntiPhenetOn = false;
 
+    public AudioClip attackClip;
+
 
     private void Awake()
     {
@@ -108,6 +110,7 @@ public class CharacterAttack : MonoBehaviour
     {
         float attackAnimationTime = 0.2f;
 
+        SoundManager.Instance.PlaySFX(attackClip);
         TriggerAttackAnimations();
 
         ActivateHitBox(attackAnimationTime);

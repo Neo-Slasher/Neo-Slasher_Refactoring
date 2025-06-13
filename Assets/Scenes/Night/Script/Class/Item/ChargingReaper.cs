@@ -20,6 +20,7 @@ public class ChargingReaper : MonoBehaviour
 
     const int MAX_GAUGE = 100;
 
+
     private void Awake()
     {
         character = GameObject.Find("CharacterImage").GetComponent<Character>();

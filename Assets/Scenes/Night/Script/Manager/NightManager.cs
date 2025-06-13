@@ -507,6 +507,6 @@ public class NightManager : MonoBehaviour
     // 테스트용 함수
     public void OnClickTestButton()
     {
-        GameManager.Instance.player.item[0] = DataManager.Instance.consumableList.item[1];
+        GameManager.Instance.player.item[0] = DataManager.Instance.consumableList.item[59];
     }
 }
