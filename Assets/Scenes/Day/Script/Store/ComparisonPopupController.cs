@@ -28,6 +28,7 @@ public class ComparisonPopupController : MonoBehaviour
 
     public void OnClickComparisonButton()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         if (shopManager.selectedItem == null)
         {
             Logger.Log("비교할 아이템이 없습니다.");
@@ -142,6 +143,7 @@ public class ComparisonPopupController : MonoBehaviour
 
     public void OnClickPurchaseButton()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         Player player = GameManager.Instance.player;
 
         if (player.money < itemToBuy.GetPrice())
@@ -200,6 +202,7 @@ public class ComparisonPopupController : MonoBehaviour
 
     public void OnClickConsumablePanelItemButton(int buttonNumber)
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         playerConsumableIndex = buttonNumber;
 
         Player player = GameManager.Instance.player;
@@ -222,6 +225,7 @@ public class ComparisonPopupController : MonoBehaviour
 
     public void OnClickCancelButton()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         consumablePanel.SetActive(false);
         equipmentPanel.SetActive(false);
         comparisonPopup.SetActive(false);

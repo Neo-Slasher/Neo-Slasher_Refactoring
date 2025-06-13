@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using static UnityEditor.Progress;
 
 public class AntiPhenet : MonoBehaviour
 {

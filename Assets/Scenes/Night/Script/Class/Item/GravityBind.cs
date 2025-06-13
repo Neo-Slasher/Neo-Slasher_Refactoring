@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.U2D.Animation;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class GravityBind : MonoBehaviour
 {

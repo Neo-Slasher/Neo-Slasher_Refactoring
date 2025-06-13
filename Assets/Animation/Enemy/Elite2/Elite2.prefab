@@ -374,7 +374,7 @@ MonoBehaviour:
     imageIndex: 0
     soundIndex: 0
     type: 0
-  character: {fileID: 0}
+  characterObj: {fileID: 0}
   isStop: 0
   isAttacked: 0
   isBeingDragged: 0

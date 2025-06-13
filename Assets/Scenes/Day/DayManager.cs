@@ -17,15 +17,21 @@ public class DayManager : MonoBehaviour
         SoundManager.Instance.PlayBGM(dayBGM);
     }
 
-    public void OnClickSettingButton() {
+    public void OnClickSettingButton()
+    {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         setting.SetActive(true);
     }
 
-    public void OnClickSettingContinueButton() {
+    public void OnClickSettingContinueButton()
+    {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         setting.SetActive(false);
     }
 
-    public void OnClickSettingExitButton() {
+    public void OnClickSettingExitButton()
+    {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         Player.Save(GameManager.Instance.player);
         SceneManager.LoadScene("MainScene");
     }

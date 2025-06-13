@@ -443,12 +443,14 @@ public class NightManager : MonoBehaviour
     //환경설정 여는 함수
     public void OnClickSettingBtn()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         setting.SetActive(true);
         Time.timeScale = 0;
     }
 
     public void OnClickContinueBtn()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         Setting.Save(GameManager.Instance.setting);
         setting.SetActive(false);
         Time.timeScale = 1;
@@ -456,6 +458,7 @@ public class NightManager : MonoBehaviour
 
     public void OnClickExitBtn()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         Setting.Save(GameManager.Instance.setting);
         setting.SetActive(false);
 

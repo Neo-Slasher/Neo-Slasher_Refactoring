@@ -34,7 +34,7 @@ public class CutSceneManager : MonoBehaviour
     private bool autoStory = false;
     private bool touchScreen = false;
 
-
+    public AudioClip buttonClip;
 
     void Start()
     {
@@ -45,6 +45,7 @@ public class CutSceneManager : MonoBehaviour
 
     public void OnClickSkipButton()
     {
+        SoundManager.Instance.PlaySFX(buttonClip);
         if (typingCoroutine != null)
             StopCoroutine(typingCoroutine);
         LoadPreparationScene();
@@ -52,6 +53,7 @@ public class CutSceneManager : MonoBehaviour
 
     public void OnClickAutoButton()
     {
+        SoundManager.Instance.PlaySFX(buttonClip);
         autoStory = !autoStory;
         if (autoStory && !isTyping)
             touchScreen = true;

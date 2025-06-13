@@ -1253,6 +1253,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1578774385}
     - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: buttonClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e308b5bedc28d48b7b6b620a8a221347, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
       propertyPath: joystickSlider
       value: 
       objectReference: {fileID: 1947267894}

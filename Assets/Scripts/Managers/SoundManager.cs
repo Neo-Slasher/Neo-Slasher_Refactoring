@@ -18,6 +18,8 @@ public class SoundManager : MonoBehaviour
     private Slider bgmSlider;
     private Slider sfxSlider;
 
+    public AudioClip buttonClip;
+
     private void Awake()
     {
         if (Instance == null)

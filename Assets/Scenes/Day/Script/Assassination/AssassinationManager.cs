@@ -67,6 +67,7 @@ public class AssassinationManager : MonoBehaviour
 
     public void OnClickGoNightButton()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         Player.Save(GameManager.Instance.player);
         SceneManager.LoadScene("NightScene");
     }
@@ -74,6 +75,7 @@ public class AssassinationManager : MonoBehaviour
 
     public void OnClickStepButton(int step)
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         GameManager.Instance.player.assassinationCount = step;
         for (int i = 0; i < StepButtons.Length; i++)
         {

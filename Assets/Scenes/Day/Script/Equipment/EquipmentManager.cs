@@ -84,6 +84,7 @@ public class EquipmentManager : MonoBehaviour
 
     public void OnClickConsumableSlot(int slotNumber)
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         ActiveConsumableButtonSelected(slotNumber);
 
         Image image = selected.transform.Find("background").Find("image").GetComponent<Image>();
@@ -105,6 +106,7 @@ public class EquipmentManager : MonoBehaviour
 
     public void OnClickEquipmentSlot(int slotNumber)
     {
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClip);
         ActiveEquipmentButtonSelected(slotNumber);
 
         Image image = selected.transform.Find("background").Find("image").GetComponent<Image>();

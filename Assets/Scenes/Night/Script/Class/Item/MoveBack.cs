@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class MoveBack : MonoBehaviour
 {

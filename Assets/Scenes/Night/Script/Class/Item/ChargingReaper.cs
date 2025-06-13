@@ -1,8 +1,6 @@
 using System.Collections;
-using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class ChargingReaper : MonoBehaviour
 {
