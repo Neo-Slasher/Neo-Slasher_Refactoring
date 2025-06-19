@@ -1260,6 +1260,38 @@ PrefabInstance:
       propertyPath: joystickSlider
       value: 
       objectReference: {fileID: 1947267894}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: bgmClips.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 20509bd614e5d8a499a85945c8dd447e, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 860ecee717c4d6a4fb0e08593bf8ae80, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 5d5c8d6ca109eb541a3f1a3f1a7ab7b2, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: b36d0389d79ae06459f7e9c6c8d8edea, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[4]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 6030ec4dc3a8aac4fa588914fb745968, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[5]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 0c4abe21cee05b347bd38149136303ea, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[6]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 3edaf0db6f2e3f748827eedb56f36b98, type: 3}
     - target: {fileID: 456498011164488409, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
       propertyPath: m_Name
       value: SoundManager
