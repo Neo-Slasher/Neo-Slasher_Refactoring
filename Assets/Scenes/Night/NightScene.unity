@@ -2441,6 +2441,10 @@ PrefabInstance:
       propertyPath: CharacterHealth
       value: 
       objectReference: {fileID: 889106821}
+    - target: {fileID: 8777833785370950353, guid: 1cad304058f6c06409a437daa96b7925, type: 3}
+      propertyPath: characterHealth
+      value: 
+      objectReference: {fileID: 889106821}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3985,6 +3989,7 @@ MonoBehaviour:
   isAbsorb: 0
   isDoubleAttack: 0
   isMoveBackOn: 0
+  isHologramTrickOn: 0
   attackClip: {fileID: 8300000, guid: b88e98049a51a4806a09286e3a1fd091, type: 3}
 --- !u!114 &889106821
 MonoBehaviour:
@@ -7151,7 +7156,7 @@ MonoBehaviour:
   backGround: {fileID: 2135326779}
   endPopup: {fileID: 973832368}
   itemChangePopup: {fileID: 1778064153}
-  GetThing: {fileID: 950442191}
+  getThing: {fileID: 0}
   characterItemImageArr:
   - {fileID: 621283414}
   - {fileID: 1889901144}
@@ -9654,6 +9659,90 @@ PrefabInstance:
       propertyPath: sfx_slider
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: bgmClips.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: sfxClips.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 20509bd614e5d8a499a85945c8dd447e, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 860ecee717c4d6a4fb0e08593bf8ae80, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 5d5c8d6ca109eb541a3f1a3f1a7ab7b2, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: b36d0389d79ae06459f7e9c6c8d8edea, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[4]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 6030ec4dc3a8aac4fa588914fb745968, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[5]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 0c4abe21cee05b347bd38149136303ea, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'bgmClips.Array.data[6]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 3edaf0db6f2e3f748827eedb56f36b98, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: b88e98049a51a4806a09286e3a1fd091, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: e308b5bedc28d48b7b6b620a8a221347, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: daea02cd680d74f2985725c5b2cace02, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 01dc10bf275714268a814e2ca9cdadb4, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[4]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 55af97b72816141ab84e0870491960b1, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[5]'
+      value: 
+      objectReference: {fileID: 8300000, guid: a23fb67a575c840a0b6b144cd732b436, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[6]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 6e81fa7b465354dc4a1cfa5b78b16624, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[7]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 929e1590a7d024ebcacf04a5225079cb, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[8]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 5570537625e9c4f0db72c931149802fe, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[9]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 0334d4d87452c46faacc480acb5e662c, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[10]'
+      value: 
+      objectReference: {fileID: 8300000, guid: e2251dac32a8b4b799c5d19ef152ac3e, type: 3}
+    - target: {fileID: -8233774032386302428, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
+      propertyPath: 'sfxClips.Array.data[11]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 19ef9188b05824675afa5e20a44c5356, type: 3}
     - target: {fileID: 456498011164488409, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
       propertyPath: m_Name
       value: SoundManager

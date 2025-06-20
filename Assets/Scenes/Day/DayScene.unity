@@ -4091,23 +4091,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29b0adb4193719744b6ca55ae24e6753, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FightingPower: {fileID: 1715013362}
-  StepButtons:
+  fightingPower: {fileID: 1715013362}
+  stepButtons:
   - {fileID: 701153159}
   - {fileID: 116639591}
   - {fileID: 2141079417}
   - {fileID: 697948868}
-  StageRecCps:
+  stageRecCps:
   - {fileID: 1349292539}
   - {fileID: 1559318072}
   - {fileID: 1670369242}
   - {fileID: 1357587275}
-  CPGaps:
+  cpGaps:
   - {fileID: 29093649}
   - {fileID: 1092466884}
   - {fileID: 1786206390}
   - {fileID: 410363158}
-  CheckMarks:
+  checkMarks:
   - {fileID: 1488853492}
   - {fileID: 1029664064}
   - {fileID: 1177955185}
@@ -6863,9 +6863,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shopManager: {fileID: 983469612}
   fightingPower: {fileID: 1715013362}
-  PurchaseButton: {fileID: 1286748319}
+  purchaseButton: {fileID: 1286748319}
   comparisonPopup: {fileID: 292709833}
-  playerComsumableImages:
+  playerConsumableImages:
   - {fileID: 1163974564}
   - {fileID: 607931932}
   - {fileID: 17537179}
@@ -13315,11 +13315,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f814270796d95294b978ec66cfc400a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equipment_buttons:
+  equipmentButtons:
   - {fileID: 1040970294}
   - {fileID: 1776436233}
   - {fileID: 1780003189}
-  item_buttons:
+  itemButtons:
   - {fileID: 336652182}
   - {fileID: 362517109}
   - {fileID: 986043354}
