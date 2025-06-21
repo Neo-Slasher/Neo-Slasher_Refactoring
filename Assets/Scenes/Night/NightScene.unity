@@ -1611,11 +1611,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293387896}
   m_CullTransparentMesh: 1
---- !u!82 &293519255 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 1031204073674619610, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
-  m_PrefabInstance: {fileID: 2108576716}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &295054476
 GameObject:
   m_ObjectHideFlags: 0
@@ -4912,17 +4907,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &843761576 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4976701938584526928, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
-  m_PrefabInstance: {fileID: 7279721334905702560}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &876965468
 GameObject:
   m_ObjectHideFlags: 0
@@ -6031,22 +6015,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!82 &1029085294 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 692878104537608870, guid: cb713221858eb472495ae1eb28d1f680, type: 3}
-  m_PrefabInstance: {fileID: 2108576716}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1042009112 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4976701938090938549, guid: 2ba22b7569c0e1247be886c7201db05c, type: 3}
-  m_PrefabInstance: {fileID: 7279721334905702560}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1042171535 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2929252283123773939, guid: aaa2c939c0359ac4dbce3f49e8b90252, type: 3}
@@ -9839,7 +9807,8 @@ MonoBehaviour:
   backGround: {fileID: 2135326779}
   endPopup: {fileID: 973832368}
   itemChangePopup: {fileID: 1778064153}
-  getThing: {fileID: 0}
+  getThing: {fileID: 950442191}
+  testButtons: {fileID: 1595766474}
   characterItemImageArr:
   - {fileID: 621283414}
   - {fileID: 1889901144}
@@ -10347,29 +10316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 081a9f07bd7478c459ffa07f3590fab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmPlayer: {fileID: 1029085294}
-  sfxPlayer: {fileID: 293519255}
-  bgmSlider: {fileID: 843761576}
-  sfxSlider: {fileID: 1042009112}
-  bgmArr:
-  - {fileID: 8300000, guid: b36d0389d79ae06459f7e9c6c8d8edea, type: 3}
-  - {fileID: 8300000, guid: 6030ec4dc3a8aac4fa588914fb745968, type: 3}
-  - {fileID: 8300000, guid: 0c4abe21cee05b347bd38149136303ea, type: 3}
-  - {fileID: 8300000, guid: 3edaf0db6f2e3f748827eedb56f36b98, type: 3}
-  sfxArr:
-  - {fileID: 0}
-  - {fileID: 8300000, guid: b88e98049a51a4806a09286e3a1fd091, type: 3}
-  - {fileID: 8300000, guid: e308b5bedc28d48b7b6b620a8a221347, type: 3}
-  - {fileID: 8300000, guid: daea02cd680d74f2985725c5b2cace02, type: 3}
-  - {fileID: 8300000, guid: 01dc10bf275714268a814e2ca9cdadb4, type: 3}
-  - {fileID: 8300000, guid: 55af97b72816141ab84e0870491960b1, type: 3}
-  - {fileID: 8300000, guid: a23fb67a575c840a0b6b144cd732b436, type: 3}
-  - {fileID: 8300000, guid: 6e81fa7b465354dc4a1cfa5b78b16624, type: 3}
-  - {fileID: 8300000, guid: 929e1590a7d024ebcacf04a5225079cb, type: 3}
-  - {fileID: 8300000, guid: 5570537625e9c4f0db72c931149802fe, type: 3}
-  - {fileID: 8300000, guid: 0334d4d87452c46faacc480acb5e662c, type: 3}
-  - {fileID: 8300000, guid: e2251dac32a8b4b799c5d19ef152ac3e, type: 3}
-  - {fileID: 8300000, guid: 19ef9188b05824675afa5e20a44c5356, type: 3}
 --- !u!1 &1685259981
 GameObject:
   m_ObjectHideFlags: 0
