@@ -1,7 +1,7 @@
 ﻿{
     "difficulty": [
         {
-            "recommandLv": 1,
+            "recommendLv": 1,
             "rewardExp": "1",
             "goalMoney": 750,
             "enemyStatus": 1.0,
@@ -9,10 +9,10 @@
             "normalEnhance": 0.0,
             "eliteEnhance": 0.0,
             "dropRank": 1,
-            "recommandCP": 1.0
+            "recommendCP": 1.0
         },
         {
-            "recommandLv": 3,
+            "recommendLv": 3,
             "rewardExp": "3",
             "goalMoney": 1500,
             "enemyStatus": 1.1,
@@ -20,10 +20,10 @@
             "normalEnhance": 0.0,
             "eliteEnhance": 0.0,
             "dropRank": 2,
-            "recommandCP": 1.2
+            "recommendCP": 1.2
         },
         {
-            "recommandLv": 6,
+            "recommendLv": 6,
             "rewardExp": "8",
             "goalMoney": 2750,
             "enemyStatus": 1.3,
@@ -31,10 +31,10 @@
             "normalEnhance": 0.0,
             "eliteEnhance": 0.04,
             "dropRank": 4,
-            "recommandCP": 1.5
+            "recommendCP": 1.5
         },
         {
-            "recommandLv": 9,
+            "recommendLv": 9,
             "rewardExp": "20",
             "goalMoney": 5000,
             "enemyStatus": 1.6,
@@ -42,10 +42,10 @@
             "normalEnhance": 0.0,
             "eliteEnhance": 0.08,
             "dropRank": 6,
-            "recommandCP": 1.9
+            "recommendCP": 1.9
         },
         {
-            "recommandLv": 12,
+            "recommendLv": 12,
             "rewardExp": "48",
             "goalMoney": 8500,
             "enemyStatus": 2.1,
@@ -53,10 +53,10 @@
             "normalEnhance": 0.05,
             "eliteEnhance": 0.15,
             "dropRank": 9,
-            "recommandCP": 2.5
+            "recommendCP": 2.5
         },
         {
-            "recommandLv": 15,
+            "recommendLv": 15,
             "rewardExp": "105",
             "goalMoney": 13500,
             "enemyStatus": 2.8,
@@ -64,10 +64,10 @@
             "normalEnhance": 0.1,
             "eliteEnhance": 0.25,
             "dropRank": 12,
-            "recommandCP": 3.4
+            "recommendCP": 3.4
         },
         {
-            "recommandLv": 18,
+            "recommendLv": 18,
             "rewardExp": "210",
             "goalMoney": 20000,
             "enemyStatus": 3.8,
@@ -75,10 +75,10 @@
             "normalEnhance": 0.2,
             "eliteEnhance": 0.4,
             "dropRank": 15,
-            "recommandCP": 4.7
+            "recommendCP": 4.7
         },
         {
-            "recommandLv": 20,
+            "recommendLv": 20,
             "rewardExp": "진엔딩",
             "goalMoney": 30000,
             "enemyStatus": 5.0,
@@ -86,7 +86,7 @@
             "normalEnhance": 0.3,
             "eliteEnhance": 0.55,
             "dropRank": 18,
-            "recommandCP": 6.2
+            "recommendCP": 6.2
         }
     ]
 }

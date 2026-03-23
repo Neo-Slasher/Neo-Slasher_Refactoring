@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git mv:*)",
+      "Bash(find Assets/Scenes -type f -name *.cs)",
+      "Bash(python3 -c \":*)",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(echo \"=== $f ===\")",
+      "Bash(done)"
+    ]
+  }
+}
