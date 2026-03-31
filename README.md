@@ -1,2 +1,3 @@
-# Neo-Slasher_Refactoring
- Neo-Slasher 리팩토링 버전
+# Neo-Slasher
+
+모바일 뱀서라이크 게임. Unity + C#.
