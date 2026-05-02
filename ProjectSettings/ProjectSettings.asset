@@ -166,7 +166,7 @@ PlayerSettings:
     Android: com.ExP.com.unity.NeoSlasher
     Lumin: com.DefaultCompany.com.unity.template.mobile2D
     Standalone: com.DefaultCompany.com.unity.template.mobile2D
-    iPhone: com.tolelom.neoslasher
+    iPhone: com.ExP.com.unity.NeoSlasher
     tvOS: com.DefaultCompany.com.unity.template.mobile2D
   buildNumber:
     Standalone: 0
