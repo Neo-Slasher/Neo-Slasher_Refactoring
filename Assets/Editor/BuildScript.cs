@@ -18,6 +18,25 @@ public static class BuildScript
             options = BuildOptions.Development,
         };
 
+        Run(options);
+    }
+
+    // 로컬 테스트용 Windows 개발 빌드
+    public static void BuildWindowsDev()
+    {
+        var options = new BuildPlayerOptions
+        {
+            scenes = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray(),
+            locationPathName = "Builds/Windows/Neo-Slasher.exe",
+            target = BuildTarget.StandaloneWindows64,
+            options = BuildOptions.Development,
+        };
+
+        Run(options);
+    }
+
+    private static void Run(BuildPlayerOptions options)
+    {
         var report = BuildPipeline.BuildPlayer(options);
         Debug.Log($"[BuildScript] result={report.summary.result} errors={report.summary.totalErrors} " +
                   $"size={report.summary.totalSize} time={report.summary.totalTime}");
