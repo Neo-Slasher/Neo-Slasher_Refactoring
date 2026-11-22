@@ -77,4 +77,6 @@ KeyStore/
 
 AssetsUserData.json
 
-.DS_Store
+# 빌드 캐시와 로컬 설정
+.utmp/
+.claude/settings.local.json
